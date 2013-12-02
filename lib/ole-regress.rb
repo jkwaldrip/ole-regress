@@ -18,11 +18,15 @@ $.unshift File.dirname(__FILE__)
 
 require 'ole-qa-framework'
 require 'ostruct'
-
 require 'lib/ole-regress/VERSION.rb'
 
 module OLE_QA
   module RegressionTest
+  
+    # Load all helper modules.
+    Dir['lib/module/*.rb'].sort.each do |file|
+      require file
+    end
 
   end
 end
