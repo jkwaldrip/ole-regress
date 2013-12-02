@@ -1,5 +1,3 @@
-#!/usr/bin/sh ruby
-
 #  Copyright 2005-2013 The Kuali Foundation
 #
 #  Licensed under the Educational Community License, Version 2.0 (the "License");
@@ -14,19 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-$:<< File.dirname(__FILE__)
+shared_context 'select_acquire' do
 
-require 'ole-qa-framework'
-require 'ostruct'
-require 'lib/ole-regress/VERSION.rb'
-
-module OLE_QA
-  module RegressionTest
-  
-    # Load all helper modules.
-    Dir['lib/module/*.rb'].sort.each do |file|
-      require file
-    end
-
-  end
 end
