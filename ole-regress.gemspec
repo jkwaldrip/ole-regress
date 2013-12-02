@@ -2,7 +2,7 @@
 lib = File.expand_path('../lib/',__FILE__)
 $:.unshift(lib) unless $:.include?(lib)
 
-require 'ole-regress/VERSION.rb'
+require 'ole_regress/VERSION.rb'
 
 Gem::Specification.new do |spec|
   spec.name                     = 'ole-regress'

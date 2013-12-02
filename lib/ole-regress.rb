@@ -21,11 +21,13 @@ require 'ole-qa-framework'
 require 'ostruct'
 require 'yaml'
 
-require 'lib/ole-regress/VERSION.rb'
-require 'lib/ole-regress/Options.rb'
-
 module OLE_QA
   module RegressionTest
+
+    # Load all *.rb in lib/ole_regress/
+    Dir['lib/ole_regress/*.rb'].sort.each do |file|
+      require file
+    end
   
     # Load all helper modules.
     Dir['lib/module/*.rb'].sort.each do |file|
