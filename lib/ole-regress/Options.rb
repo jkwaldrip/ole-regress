@@ -1,5 +1,3 @@
-#!/usr/bin/sh ruby
-
 #  Copyright 2005-2013 The Kuali Foundation
 #
 #  Licensed under the Educational Community License, Version 2.0 (the "License");
@@ -14,23 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-$:<< File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
-
-require 'ole-qa-framework'
-
-require 'ostruct'
-require 'yaml'
-
-require 'lib/ole-regress/VERSION.rb'
-require 'lib/ole-regress/Options.rb'
-
-module OLE_QA
-  module RegressionTest
-  
-    # Load all helper modules.
-    Dir['lib/module/*.rb'].sort.each do |file|
-      require file
-    end
-    
-  end
+module OLE_QA::RegressionTest
+  yaml_config = File.open('config/options.yml','r')
+  Options = YAML.load(yaml_config)
+  yaml_config.close
 end

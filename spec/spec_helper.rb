@@ -29,7 +29,8 @@ RSpec.configure do |config|
 
   # Initiate a new OLE QA Framework Session before each spec.
   config.before(:all) do
-    @ole = OLE_QA::Framework::Session.new
+    opts = OLE_QA::RegressionTest::Options
+    @ole = OLE_QA::Framework::Session.new(opts)
   end
 
   config.after(:all) do
