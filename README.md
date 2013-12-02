@@ -17,3 +17,5 @@ and basic namespacing and reusable constants are stored in [lib/ole_regress/](/l
 Currently, RSpec is being used to handle test execution and expectation building.  Each directory under [spec/](/spec/)
 represents an OLE functional module, and each contains a shared.rb file for shared context definitions particular
 to that module.  There is also a shared.rb in [spec/](/spec/shared.rb) for globally shared context definitions.
+There is a [base specs](/spec/base/) folder for basic specs used to ensure that the regression suite can perform
+basic tasks like starting an OLE QA Framework session.
