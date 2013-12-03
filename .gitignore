@@ -19,3 +19,4 @@ tmp
 .project/
 .DS_Store
 *.swp
+screenshots/*.png
