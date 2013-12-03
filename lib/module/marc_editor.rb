@@ -88,11 +88,12 @@ module OLE_QA::RegressionTest
         
       hsh_out[:message] = bib_editor.save_record
       hsh_out[:pass?]   = true
+      hsh_out
 
     rescue => e
       hsh_out[:error]     = e.message
       hsh_out[:backtrace] = e.backtrace
-    ensure
+      hsh_out[:pass?]     = false
       hsh_out
     end
 
@@ -128,11 +129,12 @@ module OLE_QA::RegressionTest
       hsh_out[:call_number],hsh_out[:call_number_type] = true
       hsh_out[:message] = instance_editor.save_record
       hsh_out[:pass?]   = true
+      hsh_out
+
     rescue => e
       hsh_out[:error]     = e.message
       hsh_out[:backtrace] = e.backtrace
       hsh_out[:pass?]     = false
-    ensure
       hsh_out
     end
 
@@ -164,22 +166,20 @@ module OLE_QA::RegressionTest
       end
       item_editor.item_link(item_info[:item_number]).click
       item_editor.wait_for_page_to_load
-
       item_editor.item_type_selector.when_present.select(item_info[:item_type])
       hsh_out[:item_type] = true
-
       item_editor.item_status_selector.when_present.select(item_info[:item_status])
       hsh_out[:item_status] = true
-
       item_editor.barcode_field.when_present.set(item_info[:barcode])
       hsh_out[:barcode] = true
-
       hsh_out[:message] = item_editor.save_record
+      hsh_out[:pass?]   = true
+      hsh_out
 
     rescue => e
       hsh_out[:error]     = e.message
       hsh_out[:backtrace] = e.backtrace
-    ensure
+      hsh_out[:pass?]     = false
       hsh_out
     end
   end
