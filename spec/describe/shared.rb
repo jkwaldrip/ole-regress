@@ -12,30 +12,29 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-shared_context 'create a Marc record' do
+shared_context 'Create a Marc Record' do
   
   include OLE_QA::RegressionTest::MarcEditor
-
-  let(:marc_record)       { OpenStruct.new(
-
-                              :bib_info       => [
+  
+  before :all do
+    @marc_record                = OpenStruct.new
+    @marc_record.bib_info       = [
                                       {:tag             => '100',
                                       :value            => '|a' + OLE_QA::Framework::String_Factory.alphanumeric},
                                       {:tag             => '245',
                                       :value            => '|a' + OLE_QA::Framework::String_Factory.alphanumeric}
-                              ],
-                              :instance_info  => {
+    ]
+    @marc_record.instance_info  = {
                                       :location         => 'B-EDUC/BED-STACKS',
                                       :call_number      => OLE_QA::Framework::Bib_Factory.call_number,
                                       :call_number_type => 'LCC'
-                              },
-                              :item_info      => {
+    }
+    @marc_record.item_info      = {
                                       :item_type        => 'Book',
                                       :item_status      => 'Available',
                                       :barcode          => OLE_QA::Framework::Bib_Factory.barcode
-                              }
-                            )
-                          }
+    }
+  end
 
   let(:bib_editor)        { OLE_QA::Framework::OLELS::Bib_Editor.new(@ole) }
   let(:instance_editor)   { OLE_QA::Framework::OLELS::Instance_Editor.new(@ole) }
@@ -46,19 +45,19 @@ shared_context 'create a Marc record' do
   end
 
   it 'creates a new bib record' do
-    results = create_bib(bib_editor, marc_record.bib_info)
+    results = create_bib(bib_editor, @marc_record.bib_info)
     results[:error].should be_nil
     results[:pass?].should be_true
   end
 
   it 'creates a new instance record' do
-    results = create_instance(instance_editor, marc_record.instance_info)
+    results = create_instance(instance_editor, @marc_record.instance_info)
     results[:error].should be_nil
     results[:pass?].should be_true
   end
 
   it 'creates a new item record' do
-    results = create_item(item_editor, marc_record.item_info)
+    results = create_item(item_editor, @marc_record.item_info)
     results[:error].should be_nil
     results[:pass?].should be_true
   end
