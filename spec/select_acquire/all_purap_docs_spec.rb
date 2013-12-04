@@ -3,6 +3,7 @@ require 'spec_helper.rb'
 
 describe 'The PURAP Workflow' do
   include OLE_QA::RegressionTest::PURAP::Requisition
+  include_context 'Create a Bib Record'
 
   let(:requisition)       { OLE_QA::Framework::OLEFS::Requisition.new(@ole) }
   let(:delivery)          { {:building => 'Wells Library', :room => '064'} }
@@ -28,4 +29,13 @@ describe 'The PURAP Workflow' do
     results[:pass?].should be_true
   end
 
+  it 'selects a new bib record for a line item' do
+    results = set_new_bib(requisition)
+    results[:error].should be_nil
+    results[:pass?].should be_true
+  end
+  
+  it 'enters the new bib' do
+    enter_bib_record
+  end
 end
