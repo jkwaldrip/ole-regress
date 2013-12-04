@@ -14,6 +14,7 @@
 
 module OLE_QA::RegressionTest
   yaml_config = File.open('config/options.yml','r')
+  # Options hash for OLE QA Framework Session.
   Options = YAML.load(yaml_config)
   yaml_config.close
 end
