@@ -31,5 +31,4 @@ shared_context 'Create a Requisition' do
                               :object  => object_ary[0],
                               :percent => '100.00' }
   end
-  
 end

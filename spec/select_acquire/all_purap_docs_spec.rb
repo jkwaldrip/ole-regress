@@ -3,6 +3,7 @@ require 'spec_helper.rb'
 
 describe 'The PURAP Workflow' do
   include OLE_QA::RegressionTest::PURAP::Requisition
+  include OLE_QA::RegressionTest::Assertions
   include_context 'Create a Marc Record'
   include_context 'Create a Requisition'
 
@@ -88,4 +89,13 @@ describe 'The PURAP Workflow' do
     @info.requisition[:id]        = requisition.document_id.text.strip
     @info.requisition[:url]       = requisition.lookup_url(@info.requisition[:id])
   end
+  
+  it 'waits for the requisition status to be Closed' do
+    lambda {
+      page_assert(requisition.lookup_url(@info.requisition[:id]))   { requisition.wait_for_page_to_load
+                                                                    requisition.document_type_statues.text.include?('Closed') }
+    }.should be_true
+  end
+
+
 end
