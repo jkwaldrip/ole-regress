@@ -129,32 +129,40 @@ module OLE_QA::RegressionTest::PURAP
       hsh_out[:backtrace]   = e.backtrace
       hsh_out
     end
-    
-    # Set the location, price, and copies (optional) on a new line item and add that line.
-    # @param  [Object]      requisition           The OLE QA Framework requisition instance to use.
-    # @param  [Hash]        line_info             The options to set on the line item before adding.
-    # @option line_info     [String]    price     The line item list price value.
-    # @option line_info     [String]    location  The location for the line item itself.
-    # @option line_info     [String]    copies    The number of copies to set on the line item.
-    #
+
+    # Set the accounting line on a line item.
+    # @param  [Object]  requisition   The OLE QA Framework requisition instance to use.
+    # @param  [Hash]    account_info  The options hash to use for accounting information.
+    # @option account_info  [Fixnum]  :line_number  The line item number to set the new account line on.
+    # @option account_info  [String]  :chart        The chart code to use.
+    # @option account_info  [String]  :account      The account number to use.
+    # @option account_info  [String]  :object       The object code to use.
+    # @option account_info  [String]  :dollar       The dollar amount to set, if any.  (Precedence is given to percentages.)
+    # @option account_info  [String]  :percent      The percentage to set, if any.  (Default is 100%.)
+    # 
     # Returns a hash with:
     # - :pass?              whether the test passed
     # - :error              the error message, if any error was raised
     # - :backtrace          the error backtrace, if any error was raised
     #
-    def set_new_line(requisition, line_info)
+    def set_acct(requisition, account_info)
       hsh_out = Hash.new
 
-      requisition.wait_for_page_to_load
-      requisition.list_price_field.when_present.set(line_info[:price])
-      requisition.location_selector.when_present.select(line_info[:location])
-      if line_info[:copies]
-        requisition.copies_field.when_present.set(line_info[:copies])
+      requisition.line_item.line_number = account_info.has_key?(:line_number) ? account_info[:line_number] : 1
+      requisition.line_item.accounting_lines_toggle.click unless requisition.line_item.chart_selector.present?
+      requisition.line_item.chart_selector.when_present.select(account_info[:chart])
+      requisition.line_item.account_number_field.set(account_info[:account])
+      requisition.line_item.object_field.set(account_info[:object])
+      if account_info.has_key?(:percent) 
+        requisition.line_item.percent_field.set(account_info[:percent])
+      elsif account_info.has_key?(:dollar)
+        requisition.line_item.dollar_field.set(account_info[:dollar])
+      else
+        requisition.line_item.percent_field.set('100.00')
       end
-      requisition.add_button.click
-      requisition.wait_for_page_to_load
+      requisition.line_item.add_account_button.when_present.click
 
-      hsh_out[:pass?] = true      
+      hsh_out[:pass?] = true
       hsh_out
 
     rescue => e
@@ -163,56 +171,5 @@ module OLE_QA::RegressionTest::PURAP
       hsh_out[:backtrace]   = e.backtrace
       hsh_out
     end
-
-    # Verify that the given information exists on a line item with a specific line-number.
-    # @param    [Object]    requisition     The OLE QA Framework requisition instance to use.
-    # @param    [Hash]      line_info       The information to verify on the line item.
-    # @option   line_info   [Fixnum]    :line_num     The 1-based line item number to use.
-    # @option   line_info   [String]    :price        The line item list price.
-    # @option   line_info   [String]    :location     The line item location.
-    # @option   line_info   [String]    :copies       The line item number of copies.
-    #
-    # Returns a hash with:
-    # - :pass?              whether the test passed
-    # - :error              the error message, if any error was raised
-    # - :backtrace          the error backtrace, if any error was raised
-    # - and one key for each given in line_info, e.g. :price?, with true/false outcome value
-    #
-    def check_line_item(requisition, line_info)
-      hsh_out = Hash.new
-      
-      requisition.line_item.line_number = line_info[:line_num]
-      
-      if ( line_info[:price] &&\
-          requisition.line_item.list_price_field.when_present.value.include?(line_info[:price]) )
-          hsh_out[:price?] = true
-      else
-          hsh_out[:price?] = false
-      end
-
-      if ( line_info[:location] &&\
-          requisition.line_item.location_selector.when_present.value.include?(line_info[:location]) )
-        hsh_out[:location?] = true
-      else
-        hsh_out[:location?] = false
-      end
-
-      if ( line_info[:copies] &&\
-          requisition.line_item.copies_field.when_present.value.include?(line_info[:copies]) )
-        hsh_out[:copies?] = true
-      else
-        hsh_out[:copies?] = false
-      end
-
-      hsh_out[:pass?] = hsh_out.has_value?(false) ? false : true
-      hsh_out
-
-    rescue => e
-      hsh_out[:pass?]       = false
-      hsh_out[:error]       = e.message
-      hsh_out[:backtrace]   = e.backtrace
-      hsh_out
-    end
-
   end
 end

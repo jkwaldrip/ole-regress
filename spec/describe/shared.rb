@@ -46,7 +46,6 @@ shared_context 'Create a Marc Record' do
     results = create_bib(bib_editor, @marc_record.bib_info)
     results[:error].should be_nil
     results[:pass?].should be_true
-    bib_editor.close_button.click if bib_editor.close_button.present?
   end
 
   def new_instance
@@ -59,5 +58,9 @@ shared_context 'Create a Marc Record' do
     results = create_item(item_editor, @marc_record.item_info)
     results[:error].should be_nil
     results[:pass?].should be_true
+  end
+
+  def close_editor
+    bib_editor.close_button.click if bib_editor.close_button.present?
   end
 end
