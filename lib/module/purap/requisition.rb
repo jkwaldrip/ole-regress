@@ -85,7 +85,7 @@ module OLE_QA::RegressionTest::PURAP
       lookup.wait_for_page_to_load
       lookup.vendor_name_field.set(vendor)
       lookup.search_button.click
-      lookup.return_result(vendor).when_present.click
+      lookup.return_result(/#{vendor}/).when_present.click
 
       requisition.wait_for_page_to_load
       if requisition.closed_vendor_name_field.text.include?(vendor)

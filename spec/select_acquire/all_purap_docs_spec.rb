@@ -22,4 +22,10 @@ describe 'The PURAP Workflow' do
     results[:pass?].should be_true
   end
 
+  it 'selects a vendor' do
+    results = set_vendor(requisition, vendor)
+    results[:error].should be_nil
+    results[:pass?].should be_true
+  end
+
 end
