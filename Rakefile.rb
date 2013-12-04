@@ -12,8 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-lib = File.expand_path(File.dirname(__FILE__))
-$:.unshift(lib) unless $:.include?(lib)
+dir = File.expand_path(File.dirname(__FILE__))
+$:.unshift(dir) unless $:.include?(dir)
 
 require 'rspec/core/rake_task'
 require 'lib/ole-regress.rb'
@@ -21,6 +21,19 @@ require 'lib/ole-regress.rb'
 desc 'Print OLE Regression Test Suite version.'
 task :version do
   puts OLE_QA::RegressionTest::VERSION
+end
+
+desc 'Clean out the screenshots folder.'
+task :scnclean do
+  files = Dir['screenshots/*.png']
+  if files.empty?
+    puts "No screenshots found."
+  else
+    files.each do |file|
+      File.delete(file)
+      puts "#{file} deleted."
+    end
+  end
 end
 
 RSpec::Core::RakeTask.new(:spec)
