@@ -12,6 +12,15 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-shared_context 'select_acquire' do
-  
+module OLE_QA::RegressionTest
+  # This module is a namespace container for modules containing S&A mix-in methods.
+  # @note The name PURAP derives from the OLE Financial System's 
+  #   PURchasing/Accounts Payable functional area.
+  #   
+  module PURAP
+    
+    # Load all PURAP modules.
+    Dir['lib/module/purap/*.rb'].sort.each {|file| require file}
+    
+  end
 end
