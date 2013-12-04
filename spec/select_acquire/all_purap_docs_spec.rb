@@ -4,22 +4,7 @@ require 'spec_helper.rb'
 describe 'The PURAP Workflow' do
   include OLE_QA::RegressionTest::PURAP::Requisition
   include_context 'Create a Marc Record'
-
-  let(:requisition)       { OLE_QA::Framework::OLEFS::Requisition.new(@ole) }
-  let(:delivery)          { {:building => 'Wells Library', :room => '064'} }
-  let(:vendor)            { 'YBP' }
-
-  before :all do
-    @struct               = OpenStruct.new
-    
-    # Generate account info.
-    account_ary           = OLE_QA::Framework::Account_Factory.select_account(:BL)
-    object_ary            = OLE_QA::Framework::Account_Factory.select_object(:BL)
-    @struct.account       = { :chart   => 'BL',
-                              :account => account_ary[0],
-                              :object  => object_ary[0],
-                              :percent => '100.00' }
-  end
+  include_context 'Create a Requisition'
 
   it 'opens a new requisition' do
     requisition.open
@@ -78,16 +63,16 @@ describe 'The PURAP Workflow' do
   end
   
   it 'adds an account to the new line' do
-    results = set_acct(requisition, @struct.account)
+    results = set_acct(requisition, @info.account)
     results[:error].should be_nil
     results[:pass?].should be_true
   end
 
   it 'has consistent data on a new accounting line' do
-    requisition.line_item.accounting_line.chart_selector.selected?(@struct.account[:chart]).should  be_true
-    requisition.line_item.accounting_line.account_number_field.value.should   eq(@struct.account[:account])
-    requisition.line_item.accounting_line.object_field.value.should           eq(@struct.account[:object])
-    requisition.line_item.accounting_line.percent_field.value.should          eq(@struct.account[:percent])
+    requisition.line_item.accounting_line.chart_selector.selected?(@info.account[:chart]).should  be_true
+    requisition.line_item.accounting_line.account_number_field.value.should   eq(@info.account[:account])
+    requisition.line_item.accounting_line.object_field.value.should           eq(@info.account[:object])
+    requisition.line_item.accounting_line.percent_field.value.should          eq(@info.account[:percent])
   end
 
   it 'can submit the requisition' do
@@ -99,8 +84,8 @@ describe 'The PURAP Workflow' do
 
   it 'can get a requisition ID' do
     requisition.document_id.present?.should be_true
-    @struct.requisition             = Hash.new
-    @struct.requisition[:id]        = requisition.document_id.text.strip
-    @struct.requisition[:url]       = requisition.lookup_url(@struct.requisition[:id])
+    @info.requisition             = Hash.new
+    @info.requisition[:id]        = requisition.document_id.text.strip
+    @info.requisition[:url]       = requisition.lookup_url(@info.requisition[:id])
   end
 end

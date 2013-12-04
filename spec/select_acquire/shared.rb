@@ -12,6 +12,24 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-shared_context 'select_acquire' do
+shared_context 'Create a Requisition' do
+  
+  let(:requisition)       { OLE_QA::Framework::OLEFS::Requisition.new(@ole) }
+  let(:delivery)          { {:building => 'Wells Library', :room => '064'} }
+  let(:vendor)            { 'YBP' }
+
+  before :all do
+
+    @info               = OpenStruct.new
+    
+    # Generate account info.
+    account_ary         = OLE_QA::Framework::Account_Factory.select_account(:BL)
+    object_ary          = OLE_QA::Framework::Account_Factory.select_object(:BL)
+
+    @info.account       = { :chart   => 'BL',
+                              :account => account_ary[0],
+                              :object  => object_ary[0],
+                              :percent => '100.00' }
+  end
   
 end
