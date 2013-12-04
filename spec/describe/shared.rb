@@ -62,3 +62,28 @@ shared_context 'Create a Marc Record' do
     results[:pass?].should be_true
   end
 end
+
+shared_context 'Create a Bib Record Only' do
+  @marc_record                = OpenStruct.new
+  @marc_record.bib_info       = [
+                                    {:tag             => '100',
+                                    :value            => '|a' + OLE_QA::Framework::String_Factory.alphanumeric},
+                                    {:tag             => '245',
+                                    :value            => '|a' + OLE_QA::Framework::String_Factory.alphanumeric}
+  ]
+  let(:bib_editor)        { OLE_QA::Framework::OLELS::Bib_Editor.new(@ole) }
+  
+  it 'waits for the Marc editor to load' do
+    bib_editor.wait_for_page_to_load
+  end
+
+  it 'fills in the Marc editor and submits the record' do
+    results = create_bib(bib_editor, @marc_record.bib_info)
+    results[:error].should be_nil
+    results[:pass?].should be_true
+  end
+
+  it 'may close the Marc editor' do
+    bib_editor.close_button.click if bib_editor.close_button.present?
+  end
+end
