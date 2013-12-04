@@ -40,51 +40,24 @@ shared_context 'Create a Marc Record' do
   let(:instance_editor)   { OLE_QA::Framework::OLELS::Instance_Editor.new(@ole) }
   let(:item_editor)       { OLE_QA::Framework::OLELS::Item_Editor.new(@ole) }
 
-  it 'opens the Marc editor' do
-    bib_editor.open
-  end
-
-  it 'creates a new bib record' do
-    results = create_bib(bib_editor, @marc_record.bib_info)
-    results[:error].should be_nil
-    results[:pass?].should be_true
-  end
-
-  it 'creates a new instance record' do
-    results = create_instance(instance_editor, @marc_record.instance_info)
-    results[:error].should be_nil
-    results[:pass?].should be_true
-  end
-
-  it 'creates a new item record' do
-    results = create_item(item_editor, @marc_record.item_info)
-    results[:error].should be_nil
-    results[:pass?].should be_true
-  end
-end
-
-shared_context 'Create a Bib Record' do
-
-  include OLE_QA::RegressionTest::MarcEditor
-
-  let(:bib_editor)        { OLE_QA::Framework::OLELS::Bib_Editor.new(@ole) }
-
-  before :all do
-    @marc_record                = OpenStruct.new
-    @marc_record.bib_info       = [
-                                      {:tag             => '100',
-                                      :value            => '|a' + OLE_QA::Framework::String_Factory.alphanumeric},
-                                      {:tag             => '245',
-                                      :value            => '|a' + OLE_QA::Framework::String_Factory.alphanumeric}
-    ]
-  end
-
-
-  def enter_bib_record
+  
+  def new_bib_record
     bib_editor.wait_for_page_to_load
     results = create_bib(bib_editor, @marc_record.bib_info)
     results[:error].should be_nil
     results[:pass?].should be_true
     bib_editor.close_button.click if bib_editor.close_button.present?
+  end
+
+  def new_instance
+    results = create_instance(instance_editor, @marc_record.instance_info)
+    results[:error].should be_nil
+    results[:pass?].should be_true
+  end
+
+  def new_item
+    results = create_item(item_editor, @marc_record.item_info)
+    results[:error].should be_nil
+    results[:pass?].should be_true
   end
 end
