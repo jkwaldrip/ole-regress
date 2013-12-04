@@ -89,4 +89,18 @@ describe 'The PURAP Workflow' do
     requisition.line_item.accounting_line.object_field.value.should           eq(@struct.account[:object])
     requisition.line_item.accounting_line.percent_field.value.should          eq(@struct.account[:percent])
   end
+
+  it 'can submit the requisition' do
+    requisition.submit_button.click
+    requisition.wait_for_page_to_load
+    requisition.generic_message.wait_until_present
+    requisition.submit_message.present?.should be_true
+  end
+
+  it 'can get a requisition ID' do
+    requisition.document_id.present?.should be_true
+    @struct.requisition             = Hash.new
+    @struct.requisition[:id]        = requisition.document_id.text.strip
+    @struct.requisition[:url]       = requisition.lookup_url(@struct.requisition[:id])
+  end
 end
