@@ -132,4 +132,8 @@ describe 'The PURAP Workflow' do
     receiving.wait_for_page_to_load.should be_true
   end
 
+  it 'receives the line item' do
+    receiving.receiving_line.receive_button.when_present.click
+  end
+
 end
