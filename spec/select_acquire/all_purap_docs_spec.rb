@@ -8,6 +8,7 @@ describe 'The PURAP Workflow' do
   include_context 'Create a Requisition'
 
   let(:purchase_order)          { OLE_QA::Framework::OLEFS::Purchase_Order.new(@ole) }
+  let(:receiving)               { OLE_QA::Framework::OLEFS::Receiving_Document.new(@ole) }
 
   it 'opens a new requisition' do
     requisition.open
@@ -111,6 +112,24 @@ describe 'The PURAP Workflow' do
   it 'opens the PO' do
     @ole.browser.goto(@info.po[:url])
     purchase_order.wait_for_page_to_load.should be_true
+  end
+
+  it 'retrieves a PO number' do
+    @info.po[:po_id] = purchase_order.document_type_id.text.strip
+    @info.po[:po_id].should =~ /[0-9]+/
+  end
+
+  it 'has appropriate PO statuses' do
+    purchase_order.document_status.text.strip.should        match(/FINAL/)
+    purchase_order.document_type_status.text.strip.should   match(/Open/)
+  end
+
+  it 'can receive the PO' do
+    purchase_order.receiving_button.when_present.click
+  end
+
+  it 'opens a receiving document' do
+    receiving.wait_for_page_to_load.should be_true
   end
 
 end
