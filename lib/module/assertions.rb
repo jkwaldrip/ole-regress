@@ -18,7 +18,19 @@ module OLE_QA::RegressionTest
 
     # The interval in seconds to wait between retrying an assertion.
     INTERVAL = 1
-
+    
+    # Reload a page, test an assertion, and if it fails, start over.
+    # @param [String] page_url    The URL of the page to load.
+    # @param [Fixnum] timeout     The timeout interval, in seconds.
+    # @param [Object] ole_session The OLE QA Framework session to run the assertion in.
+    #
+    # @note This assertion will not return any errors, thanks to the rescue clause.
+    #   This is necessary to ensure that assertions fail gracefully.  Be sure the assertion
+    #   would normally evaluate to true while writing the lambda to pass to this method.
+    #
+    # @usage page_assert( requisition.lookup_url('4007') )
+    #     { requisition.document_type_status.text.strip.include?('Closed') }
+    #
     def page_assert(page_url, timeout = OLE_QA::Framework.doc_wait, ole_session = @ole)
       timeout = Time.now + timeout
       ole_session.browser.goto(page_url)
