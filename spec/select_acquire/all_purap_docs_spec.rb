@@ -169,10 +169,15 @@ describe 'The PURAP Workflow' do
     invoice.current_items_line.po_number.when_present.text.strip.should eq(@info.po[:id])
   end
 
-  it 'approves the invoice' do
-    invoice.wait_for_page_to_load
+  it 'saves the invoice' do
     @info.invoice[:id]  = invoice.document_id.when_present.text.strip
     @info.invoice[:url] = invoice.lookup_url(@info.invoice[:id])
+    invoice.save_button.click
+    invoice.wait_for_page_to_load
+    invoice.document_status.when_present.text.strip.should match('SAVED')
+  end
+
+  it 'approves the invoice' do
     invoice.approve_button.when_present.click
   end
 
