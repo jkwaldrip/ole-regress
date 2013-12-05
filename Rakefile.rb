@@ -17,6 +17,7 @@ $:.unshift(dir) unless $:.include?(dir)
 
 require 'rspec/core/rake_task'
 require 'lib/ole-regress.rb'
+require 'yaml'
 
 desc 'Print OLE Regression Test Suite version.'
 task :version do
@@ -33,6 +34,40 @@ task :scnclean do
       File.delete(file)
       puts "#{file} deleted."
     end
+  end
+end
+
+desc 'Interactively configure config/options.yml'
+task :configurator do
+  config_file = File.open('config/options.yml','r')
+  options     = YAML.load(config_file)
+  config_file.close
+  
+  options.each do |k,v|
+    puts "#{k.to_s.ljust(20)}:  #{v}"
+    puts "... (k)eep or (c)hange? [k|c]"
+    ans = STDIN.gets.chomp
+    if ans =~ /[Cc]/
+      puts "Enter new value:"
+      new_val    = STDIN.gets.chomp
+      options[k] = new_val
+      puts "#{k.to_s.ljust(20)} updated to:  #{new_val}"
+    end
+  end
+
+  config_file = File.open('config/options.yml','w')
+  YAML.dump(options,config_file)
+  config_file.close
+  
+end
+
+desc 'Show current options in config/options.yml'
+task :show_config do
+  config_file = File.open('config/options.yml','r')
+  options     = YAML.load(config_file)
+  config_file.close
+  options.each do |k,v|
+    puts "#{k.to_s.ljust(20)}:  #{v}"
   end
 end
 
