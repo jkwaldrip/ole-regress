@@ -50,6 +50,9 @@ task :configurator do
     if ans =~ /[Cc]/
       puts "Enter new value:"
       new_val    = STDIN.gets.chomp
+      if v.is_a?(TrueClass) || v.is_a?(FalseClass)
+        new_val.match(/^[Tt]/) ? new_val = true : new_val = false
+      end
       options[k] = new_val
       puts "#{k.to_s.ljust(20)} updated to:  #{new_val}"
     end
