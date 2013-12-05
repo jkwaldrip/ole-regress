@@ -9,6 +9,7 @@ describe 'The PURAP Workflow' do
 
   let(:purchase_order)          { OLE_QA::Framework::OLEFS::Purchase_Order.new(@ole) }
   let(:receiving)               { OLE_QA::Framework::OLEFS::Receiving_Document.new(@ole) }
+  let(:invoice)                 { OLE_QA::Framework::OLEFS::Invoice.new(@ole) }
 
   it 'opens a new requisition' do
     requisition.open
@@ -142,4 +143,40 @@ describe 'The PURAP Workflow' do
     receiving.submit_message.present?.should be_true
   end
 
+  it 'opens a new invoice' do
+    invoice.open
+    invoice.wait_for_page_to_load
+  end
+
+  it 'selects a vendor' do
+    invoice.vendor_selector.when_present.select(/#{vendor}/)
+    invoice.wait_for_page_to_load
+  end
+
+  it 'sets invoice information' do
+    invoice.invoice_date_field.when_present.set(@info.invoice[:date])
+    invoice.vendor_invoice_amt_field.when_present.set(@info.invoice[:total])
+    invoice.payment_method_selector.when_present.select(@info.invoice[:payment])
+  end
+
+  it 'selects the purchase order' do
+    invoice.po_number_field.when_present.set(@info.po[:id] + "\n")
+    invoice.wait_for_page_to_load
+  end
+
+  it 'adds the purchase order' do
+    invoice.po_line.add_button.when_present.click
+    invoice.current_items_line.po_number.when_present.text.strip.should eq(@info.po[:id])
+  end
+
+  it 'approves the invoice' do
+    invoice.wait_for_page_to_load
+    @info.invoice[:id]  = invoice.document_id.when_present.text.strip
+    @info.invoice[:url] = invoice.lookup_url(@info.invoice[:id])
+    invoice.approve_button.when_present.click
+  end
+
+  it 'waits for the invoice to be department-approved' do
+    page_assert(@info.invoice[:url])    { invoice.document_type_status.when_present.text.strip.include?('Department-Approved') }.should be_true
+  end
 end

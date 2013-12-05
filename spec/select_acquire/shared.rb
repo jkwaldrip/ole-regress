@@ -33,5 +33,11 @@ shared_context 'Create a Requisition' do
 
     # Generate a price.
     @info.item          = { :price    => sprintf('%.2f',OLE_QA::Framework::String_Factory.numeric(2)) }
+
+    # Generate invoice info.
+    @info.invoice = {:date    => Time.now.strftime('%m/%d/%Y'),
+                     :payment => 'Check',
+                     :total   => @info.item[:price]}
+
   end
 end
