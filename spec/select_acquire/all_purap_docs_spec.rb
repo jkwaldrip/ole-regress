@@ -44,7 +44,7 @@ describe 'The PURAP Workflow' do
   end
   
   it 'gives a list price' do
-    requisition.list_price_field.when_present.set('42.00')
+    requisition.list_price_field.when_present.set(@info.item[:price])
   end
 
   it 'gives a location' do
@@ -62,7 +62,7 @@ describe 'The PURAP Workflow' do
 
   it 'has consistent data on a new line item' do
     requisition.line_item.line_number = 1
-    requisition.line_item.list_price_field.when_present.value.should    eq('42.00')
+    requisition.line_item.list_price_field.when_present.value.should    eq(@info.item[:price])
     requisition.line_item.location_selector.when_present.value.should   eq('B-EDUC/BED-STACKS')
     requisition.line_item.copies_field.when_present.value.should        eq('1')
   end

@@ -26,9 +26,12 @@ shared_context 'Create a Requisition' do
     account_ary         = OLE_QA::Framework::Account_Factory.select_account(:BL)
     object_ary          = OLE_QA::Framework::Account_Factory.select_object(:BL)
 
-    @info.account       = { :chart   => 'BL',
-                              :account => account_ary[0],
-                              :object  => object_ary[0],
-                              :percent => '100.00' }
+    @info.account       = { :chart    => 'BL',
+                            :account  => account_ary[0],
+                            :object   => object_ary[0],
+                            :percent  => '100.00' }
+
+    # Generate a price.
+    @info.item          = { :price    => sprintf('%.2f',OLE_QA::Framework::String_Factory.numeric(2)) }
   end
 end
