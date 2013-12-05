@@ -136,4 +136,10 @@ describe 'The PURAP Workflow' do
     receiving.receiving_line.receive_button.when_present.click
   end
 
+  it 'submits the receiving document' do
+    receiving.submit_button.click
+    receiving.wait_for_page_to_load
+    receiving.submit_message.present?.should be_true
+  end
+
 end
