@@ -7,6 +7,8 @@ describe 'The PURAP Workflow' do
   include_context 'Create a Marc Record'
   include_context 'Create a Requisition'
 
+  let(:purchase_order)          { OLE_QA::Framework::OLEFS::Purchase_Order.new(@ole) }
+
   it 'opens a new requisition' do
     requisition.open
   end
@@ -35,6 +37,7 @@ describe 'The PURAP Workflow' do
   end
   
   it 'returns to the requisition' do
+    @ole.browser.windows[-1].close if @ole.browser.windows.count > 1
     @ole.browser.windows[0].use
     requisition.wait_for_page_to_load
   end
@@ -91,11 +94,23 @@ describe 'The PURAP Workflow' do
   end
   
   it 'waits for the requisition status to be Closed' do
-    lambda {
-      page_assert(requisition.lookup_url(@info.requisition[:id]))   { requisition.wait_for_page_to_load
-                                                                    requisition.document_type_statues.text.include?('Closed') }
-    }.should be_true
+    page_assert(@info.requisition[:url])   { requisition.wait_for_page_to_load
+                                             requisition.document_type_status.text.include?('Closed') }.should be_true
   end
 
+  it 'should have a valid PO number' do
+    page_assert(@info.requisition[:url])   { requisition.wait_for_page_to_load
+                          requisition.view_related_tab_toggle.click unless requisition.view_related_po_link.present?
+                          requisition.view_related_po_link.wait_until_present
+                          requisition.view_related_po_link.text =~ /[0-9]+/ }.should be_true
+    @info.po        = Hash.new
+    @info.po[:id]   = requisition.view_related_po_link.text.strip
+    @info.po[:url]  = requisition.view_related_po_link.href
+  end
+
+  it 'opens the PO' do
+    @ole.browser.goto(@info.po[:url])
+    purchase_order.wait_for_page_to_load.should be_true
+  end
 
 end
