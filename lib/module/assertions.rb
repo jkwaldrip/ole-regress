@@ -22,12 +22,13 @@ module OLE_QA::RegressionTest
     def page_assert(page_url, timeout = OLE_QA::Framework.doc_wait, ole_session = @ole)
       timeout = Time.now + timeout
       ole_session.browser.goto(page_url)
-      while Time.now < timeout
+      begin
         return true if yield
         sleep INTERVAL
-        ole_session.browser.goto(page_url)
-      end
-    rescue
+        ole_session.browser.refresh
+        ole_session.browser.goto(page_url) unless ole_session.browser.url == page_url
+      rescue
+      end while Time.now < timeout
       false
     end
     alias_method(:assert_page,:page_assert)
