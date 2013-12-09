@@ -9,6 +9,7 @@ describe 'The Describe Workbench' do
   let(:workbench)       { OLE_QA::Framework::OLELS::Describe_Workbench.new(@ole) } 
   let(:author)          { @marc_record.bib_info[0][:value].gsub('|a','') }
   let(:title)           { @marc_record.bib_info[1][:value].gsub('|a','') }
+  let(:call_number)     { @marc_record.instance_info[:call_number] }
 
   it 'starts with a Marc record' do
     bib_editor.open
@@ -28,6 +29,12 @@ describe 'The Describe Workbench' do
 
     it 'by author' do
       bib_search(workbench, 'Author', author)
+    end
+  end
+
+  context 'searches for a holdings record' do
+    it 'by call number' do
+      holdings_search(workbench, 'Call Number', call_number)
     end
   end
 end
