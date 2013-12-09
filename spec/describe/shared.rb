@@ -64,3 +64,18 @@ shared_context 'Create a Marc Record' do
     bib_editor.close_button.click if bib_editor.close_button.present?
   end
 end
+
+shared_context 'Describe Workbench' do
+
+  def bib_search(workbench_page, search_type, value)
+    workbench_page.wait_for_page_to_load
+    workbench_page.doc_type_bib.when_present.set
+    workbench_page.wait_for_page_to_load
+    workbench_page.search_field_1.when_present.set(value)
+    workbench_page.search_field_selector_1.select(search_type)
+    workbench_page.search_button.click
+    workbench_page.wait_for_page_to_load
+    workbench_page.result_present?(value).should be_true
+    workbench_page.clear_button.when_present.click
+  end
+end
