@@ -21,10 +21,10 @@ require 'yaml'
 
 desc 'Print OLE Regression Test Suite version.'
 task :version do
-  puts OLE_QA::RegressionTest::VERSION
+  puts "OLE Regression Test Version #{OLE_QA::RegressionTest::VERSION}"
 end
 
-desc 'Clean out the screenshots folder.'
+desc 'Clean out the screenshots/ folder.'
 task :scnclean do
   files = Dir['screenshots/*.png']
   if files.empty?
@@ -33,6 +33,21 @@ task :scnclean do
     files.each do |file|
       File.delete(file)
       puts "#{file} deleted."
+    end
+  end
+end
+
+desc 'Clean out the logs/ folder.'
+task :logclean do
+  logs = Dir['logs/*.log']
+  txts = Dir['logs/*.txt']
+  logs.concat(txts)
+  if logs.empty?
+    puts 'No logfiles found.'
+  else
+    logs.each do |logfile|
+      File.delete(logfile)
+      puts "#{logfile} deleted."
     end
   end
 end
