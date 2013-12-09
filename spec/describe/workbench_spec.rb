@@ -10,6 +10,7 @@ describe 'The Describe Workbench' do
   let(:author)          { @marc_record.bib_info[0][:value].gsub('|a','') }
   let(:title)           { @marc_record.bib_info[1][:value].gsub('|a','') }
   let(:call_number)     { @marc_record.instance_info[:call_number] }
+  let(:barcode)         { @marc_record.item_info[:barcode] }
 
   it 'starts with a Marc record' do
     bib_editor.open
@@ -35,6 +36,12 @@ describe 'The Describe Workbench' do
   context 'searches for a holdings record' do
     it 'by call number' do
       holdings_search(workbench, 'Call Number', call_number)
+    end
+  end
+
+  context 'searches for an item record' do
+    it 'by barcode' do
+      item_search(workbench, 'Item Barcode', barcode)
     end
   end
 end
