@@ -39,7 +39,6 @@ shared_context 'Create a Marc Record' do
   let(:bib_editor)        { OLE_QA::Framework::OLELS::Bib_Editor.new(@ole) }
   let(:instance_editor)   { OLE_QA::Framework::OLELS::Instance_Editor.new(@ole) }
   let(:item_editor)       { OLE_QA::Framework::OLELS::Item_Editor.new(@ole) }
-
   
   def new_bib_record
     bib_editor.wait_for_page_to_load
@@ -78,7 +77,6 @@ shared_context 'Describe Workbench' do
     workbench_page.result_present?(value).should be_true
     workbench_page.clear_button.when_present.click
   end
-
 
   def bib_search(workbench_page, search_type, value)
     workbench_page.wait_for_page_to_load
