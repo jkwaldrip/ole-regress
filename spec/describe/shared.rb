@@ -67,7 +67,6 @@ end
 shared_context 'Describe Workbench' do
 
   def search(workbench_page, search_type, value)
-    workbench_page.clear_button.when_present.click
     workbench_page.wait_for_page_to_load
     workbench_page.search_field_1.when_present.set(value)
     workbench_page.search_field_selector_1.wait_until_present

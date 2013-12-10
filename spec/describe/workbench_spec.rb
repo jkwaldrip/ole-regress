@@ -44,19 +44,23 @@ describe 'The Describe Workbench' do
     end
   end
 
-  it 'retrieves the bib by title' do
-    bib_search(workbench, 'Title', title)
-  end
+  context 'verifies a Marc record' do
+    it 'from a title search' do
+      bib_search(workbench, 'Title', title)
+      workbench.view_by_text(title).when_present.click
+      @ole.windows.count.should eq(2)
+      @ole.windows[-1].use
+      bib_editor.wait_for_page_to_load
+    end
 
-  it 'opens the read-only bib' do
-    workbench.view_by_text(title).when_present.click
-    @ole.windows.count.should eq(2)
-    @ole.windows[-1].use
-    bib_editor.wait_for_page_to_load
-  end
+    it 'by title and author' do
+      bib_editor.readonly_data_field(1).when_present.text.strip.include?(author).should be_true
+      bib_editor.readonly_data_field(2).when_present.text.strip.include?(title).should  be_true
+    end
 
-  it 'verifies that title and author are present' do
-    bib_editor.readonly_data_field(1).when_present.text.strip.should.include?(author)
-    bib_editor.readonly_data_field(2).when_present.text.strip.should.include?(title)
+    it 'and returns to the main window' do
+      @ole.windows[-1].close
+      @ole.windows[0].use
+    end
   end
 end
