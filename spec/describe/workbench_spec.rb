@@ -44,22 +44,19 @@ describe 'The Describe Workbench' do
     end
   end
 
-  context 'verifies a bib record' do
-    it 'searches for the record' do
-      bib_search(workbench, 'Title', title)
-    end
+  it 'retrieves the bib by title' do
+    bib_search(workbench, 'Title', title)
+  end
 
-    it 'opens the record in view-only mode' do
-      workbench.view_by_text(title).when_present.click
-      @ole.windows.count.should eq(2)
-      @ole.windows[-1].use
-      bib_editor.wait_for_page_to_load
-    end
+  it 'opens the read-only bib' do
+    workbench.view_by_text(title).when_present.click
+    @ole.windows.count.should eq(2)
+    @ole.windows[-1].use
+    bib_editor.wait_for_page_to_load
+  end
 
-    it 'verifies that title and author are present' do
-      bib_editor.readonly_data_field(1).when_present.text.strip.should.include?(author)
-      bib_editor.readonly_data_field(2).when_present.text.strip.should.include?(title)
-    end
-
+  it 'verifies that title and author are present' do
+    bib_editor.readonly_data_field(1).when_present.text.strip.should.include?(author)
+    bib_editor.readonly_data_field(2).when_present.text.strip.should.include?(title)
   end
 end
