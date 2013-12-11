@@ -12,6 +12,10 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-shared_context 'deliver' do
+shared_context 'Checkin' do
+
+end
+
+shared_context 'Checkout' do
 
 end
