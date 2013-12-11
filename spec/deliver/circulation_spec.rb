@@ -42,9 +42,7 @@ describe 'The Circulation module' do
   end
 
   it 'uses a circulation desk' do
-    loan_page.circulation_desk_selector.when_present.select('BL_EDUC')
-    loan_page.circulation_desk_yes.when_present.click
-    loan_page.loan_popup_box.wait_while_present if loan_page.loan_popup_box.present?
+    select_desk(loan_page,'BL_EDUC')
   end
 
   it 'selects a patron by barcode' do
@@ -64,6 +62,16 @@ describe 'The Circulation module' do
     loan_page.item_barcode_link(1).when_present.text.strip.include?(item_barcode).should be_true
   end
 
+  it 'opens the return screen' do
+    loan_page.return_button.when_present.click
+    return_page.wait_for_page_to_load
+  end
+
   it 'returns a resource' do
+    return_resource(return_page, item_barcode) 
+  end
+
+  it 'ends the circulation session' do
+    end_session(return_page)
   end
 end
