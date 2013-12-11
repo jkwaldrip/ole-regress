@@ -10,8 +10,6 @@ describe 'The Circulation module' do
   include_context 'Checkout'
 
   let(:main_menu)                         { OLE_QA::Framework::OLELS::Main_Menu.new(@ole) }
-  let(:loan_page)                         { OLE_QA::Framework::OLELS::Loan.new(@ole) }
-  let(:return_page)                       { OLE_QA::Framework::OLELS::Return.new(@ole) }
   let(:item_barcode)                      { @marc_record.item_info[:barcode] }
   
   before :all do

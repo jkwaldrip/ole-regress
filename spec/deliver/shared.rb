@@ -13,6 +13,8 @@
 #  limitations under the License.
 
 shared_context 'Checkin' do
+
+  let(:loan_page)    { OLE_QA::Framework::OLELS::Loan.new(@ole) }
   
   def select_desk(loan_page,desk)
     loan_page.circulation_desk_selector.when_present.select(desk)
@@ -23,6 +25,8 @@ shared_context 'Checkin' do
 end
 
 shared_context 'Checkout' do
+
+  let(:return_page) { OLE_QA::Framework::OLELS::Return.new(@ole) }
   
   before :all do
     date            = Time.now.strftime("%m/%d/%Y") 
