@@ -2,6 +2,9 @@ require 'rspec'
 require 'spec_helper.rb'
 
 describe 'The Circulation module' do
+
+  include OLE_QA::RegressionTest::Assertions
+
   include_context 'Create a Marc Record'
   include_context 'Checkin'
   include_context 'Checkout'
@@ -54,7 +57,7 @@ describe 'The Circulation module' do
   end
 
   it 'dismisses any popups on loan' do
-    # loan_page.loan_button.when_present.click if verify { loan_page.loan_popup_box.present? }
+    loan_page.loan_button.when_present.click if verify { loan_page.loan_popup_box.present? }
   end
 
   it 'has the item barcode in current items' do
