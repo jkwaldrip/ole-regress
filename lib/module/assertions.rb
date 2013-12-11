@@ -18,7 +18,31 @@ module OLE_QA::RegressionTest
 
     # The interval in seconds to wait between retrying an assertion.
     INTERVAL = 1
-    
+
+    # Repeat an assertion until success or timeout, and report true or false outcome.
+    # @param [Fixnum] timeoue     The timeout interval, in seconds.
+    # @param [Object] ole_session The OLE QA Framework session to run the assertion in.
+    #
+    # @note This assertion will not return any errors, only a value of false.
+    #   This is necessary to ensure that assertions fail gracefully.  Be sure the
+    #   assertion would normally evalute to true while writing the lambda to use with this method.
+    #
+    # @usage 
+    #   if assert { loan_page.loan_popup_box.present? }
+    #     loan_page.loan_button.when_present.click
+    #   end
+    #
+    def assert(timeout = OLE_QA::Framework.explicit_wait)
+      timeout = Time.now + timeout
+      begin
+        return true if yield
+        sleep INTERVAL
+      rescue
+      end while Time.now < timeout
+      false
+    end
+    alias_method(:verify,:assert)
+
     # Reload a page, test an assertion, and if it fails, start over.
     # @param [String] page_url    The URL of the page to load.
     # @param [Fixnum] timeout     The timeout interval, in seconds.
