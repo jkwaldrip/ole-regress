@@ -13,16 +13,27 @@ describe 'A Patron' do
   end
 
   context 'is searchable' do
-    it 'by id' do
-    end
-
     it 'by barcode' do
+      patron_lookup.open
+      patron_lookup.barcode_field.when_present.set(@patron.barcode)
+      patron_lookup.search_button.click
+      patron_lookup.text_in_results?(@patron.barcode).should be_true
     end
 
     it 'by name' do
+      patron_lookup.clear_button.click
+      patron_lookup.first_name_field.when_present.set(@patron.first)
+      patron_lookup.last_name_field.when_present.set(@patron.last)
+      patron_lookup.search_button.click
+      patron_lookup.text_in_results?(@patron.barcode).should be_true
     end
 
     it 'by email' do
+      patron_lookup.clear_button.click
+      patron_lookup.email_address_field.when_present.set(@patron.email)
+      patron_lookup.search_button.click
+      patron_lookup.text_in_results?(@patron.barcode).should be_true
+      patron_lookup.clear_button.click
     end
   end
 end
