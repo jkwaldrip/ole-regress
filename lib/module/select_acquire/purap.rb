@@ -20,7 +20,7 @@ module OLE_QA::RegressionTest
   module PURAP
     
     # Load all PURAP modules.
-    Dir['lib/module/purap/*.rb'].sort.each {|file| require file}
+    Dir['lib/module/select_acquire/purap/*.rb'].sort.each {|file| require file}
     
   end
 end

@@ -34,6 +34,9 @@ module OLE_QA
     Dir['lib/module/*.rb'].sort.each do |file|
       require file
     end
+    Dir['lib/module/*/*.rb'].sort.each do |file|
+      require file
+    end
     
   end
 end
