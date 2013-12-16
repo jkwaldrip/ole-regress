@@ -1,0 +1,8 @@
+#
+# Set options for SauceLabs connection.
+# 
+# @note Only used if :sauce?: is true in config/options.yml
+#
+---
+:username:    your-username
+:api_key:     your-api-key
