@@ -15,9 +15,9 @@
 dir = File.expand_path(File.dirname(__FILE__))
 $:.unshift(dir) unless $:.include?(dir)
 
+require 'rspec'
 require 'rspec/core/rake_task'
 require 'lib/ole-regress.rb'
-require 'yaml'
 
 desc 'Print OLE Regression Test Suite version.'
 task :version do
@@ -89,7 +89,10 @@ task :show_config do
   end
 end
 
-RSpec::Core::RakeTask.new(:spec)
+desc 'Run all specs with default configuration.'
+RSpec::Core::RakeTask.new do |task|
+  task.rspec_opts = '-r spec_helper.rb'
+end
 
 desc 'Default:  Show version.'
 task :default => :version

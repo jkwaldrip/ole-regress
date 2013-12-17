@@ -18,27 +18,33 @@ module OLE_QA::RegressionTest
   # @usage
   #   OLE_QA::RegressionTest.start_browser('firefox'|'chrome'|'internet explorer'|'safari')
   #
-  module Sauce
+  module Sauce   
+    @options = YAML.load_file('config/sauce.yml')
+
     class << self
-      
+
+      # SauceLabs options hash.
+      attr_reader :options
+
       # Start the specified browser in a SauceLabs session.
       #
       # @param [String] which Which browser to use.  ('firefox'|'chrome'|'internet explorer'|'safari')
       #
       def start_browser(which)
-        @options = YAML.load_file('config/sauce.yml')
         which.gsub!(' ','_')
         @caps = Selenium::WebDriver::Remote::Capabilities.send(which.to_sym)
         case which
         when 'firefox','chrome','internet_explorer'
           os  = 'Windows ' + @options[:platforms][:windows]
         when 'safari'
-          os = 'OS X ' + @options[:platforms][:safari]
+          os = 'OS X ' + @options[:platforms][:os_x]
         end
-        @caps.platform  = os
-        @caps.version   = @options[:browsers][which.to_sym]
-        time            = Time.now.strftime('%Y-%m-%d %I:%M %p %Z')
-        @caps[:name]    = "Regression Test - #{time}"
+        @caps.platform              = os
+        @caps.version               = @options[:browsers][which.to_sym]
+        time                        = Time.now.strftime('%Y-%m-%d %I:%M %p %Z')
+        @caps[:name]                = "RegressionTest - #{time} - #{which} on #{os}"
+        @caps['record-video']       = false
+        @caps['sauce-advisor']      = false
         username        = @options[:username]
         api_key         = @options[:api_key]
         OLE_QA::RegressionTest::Options[:browser] = Watir::Browser.new(

@@ -1,3 +1,5 @@
 :url:               http://tst.ole.kuali.org/
 :docstore_url:      http://tst.docstore.ole.kuali.org/
 :headless?:         true
+:sauce?:            false           # :which_browser: is only used if this is set to true, firefox is the default
+:which_browser:     'firefox'       # Set to 'firefox'|'chrome'|'safari'|'internet explorer'
