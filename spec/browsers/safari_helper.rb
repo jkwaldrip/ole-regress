@@ -17,4 +17,5 @@ $:.unshift(dir) unless $:.include?(dir)
 require 'rspec'
 require 'lib/ole-regress.rb'
 
+# Start a SauceLabs browser session before running the specs.
 OLE_QA::RegressionTest::Sauce.start_browser('safari')
