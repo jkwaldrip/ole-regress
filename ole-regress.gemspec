@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
 
   spec.require_ruby_version     = '~> 1.9.3'
 
-  spec.add_dependency             'ole-qa-framework', '~> 3.6.6'
+  spec.add_dependency             'ole-qa-framework', '~> 3.7.1'
   spec.add_dependency             'rspec'
   spec.add_dependency             'chronic'
 end
