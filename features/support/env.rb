@@ -16,6 +16,9 @@ dir = File.join(File.dirname(__FILE__),'../../')
 $:.unshift(dir) unless $:.include?(dir)
 
 require 'lib/ole-regress.rb'
+require 'rspec/expectations'
+
+World(RSpec::Matchers)
 
 Before do |scenario|
   opts = OLE_QA::RegressionTest::Options
