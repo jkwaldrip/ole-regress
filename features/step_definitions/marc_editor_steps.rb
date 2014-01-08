@@ -68,3 +68,13 @@ Then /^I can save the instance record$/ do
   save_msg = @instance_editor.save_record
   save_msg.should =~ /success/
 end
+
+When /^I create an instance record$/ do
+  steps %{
+    When I add an instance record
+    And I enter a location
+    And I enter a call number
+    And I select a call number type
+    Then I can save the instance record
+  }
+end
