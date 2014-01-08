@@ -59,13 +59,14 @@ When /^I enter a location ?(?:of )?(.*)?$/ do |location|
   @instance_editor.location_field.when_present.set(location)
 end
 
-When /^I enter a call number$/ do
-  call_number = OLE_QA::Framework::Bib_Factory.call_number
+When /^I enter a call number ?(?:of )?(.*)?$/ do |call_number|
+  call_number = OLE_QA::Framework::Bib_Factory.call_number if call_number.empty?
   @instance_editor.call_number_field.when_present.set(call_number)
 end
 
-When /^I select a call number type$/ do
-  @instance_editor.call_number_type_selector.when_present.select_value('LCC')
+When /^I select a call number type ?(?:of )?(.*)?$/ do |call_number_type|
+  call_number_type = 'LCC' if call_number_type.empty?
+  @instance_editor.call_number_type_selector.when_present.select_value(call_number_type)
 end
 
 Then /^I can save the instance record$/ do
