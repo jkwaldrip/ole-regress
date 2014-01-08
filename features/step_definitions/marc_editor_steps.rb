@@ -36,8 +36,9 @@ When /^I enter an author ?(?:of )?(.*)?$/ do |author|
   @bib_editor.data_line.data_field.value.should eq(author)
 end
 
-Then /^I can save the bib record$/ do
-  save_msg = @bib_editor.save_record
+Then /^I can save the (bib|instance|item) record$/ do |which|
+  editor = instance_variable_get("@#{which}_editor".to_sym)
+  save_msg = editor.save_record
   save_msg.should =~ /success/
 end
 
@@ -71,11 +72,6 @@ When /^I select a call number type ?(?:of )?(.*)?$/ do |call_number_type|
   call_number_type = 'LCC' if call_number_type.empty?
   @instance_editor.call_number_type_selector.when_present.select_value(call_number_type)
   @instance_editor.call_number_type_selector.selected?(/#{call_number_type}/).should be_true
-end
-
-Then /^I can save the instance record$/ do
-  save_msg = @instance_editor.save_record
-  save_msg.should =~ /success/
 end
 
 When /^I create an instance record$/ do
