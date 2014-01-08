@@ -55,7 +55,6 @@ end
 
 When /^I enter a location ?(?:of )?(.*)?$/ do |location|
   location = 'B-EDUC/BED-STACKS' if location.empty? # TODO Randomize the location when it becomes possible.
-  location.strip!
   @instance_editor.location_field.when_present.set(location)
 end
 
