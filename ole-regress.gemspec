@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.test_files               = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths            = ['lib']
 
-  spec.require_ruby_version     = '~> 1.9.3'
+  spec.require_ruby_version     = '>= 1.9.3'
 
   spec.add_dependency             'ole-qa-framework', '~> 3.7.3'
   spec.add_dependency             'rspec'
