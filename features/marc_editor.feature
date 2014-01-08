@@ -8,7 +8,7 @@ Feature:  Marc Editor
     And I enter an author of John Q. Author
     Then I can save the bib record
 
-  Scenario:  Create an Item Record
+  Scenario:  Create a Bib, Instance, and Item Record
     When I create a bib record
     And I create an instance record
     Then I add an item record

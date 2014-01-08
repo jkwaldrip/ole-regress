@@ -90,3 +90,21 @@ When /^I add an item record$/ do
   @instance_editor.item_link(1).when_present.click
   @item_editor.wait_for_page_to_load
 end
+
+When /^I select an item type ?(?:of )?(.*)?$/ do |type|
+  type = 'Book' if type.empty?
+  @item_editor.item_type_selector.when_present.select(type)
+  @item_editor.item_type_selector.selected?(/#{type}/).should be_true
+end
+
+When /^I select an item status ?(?:of )?(.*)?$/ do |status|
+  status = 'Available' if status.empty?
+  @item_editor.item_status_selector.when_present.select(status)
+  @item_editor.item_status_selector.selected?(/#{status}/).should be_true
+end
+
+When /^I enter a barcode ?(?:of )?(.*)?$/ do |barcode|
+  barcode = OLE_QA::Framework::Bib_Factory.barcode if barcode.empty?
+  @item_editor.barcode_field.when_present.set(barcode)
+  @item_editor.barcode_field.value.should eq(barcode)
+end
