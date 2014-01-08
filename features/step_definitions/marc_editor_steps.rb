@@ -17,15 +17,17 @@ Given /^I am using the Marc Editor$/ do
   @bib_editor.open
 end
 
-When /^I enter a title$/ do
-  title = '|a' + OLE_QA::Framework::String_Factory.alpha(8).capitalize
+When /^I enter a title ?(?:of )?(.*)?$/ do |title|
+  title = '|a' + OLE_QA::Framework::String_Factory.alpha(8).capitalize if title.empty?
   @bib_editor.data_line.tag_field.when_present.set('245')
   @bib_editor.data_line.data_field.when_present.set(title)
 end
 
-When /^I enter an author$/ do
-  author = '|a' + OLE_QA::Framework::String_Factory.alpha(4).capitalize
-  author += ' ' + OLE_QA::Framework::String_Factory.alpha(8).capitalize
+When /^I enter an author ?(?:of )?(.*)?$/ do |author|
+  if author.empty?
+    author = '|a' + OLE_QA::Framework::String_Factory.alpha(4).capitalize
+    author += ' ' + OLE_QA::Framework::String_Factory.alpha(8).capitalize
+  end
   @bib_editor.data_line.add_button.when_present.click
   @bib_editor.data_line.line_number += 1
   @bib_editor.data_line.tag_field.when_present.set('100')
@@ -51,7 +53,9 @@ When /^I add an instance record$/ do
   @instance_editor.wait_for_page_to_load
 end
 
-When /^I enter a location (.*)$/ do |location|
+When /^I enter a location ?(?:of )?(.*)?$/ do |location|
+  location = 'B-EDUC/BED-STACKS' if location.empty? # TODO Randomize the location when it becomes possible.
+  location.strip!
   @instance_editor.location_field.when_present.set(location)
 end
 
@@ -77,4 +81,11 @@ When /^I create an instance record$/ do
     And I select a call number type
     Then I can save the instance record
   }
+end
+
+When /^I add an item record$/ do
+  @item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
+  @instance_editor.holdings_icon(1).when_present.click
+  @instance_editor.item_link(1).when_present.click
+  @item_editor.wait_for_page_to_load
 end
