@@ -19,3 +19,9 @@ represents an OLE functional module, and each contains a shared.rb file for shar
 to that module.  There is also a shared.rb in [spec/](/spec/shared.rb) for globally shared context definitions.
 There is a [base specs](/spec/base/) folder for basic specs used to ensure that the regression suite can perform
 basic tasks like starting an OLE QA Framework session.
+
+### Installation
+
+    git clone https://github.com/jkwaldrip/ole-regress.git
+    cd ole-regress
+    bundle install

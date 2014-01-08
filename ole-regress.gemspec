@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency             'rspec'
   spec.add_dependency             'chronic'
   spec.add_dependency             'cucumber'
+  spec.add_dependency             'bundler'
 end
