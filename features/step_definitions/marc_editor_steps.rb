@@ -21,6 +21,7 @@ When /^I enter a title ?(?:of )?(.*)?$/ do |title|
   title = '|a' + OLE_QA::Framework::String_Factory.alpha(8).capitalize if title.empty?
   @bib_editor.data_line.tag_field.when_present.set('245')
   @bib_editor.data_line.data_field.when_present.set(title)
+  @bib_editor.data_line.data_field.value.should eq(title)
 end
 
 When /^I enter an author ?(?:of )?(.*)?$/ do |author|
@@ -32,6 +33,7 @@ When /^I enter an author ?(?:of )?(.*)?$/ do |author|
   @bib_editor.data_line.line_number += 1
   @bib_editor.data_line.tag_field.when_present.set('100')
   @bib_editor.data_line.data_field.when_present.set(author)
+  @bib_editor.data_line.data_field.value.should eq(author)
 end
 
 Then /^I can save the bib record$/ do
@@ -56,16 +58,19 @@ end
 When /^I enter a location ?(?:of )?(.*)?$/ do |location|
   location = 'B-EDUC/BED-STACKS' if location.empty? # TODO Randomize the location when it becomes possible.
   @instance_editor.location_field.when_present.set(location)
+  @instance_editor.location_field.value.should eq(location)
 end
 
 When /^I enter a call number ?(?:of )?(.*)?$/ do |call_number|
   call_number = OLE_QA::Framework::Bib_Factory.call_number if call_number.empty?
   @instance_editor.call_number_field.when_present.set(call_number)
+  @instance_editor.call_number_field.value.should eq(call_number)
 end
 
 When /^I select a call number type ?(?:of )?(.*)?$/ do |call_number_type|
   call_number_type = 'LCC' if call_number_type.empty?
   @instance_editor.call_number_type_selector.when_present.select_value(call_number_type)
+  @instance_editor.call_number_type_selector.selected?(/#{call_number_type}/).should be_true
 end
 
 Then /^I can save the instance record$/ do
