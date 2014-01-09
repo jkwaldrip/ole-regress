@@ -12,6 +12,21 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+Given /^I have a (?:library )?resource$/ do
+  @resource = OpenStruct.new(
+      :title              => OLE_QA::Framework::Bib_Factory.title,
+      :author             => OLE_QA::Framework::Bib_Factory.author,
+      :price              => OLE_QA::Framework::String_Factory.price,
+      :location           => 'B-EDUC/BED-STACKS',       # TODO Replace with randomly chosen existing location.
+      :desk               => 'BL_EDUC',                 # TODO Replace with desk based on random extant location.
+      :call_number        => OLE_QA::Framework::Bib_Factory.call_number,
+      :call_number_type   => 'LCC',
+      :item_type          => 'Book',
+      :item_status        => 'Available',
+      :barcode            => OLE_QA::Framework::Bib_Factory.barcode
+  )
+end
+
 Given /^I (?:am using|use) the Marc Editor$/ do
   @bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
   @bib_editor.open

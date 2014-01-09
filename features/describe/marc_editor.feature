@@ -1,6 +1,7 @@
 Feature:  Marc Editor
 
   Background:
+    Given I have a resource
     Given I am using the Marc Editor
 
   Scenario:  Create a Bib Record
