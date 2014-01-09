@@ -12,7 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-Given /^I am using the Marc Editor$/ do
+Given /^I (?:am using|use) the Marc Editor$/ do
   @bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
   @bib_editor.open
 end
@@ -36,7 +36,7 @@ When /^I enter an author ?(?:of )?(.*)?$/ do |author|
   @bib_editor.data_line.data_field.value.should eq(author)
 end
 
-Then /^I can save the (bib|instance|item) record$/ do |which|
+Then /^I (?:can )?save the (bib|instance|item) record$/ do |which|
   editor = instance_variable_get("@#{which}_editor".to_sym)
   save_msg = editor.save_record
   save_msg.should =~ /success/
@@ -111,10 +111,10 @@ end
 
 When /^I create an item record$/ do
   steps %{
-    I add an item record
-    I select an item type
-    I select an item status
-    I select an item barcode
-    I save the item record
+    When I add an item record
+    And I select an item type
+    And I select an item status
+    And I enter a barcode
+    Then I can save the item record
   }
 end
