@@ -108,3 +108,13 @@ When /^I enter a barcode ?(?:of )?(.*)?$/ do |barcode|
   @item_editor.barcode_field.when_present.set(barcode)
   @item_editor.barcode_field.value.should eq(barcode)
 end
+
+When /^I create an item record$/ do
+  steps %{
+    I add an item record
+    I select an item type
+    I select an item status
+    I select an item barcode
+    I save the item record
+  }
+end
