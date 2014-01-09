@@ -12,20 +12,13 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-dir = File.join(File.dirname(__FILE__),'../../')
-$:.unshift(dir) unless $:.include?(dir)
+module OLE_QA
+  # This module is for mix-in methods common to all Cucumber step definitions.
+  module Cukes
 
-require 'lib/ole-regress.rb'
-require 'rspec/expectations'
-
-World(RSpec::Matchers)
-World(OLE_QA::Cukes)
-
-Before do |scenario|
-  opts = OLE_QA::RegressionTest::Options
-  @ole = OLE_QA::Framework::Session.new(opts)
-end
-
-After do |scenario|
-  @ole.quit
+    # Given a string containing an English-language ordinal, return an integer.
+    def numerize(str)
+      Chronic::Numerizer.numerize(str).to_i
+    end
+  end
 end
