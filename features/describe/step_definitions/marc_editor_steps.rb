@@ -33,22 +33,21 @@ Given /^I (?:am using|use) the Marc Editor$/ do
 end
 
 When /^I enter a title ?(?:of )?(.*)?$/ do |title|
-  title = '|a' + OLE_QA::Framework::String_Factory.alpha(8).capitalize if title.empty?
+  title.empty? ? title = "|a#{@resource[:title]}" : @resource[:title] = title.gsub('|a','')
+  title = '|a' + title unless title =~ /^\|a/
   @bib_editor.data_line.tag_field.when_present.set('245')
   @bib_editor.data_line.data_field.when_present.set(title)
-  @bib_editor.data_line.data_field.value.should eq(title)
+  @bib_editor.data_line.data_field.value.should =~ /#{@resource[:title]}/
 end
 
 When /^I enter an author ?(?:of )?(.*)?$/ do |author|
-  if author.empty?
-    author = '|a' + OLE_QA::Framework::String_Factory.alpha(4).capitalize
-    author += ' ' + OLE_QA::Framework::String_Factory.alpha(8).capitalize
-  end
+  author.empty? ? author = "|a#{@resource[:author]}" : @resource[:author] = author.gsub('|a','')
+  author = '|a' + author unless author =~ /^\|a/
   @bib_editor.data_line.add_button.when_present.click
   @bib_editor.data_line.line_number += 1
   @bib_editor.data_line.tag_field.when_present.set('100')
   @bib_editor.data_line.data_field.when_present.set(author)
-  @bib_editor.data_line.data_field.value.should eq(author)
+  @bib_editor.data_line.data_field.value.should =~ /#{@resource[:author]}/
 end
 
 Then /^I (?:can )?save the (bib|instance|item) record$/ do |which|
@@ -72,21 +71,21 @@ When /^I add an instance record$/ do
 end
 
 When /^I enter a location ?(?:of )?(.*)?$/ do |location|
-  location = 'B-EDUC/BED-STACKS' if location.empty? # TODO Randomize the location when it becomes possible.
+  location.empty? ? location = @resource[:location] : @resource[:location] = location # TODO Randomize the location when it becomes possible.
   @instance_editor.location_field.when_present.set(location)
-  @instance_editor.location_field.value.should eq(location)
+  @instance_editor.location_field.value.should eq(@resource[:location])
 end
 
 When /^I enter a call number ?(?:of )?(.*)?$/ do |call_number|
-  call_number = OLE_QA::Framework::Bib_Factory.call_number if call_number.empty?
+  call_number.empty? ? call_number = @resource[:call_number] : @resource[:call_number] = call_number
   @instance_editor.call_number_field.when_present.set(call_number)
-  @instance_editor.call_number_field.value.should eq(call_number)
+  @instance_editor.call_number_field.value.should eq(@resource[:call_number])
 end
 
 When /^I select a call number type ?(?:of )?(.*)?$/ do |call_number_type|
-  call_number_type = 'LCC' if call_number_type.empty?
+  call_number_type.empty? ? call_number_type = 'LCC' : @resource[:call_number_type] = call_number_type
   @instance_editor.call_number_type_selector.when_present.select_value(call_number_type)
-  @instance_editor.call_number_type_selector.selected?(/#{call_number_type}/).should be_true
+  @instance_editor.call_number_type_selector.selected?(/#{@resource[:call_number_type]}/).should be_true
 end
 
 When /^I create an instance record$/ do
@@ -107,21 +106,21 @@ When /^I add an item record$/ do
 end
 
 When /^I select an item type ?(?:of )?(.*)?$/ do |type|
-  type = 'Book' if type.empty?
+  type.empty? ? type = @resource[:item_type] : @resource[:item_type] = type
   @item_editor.item_type_selector.when_present.select(type)
-  @item_editor.item_type_selector.selected?(/#{type}/).should be_true
+  @item_editor.item_type_selector.selected?(/#{@resource[:item_type]}/).should be_true
 end
 
 When /^I select an item status ?(?:of )?(.*)?$/ do |status|
-  status = 'Available' if status.empty?
+  status.empty? ? status = @resource[:item_status] : @resource[:item_status] = status
   @item_editor.item_status_selector.when_present.select(status)
-  @item_editor.item_status_selector.selected?(/#{status}/).should be_true
+  @item_editor.item_status_selector.selected?(/#{@resource[:item_status]}/).should be_true
 end
 
 When /^I enter a barcode ?(?:of )?(.*)?$/ do |barcode|
-  barcode = OLE_QA::Framework::Bib_Factory.barcode if barcode.empty?
+  barcode.empty? ? barcode = @resource[:barcode] : @resource[:barcode] = barcode
   @item_editor.barcode_field.when_present.set(barcode)
-  @item_editor.barcode_field.value.should eq(barcode)
+  @item_editor.barcode_field.value.should eq(@resource[:barcode])
 end
 
 When /^I create an item record$/ do
