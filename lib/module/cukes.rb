@@ -20,5 +20,10 @@ module OLE_QA
     def numerize(str)
       Chronic::Numerizer.numerize(str).to_i
     end
+
+    # Given a string from user-generated Gherkin input, return it as a suitable hash key.
+    def keyify(str)
+      str.downcase.gsub(' ','_').to_sym
+    end
   end
 end
