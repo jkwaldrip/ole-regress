@@ -37,6 +37,10 @@ module OLE_QA
     Dir['lib/module/*/*.rb'].sort.each do |file|
       require file
     end
-    
+
+    # Allow OLE_QA::RegressionTest::Error as a viable error class.
+    class Error < StandardError
+    end
+
   end
 end

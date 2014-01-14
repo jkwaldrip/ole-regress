@@ -25,5 +25,16 @@ module OLE_QA
     def keyify(str)
       str.downcase.gsub(' ','_').to_sym
     end
+
+    # Click the given named button on a page instance, if it exists.
+    # e.g.
+    #   click_which('Patron Search','search')
+    def click_which(page_name,button)
+      page = instance_variable_get("@#{keyify(page_name)}")
+      raise OLE_QA::RegressionTest::Error,"Page not instantiated:  @#{page_name}" if page.nil?
+      raise OLE_QA::RegressionTest::Error,"@#{page} does not have a #{button} button." unless page.elements.include?("#{button}_button".to_sym)
+      page.send("#{button}_button".to_sym).click
+      page.wait_for_page_to_load
+    end
   end
 end

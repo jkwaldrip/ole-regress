@@ -48,10 +48,9 @@ When /^I set the (first|second) search selector to (.*)$/ do |line,value|
   selector.select(value)
 end
 
-When /^I click (?:the )?(search|clear)(?: button)?$/ do |which|
-  button = @workbench.send(keyify("#{which}_button"))
-  button.click
-  @workbench.wait_for_page_to_load
+When /^I click (?:the )?(search|clear)(?: button)?(?: on the )?([A-Za-z\s]+) page$/ do |button,page|
+  page.gsub!(' page','')
+  click_which(page,button)
 end
 
 Then /^I (?:should )?see the ([A-Za-z\s]+) in the search results$/ do |term|
