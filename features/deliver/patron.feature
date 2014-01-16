@@ -49,12 +49,14 @@ Feature:  Patron
     When I enter the patron first name
     And I enter the patron last name
     And I enter the patron barcode
+    And I click the search button on the patron lookup page
     Then I see the barcode in the patron search results
-    And I click the "edit" link
-    And I set a new barcode
-    And I save the patron record
+    And I edit the patron record
+    And I set the patron's barcode to "000111222"
+    And I submit the patron record
     When I use the Patron Search
     And I enter the patron first name
     And I enter the patron last name
     And I enter the patron barcode
-    Then I see the patron barcode in the patron search results
+    And I click the search button on the patron lookup page
+    Then I see the barcode in the patron search results

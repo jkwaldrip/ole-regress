@@ -156,3 +156,9 @@ end
 Then /^I see the (?:([\w ?]+){1,2}) in the patron search results$/ do |which|
   @patron_lookup.text_in_results?(@patron[keyify(which)]).should be_true
 end
+
+And /^I edit the patron record$/ do
+  @patron_lookup.edit_by_text(@patron.barcode).when_present.click
+  @patron_editor.wait_for_page_to_load
+end
+
