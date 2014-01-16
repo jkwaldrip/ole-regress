@@ -53,6 +53,6 @@ When /^I click (?:the )?(search|clear)(?: button)?(?: on the )?([A-Za-z\s]+) pag
   click_which(page,button)
 end
 
-Then /^I (?:should )?see the ([A-Za-z\s]+) in the search results$/ do |term|
+Then /^I (?:should )?see the ([A-Za-z\s]+) in the workbench search results$/ do |term|
   @workbench.result_present?(@resource[keyify(term)]).should be_true
 end
