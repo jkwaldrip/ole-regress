@@ -36,5 +36,24 @@ module OLE_QA
       page.send("#{button}_button".to_sym).click
       page.wait_for_page_to_load
     end
+
+    # Set a given field element to a given value, then verify that that value was set properly.
+    # e.g.
+    #   set_field(@patron_editor.first_name_field,'Bob')
+    def set_field(field,value)
+      case field.class.name
+        when /TextField/
+          field.when_present.set(value)
+          field.value.should eq(value)
+        when /Select/
+          Watir::Wait.until {field.present? || field.include?(value)}
+          field.select(value)
+          field.selected?(value).should be_true
+        when /CheckBox/
+          field.set(value)
+          field.set?.should eq(value)
+      end
+    end
+    alias_method(:set_selector,:set_field)
   end
 end
