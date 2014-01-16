@@ -20,6 +20,7 @@ Given /^I have new patron information$/ do
   @patron[:phone_number_country]  = 'United States'
   @patron[:email_address]         = @patron[:email]
   @patron[:phone_number]          = @patron[:phone]
+  @patron[:address_type]          = 'Home'
 end
 
 Given /^I (?:open|visit|go to)? the patron editor$/ do
@@ -106,4 +107,52 @@ When /^I (submit|save|cancel) the patron record$/ do |which|
     when /(cancel|close)/
       @patron_editor.close_button.click
   end
+end
+
+When /^I create a new patron record$/ do
+  steps %{
+    Given I have new patron information
+    Given I open the patron editor
+    When I set the patron's first name to "Darren"
+    And I set the patron's last name to "Smith"
+    And I set the patron's barcode
+    And I set the patron's borrower type
+    And I add a patron address line
+    And I set the patron's address type
+    And I set the patron's address
+    And I set the patron's city
+    And I set the patron's state
+    And I set the patron's postal code
+    And I set the patron's country
+    And I set the patron's email address
+    And I add the patron's email line
+    And I set the patron's phone number
+    And I add the patron's phone number line
+    Then I submit the patron record
+  }
+end
+
+When /^I (?:open|visit|use|am using) (?:the )?[Pp]atron [Ss]earch(?: [Pp]age|[Ss]creen)?$/ do
+  @patron_lookup.open
+end
+
+When /^I enter (?:a|the) patron(?:'s)? (?:([\w ?]+){1,2})$/ do |field|
+  value = @patron[keyify(field)]
+  raise OLE_QA::RegressionTest::Error,"Patron record does not have #{value}" if value.nil?
+  case field
+    when 'first name'
+      set_field(@patron_lookup.first_name_field,value)
+    when 'last name'
+      set_field(@patron_lookup.last_name_field,value)
+    when 'barcode'
+      set_field(@patron_lookup.barcode_field,value)
+    when 'email address'
+      set_field(@patron_lookup.email_address_field,value)
+    when 'borrower type'
+      set_field(@patron_lookup.borrower_type_selector,value)
+  end
+end
+
+Then /^I see the (?:([\w ?]+){1,2}) in the patron search results$/ do |which|
+  @patron_lookup.text_in_results?(@patron[keyify(which)]).should be_true
 end
