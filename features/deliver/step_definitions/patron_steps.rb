@@ -93,7 +93,17 @@ When /^I add (?:a|the) patron(?:'s)? (?:([\w ]+){1,2}) line$/ do |which|
   end
 end
 
-When /^I submit the patron record$/ do
-  @patron_editor.submit_button.click
-  @patron_editor.message.text.should =~ /success/
+When /^I (submit|save|cancel) the patron record$/ do |which|
+  case which
+    when /submit/
+      @patron_editor.submit_button.click
+      @patron_editor.wait_for_page_to_load
+      @patron_editor.message.text.should =~ /success/
+    when /save/
+      @patron_editor.save_button.click
+      @patron_editor.wait_for_page_to_load
+      @patron_editor.message.text.should =~ /success/
+    when /(cancel|close)/
+      @patron_editor.close_button.click
+  end
 end
