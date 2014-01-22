@@ -15,7 +15,7 @@ RSpec.configure do |config|
   end
 
   config.after(:all) do
-    @ole.quit
+    @ole.browser.close
   end
 
   config.after(:each) do
