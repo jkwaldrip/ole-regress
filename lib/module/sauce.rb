@@ -46,10 +46,10 @@ module OLE_QA::RegressionTest
         @caps['record-video']       = false
         @caps['record-screenshots'] = false
         @caps['sauce-advisor']      = false
-        username        = @options[:username]
-        api_key         = @options[:api_key]
+        username                    = @options[:username]
+        api_key                     = @options[:api_key]
         OLE_QA::RegressionTest::Options[:headless?] = false               # Don't start Headless if we're using a Sauce connection.
-        OLE_QA::RegressionTest::Options[:browser] = Watir::Browser.new(
+        OLE_QA::RegressionTest::Options[:browser]   = Watir::Browser.new(
           :remote,
           :http_client => Selenium::WebDriver::Remote::Http::Persistent.new,
           :url => "http://#{username}:#{api_key}@ondemand.saucelabs.com:80/wd/hub",

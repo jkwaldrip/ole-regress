@@ -38,7 +38,7 @@ browsers.each do |browser|
     end
   end
   # Run all specs
-  RSpec::Core::Runner::run(['spec/base/framework_spec.rb','spec/describe/marc_editor_spec.rb'],$stderr,$stdout)
+  RSpec::Core::Runner::run(Dir["spec/*/*_spec.rb"].sort,$stderr,$stdout)
 end
 
 exit
