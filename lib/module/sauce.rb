@@ -47,6 +47,7 @@ module OLE_QA::RegressionTest
         @caps['sauce-advisor']      = false
         username        = @options[:username]
         api_key         = @options[:api_key]
+        OLE_QA::RegressionTest::Options[:headless?] = false               # Don't start Headless if we're using a Sauce connection.
         OLE_QA::RegressionTest::Options[:browser] = Watir::Browser.new(
           :remote,
           :url => "http://#{username}:#{api_key}@ondemand.saucelabs.com:80/wd/hub",
