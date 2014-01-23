@@ -1,11 +1,11 @@
-ole-regress
+ole-xbrowser
 ===========
 
-OLE Regression Testing Suite
+OLE Cross-Browser Regression Testing Suite
 [Kuali OLE](http://www.kuali.org/ole)
 ---
 
-This is a regression testing suite for the Kuali Open Library Environment (OLE) project.
+This is a cross-browser regression testing suite for the Kuali Open Library Environment (OLE) project.
 
 ### Code
 
@@ -22,6 +22,6 @@ basic tasks like starting an OLE QA Framework session.
 
 ### Installation
 
-    git clone https://github.com/jkwaldrip/ole-regress.git
+    git clone https://github.com/jkwaldrip/ole-xbrowser.git
     cd ole-regress
     bundle install
