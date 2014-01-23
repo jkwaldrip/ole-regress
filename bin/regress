@@ -24,7 +24,7 @@ require 'spec/spec_helper.rb'
 
 FileUtils.mkdir('logs') unless File.directory?('logs')
 
-logfile = File.open("logs/#{Time.now.strftime('%Y-%m-%d-%H%M')}.log",'w')
+#logfile = File.open("logs/#{Time.now.strftime('%Y-%m-%d-%H%M')}.log",'w')
 
 browsers = ['chrome','internet_explorer','safari','firefox']
 browsers.each do |browser|
@@ -47,5 +47,5 @@ browsers.each do |browser|
   RSpec::Core::Runner::run(['spec/base/framework_spec.rb'],$stderr,$stdout)
 end
 
-# logfile.close
+#logfile.close
 exit
