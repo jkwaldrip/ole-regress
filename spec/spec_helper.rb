@@ -8,6 +8,7 @@ require 'spec/shared.rb'
 Dir['spec/*/shared.rb'].sort.each {|file| require file}
 
 RSpec.configure do |config|
+
   # Initiate a new OLE QA Framework Session before each spec.
   config.before(:all) do
     opts = OLE_QA::RegressionTest::Options
