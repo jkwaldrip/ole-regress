@@ -18,9 +18,14 @@ $:<< File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
 
 require 'ole-qa-framework'
 require 'chronic'
+require 'selenium/webdriver/remote/http/persistent'
 
 require 'ostruct'
 require 'yaml'
+require 'fileutils'
+
+# Make a logs directory if there isn't one already.
+FileUtils.mkdir('logs') unless File.directory?('logs')
 
 module OLE_QA
   module RegressionTest

@@ -18,19 +18,13 @@ $:<< dir unless $:.include?(dir)
 
 # A quick-and-easy script to silently run all specs in the project and log the output.
 require 'lib/ole-regress.rb'
-require 'fileutils'
 require 'rspec'
 require 'spec/spec_helper.rb'
 
-FileUtils.mkdir('logs') unless File.directory?('logs')
-
-#logfile = File.open("logs/#{Time.now.strftime('%Y-%m-%d-%H%M')}.log",'w')
-
-browsers = ['chrome','internet_explorer','safari','firefox']
+browsers = ['firefox','chrome','internet_explorer','safari']
 browsers.each do |browser|
   # Record which browser is being run.
   puts browser.split('_').map(&:capitalize).join(' ')
-
   # Configure RSpec
   RSpec.configure do |config|
     # Start the SauceLabs connection and the OLE QA Framework session
@@ -43,9 +37,8 @@ browsers.each do |browser|
       @ole.quit
     end
   end
-
-  RSpec::Core::Runner::run(['spec/base/framework_spec.rb'],$stderr,$stdout)
+  # Run all specs
+  RSpec::Core::Runner::run(['spec/base/framework_spec.rb','spec/describe/marc_editor_spec.rb'],$stderr,$stdout)
 end
 
-#logfile.close
 exit
