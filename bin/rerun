@@ -55,6 +55,8 @@ RSpec.configure do |config|
   end
 end
 
+puts "Running #{script} on #{browser}..."
+
 # Run the spec...
 RSpec::Core::Runner::run([script],$stderr,$stdout)
 
