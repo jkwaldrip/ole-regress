@@ -31,7 +31,7 @@ module OLE_QA::RegressionTest
       # @param [String] which Which browser to use.  ('firefox'|'chrome'|'internet explorer'|'safari')
       #
       def start_browser(which)
-        which.gsub!(' ','_')
+        which = which.gsub(' ','_')
         @caps = Selenium::WebDriver::Remote::Capabilities.send(which.to_sym)
         case which
         when 'firefox','chrome','internet_explorer'
