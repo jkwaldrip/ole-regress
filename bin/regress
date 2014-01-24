@@ -16,7 +16,6 @@
 dir = File.expand_path(File.dirname(__FILE__) + '/../')
 $:<< dir unless $:.include?(dir)
 
-# A quick-and-easy script to silently run all specs in the project and log the output.
 require 'lib/ole-regress.rb'
 require 'rspec'
 require 'spec/spec_helper.rb'
