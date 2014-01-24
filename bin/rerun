@@ -16,14 +16,25 @@
 dir = File.expand_path(File.dirname(__FILE__) + '/../')
 $:<< dir unless $:.include?(dir)
 
-require 'lib/ole-regress.rb'
-require 'rspec'
-require 'spec/spec_helper.rb'
+# Show help information and exit.
+def display_help
+  puts 'Usage:'
+  puts '     rerun path/to/some_spec.rb browser_name'
+  exit
+end
 
 # Parse command-line arguments.
 if ARGV.count == 0 or ARGV[0] == 'help'
-  puts 'Usage:'
-  puts 'rerun spec_name browser_name'.rjust(25)
-  exit
+  display_help
 end
+
+# Verify that the first argument is a path to a spec that exists on the filesystem.
+display_help unless ARGV[0] =~ /^spec\//  && ARGV[0] =~ /\_spec.rb$/ && File.exists?(ARGV[0])
+
+# Verify that the second argument is a browser supported by this regression test suite.
+display_help unless ARGV[1] =~ /^(firefox|internet_explorer|chrome|safari)$/
+
+require 'lib/ole-regress.rb'
+require 'rspec'
+require 'spec/spec_helper.rb'
 
