@@ -20,7 +20,7 @@ require 'lib/ole-regress.rb'
 require 'rspec'
 require 'spec/spec_helper.rb'
 
-browsers = ['firefox','chrome','internet_explorer','safari']
+browsers = ['firefox','chrome','internet_explorer']
 browsers.each do |browser|
   # Record which browser is being run.
   puts browser.split('_').map(&:capitalize).join(' ')

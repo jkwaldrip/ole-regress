@@ -32,7 +32,7 @@ end
 display_help unless ARGV[0] =~ /^spec\//  && ARGV[0] =~ /\_spec.rb$/ && File.exists?(ARGV[0])
 
 # Verify that the second argument is a browser supported by this regression test suite.
-display_help unless ARGV[1] =~ /^(firefox|internet_explorer|chrome|safari)$/
+display_help unless ARGV[1] =~ /^(firefox|internet_explorer|chrome)$/
 
 
 script  = ARGV[0]
