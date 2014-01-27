@@ -14,3 +14,6 @@
   :internet_explorer: '10'
   :firefox: '25'
   :safari: '6'
+:record_video:        false
+:record_screenshots:  false
+:sauce_advisor:       false

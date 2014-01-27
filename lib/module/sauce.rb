@@ -43,9 +43,9 @@ module OLE_QA::RegressionTest
         @caps.version               = @options[:browsers][which.to_sym]
         time                        = Time.now.strftime('%Y-%m-%d %I:%M %p %Z')
         @caps[:name]                = "RegressionTest - #{time} - #{which} on #{os}"
-        @caps['record-video']       = false
-        @caps['record-screenshots'] = false
-        @caps['sauce-advisor']      = false
+        @caps['record-video']       = @options[:record_video]
+        @caps['record-screenshots'] = @options[:record_screenshots]
+        @caps['sauce-advisor']      = @options[:sauce_advisor]
         username                    = @options[:username]
         api_key                     = @options[:api_key]
         OLE_QA::RegressionTest::Options[:headless?] = false               # Don't start Headless if we're using a Sauce connection.
