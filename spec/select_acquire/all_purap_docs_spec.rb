@@ -40,6 +40,7 @@ describe 'The PURAP Workflow' do
   
   it 'returns to the requisition' do
     @ole.browser.windows[-1].close if @ole.browser.windows.count > 1
+    @ole.browser.alert.ok if @ole.browser.alert.present?
     @ole.browser.windows[0].use
     requisition.wait_for_page_to_load
   end
