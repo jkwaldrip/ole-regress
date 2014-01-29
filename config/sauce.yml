@@ -7,7 +7,7 @@
 :username: 'your-username'
 :api_key:  'your-api-key'
 :platforms:                         # Which versions of Windows & OS X to use.
-  :windows: '8'
+  :windows: '7'
   :os_x: '10.8'
 :browsers:                          # The latest versions of each supported browser.
   :chrome: '31'
