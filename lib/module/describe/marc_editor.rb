@@ -87,7 +87,7 @@ module OLE_QA::RegressionTest
       end
         
       hsh_out[:message] = bib_editor.save_record
-      hsh_out[:pass?]   = true
+      hsh_out[:pass?]   = hsh_out[:message] =~ /success/ ? true : false
       hsh_out
 
     rescue => e
