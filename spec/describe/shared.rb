@@ -44,6 +44,7 @@ shared_context 'Create a Marc Record' do
     bib_editor.wait_for_page_to_load
     results = create_bib(bib_editor, @marc_record.bib_info)
     results[:error].should be_nil
+    results[:message].should =~ /success/
     results[:pass?].should be_true
   end
 
