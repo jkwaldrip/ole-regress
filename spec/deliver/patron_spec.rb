@@ -22,11 +22,17 @@ describe 'A Patron' do
   end
 
   context 'is searchable' do
+    # Use a verify as this is the first test after record submission.
+    # If the search is not repeated, slow system performance will result
+    # in a premature failure.
     it 'by barcode' do
       patron_lookup.open
-      patron_lookup.barcode_field.when_present.set(@patron.barcode)
-      patron_lookup.search_button.click
-      patron_lookup.text_in_results?(@patron.barcode).should be_true
+      verify {
+        patron_lookup.clear_button.click
+        patron_lookup.barcode_field.when_present.set(@patron.barcode)
+        patron_lookup.search_button.click
+        patron_lookup.text_in_results?(@patron.barcode)
+      }.should be_true
     end
 
     it 'by name' do
