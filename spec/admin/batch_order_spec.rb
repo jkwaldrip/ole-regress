@@ -71,7 +71,7 @@ describe 'The Order Record Batch Process' do
 
   it 'generates a load summary' do
     load_summary_lookup.open
-    assert {
+    assert(60) {
       load_summary_lookup.user_id_field.when_present.clear
       load_summary_lookup.load_profile_selector.when_present.select('YBP')
       load_summary_lookup.filename_field.set(@batch_job.file_name)
