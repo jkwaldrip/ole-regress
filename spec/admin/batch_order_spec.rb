@@ -67,7 +67,10 @@ describe 'The Order Record Batch Process' do
     batch_process.message.when_present.text.should =~ /successfully saved/
   end
 
-  # Dismiss job details page
+  it 'opens the job details page' do
+    @ole.windows.count.should eq(2)
+    @ole.windows[-1].close
+  end
 
   it 'generates a load summary' do
     load_summary_lookup.open
