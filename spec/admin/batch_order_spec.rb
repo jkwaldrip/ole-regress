@@ -22,6 +22,7 @@ describe 'The Order Record Batch Process' do
   let(:batch_process)                     {OLE_QA::Framework::OLELS::Batch_Process.new(@ole)}
   let(:profile_lookup)                    {OLE_QA::Framework::OLELS::Batch_Profile_Lookup.new(@ole)}
   let(:load_summary_lookup)               {OLE_QA::Framework::OLEFS::Load_Summary_Lookup.new(@ole)}
+  let(:load_report)                       {OLE_QA::Framework::OLEFS::Load_Report.new(@ole)}
   let(:job_lookup)                        {OLE_QA::Framework::OLELS::Batch_Job_Details.new(@ole)}
   let(:job_report)                        {OLE_QA::Framework::OLELS::Batch_Job_Report.new(@ole)}
 
@@ -72,8 +73,14 @@ describe 'The Order Record Batch Process' do
     @ole.windows[-1].close
   end
 
+  it 'adds a YBP profile to load summary lookup' do
+    assert {
+      load_summary_lookup.open
+      load_summary_lookup.load_profile_selector.option(:value => 'YBP').wait_until_present
+    }.should be_true
+  end
+
   it 'generates a load summary' do
-    load_summary_lookup.open
     assert(60) {
       load_summary_lookup.user_id_field.when_present.clear
       load_summary_lookup.load_profile_selector.when_present.select('YBP')
@@ -87,9 +94,30 @@ describe 'The Order Record Batch Process' do
 
   context 'generates a load report' do
     it 'with a document ID' do
+      load_summary_lookup.doc_link_by_text(@batch_job.file_name).present?.should be_true
       @batch_job.load_report_id = load_summary_lookup.doc_link_by_text(@batch_job.file_name).text.strip
       @batch_job.load_report_id.should =~ /\d+/
     end
+
+    it 'with a record count' do
+      verify(90) {
+        load_report.lookup(@batch_job.load_report_id)
+        load_report.wait_for_page_to_load
+        load_report.total_count.should =~ /\d+/
+      }.should be_true
+      @batch_job.record_count = load_report.total_count
+    end
+
+    it 'with a success count' do
+      load_report.success_count.should =~ /\d+/
+      @batch_job.success_count = load_report.success_count
+    end
+
+    it 'with a failure count' do
+      load_report.failure_count.should =~ /\d+/
+      @batch_job.failure_count = load_report.failure_count
+    end
+
 
     # verify successes/failures exist
     # save no. of records, successes, failures to struct
