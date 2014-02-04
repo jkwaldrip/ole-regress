@@ -73,10 +73,13 @@ describe 'The Order Record Batch Process' do
     @ole.windows[-1].close
   end
 
+  # @note On the first run after a restart, it can take some time for the 'YBP' profile
+  #   to show up in the load_profile_selector options list.
+  #   - jkw, 2014/02/04
   it 'adds a YBP profile to load summary lookup' do
-    assert {
+    assert(120) {
       load_summary_lookup.open
-      load_summary_lookup.load_profile_selector.option(:value => 'YBP').wait_until_present
+      Watir::Wait.until { load_summary_lookup.load_profile_selector.include?('YBP') }
     }.should be_true
   end
 
@@ -88,8 +91,7 @@ describe 'The Order Record Batch Process' do
       load_summary_lookup.search_button.click
       load_summary_lookup.wait_for_page_to_load
       load_summary_lookup.text_in_results?(@batch_job.file_name)
-    }
-    load_summary_lookup.text_in_results?(@batch_job.file_name).should be_true
+    }.should be_true
   end
 
   context 'generates a load report' do
@@ -99,11 +101,15 @@ describe 'The Order Record Batch Process' do
       @batch_job.load_report_id.should =~ /\d+/
     end
 
+    # @note It can take some time for the record counts (total, success, failure) to be available
+    #   on a load report after it is first opened.  The timeout needs to be generous, for now,
+    #   to cut down on the number of failures due to a slow system after initial deployment.
+    #   - jkw, 2014/02/04
     it 'with a record count' do
-      verify(90) {
-        load_report.lookup(@batch_job.load_report_id)
+      url = load_report.lookup_url(@batch_job.load_report_id)
+      page_assert(url,180) {
         load_report.wait_for_page_to_load
-        load_report.total_count.should =~ /\d+/
+        load_report.total_count =~ /\d+/
       }.should be_true
       @batch_job.record_count = load_report.total_count
     end
