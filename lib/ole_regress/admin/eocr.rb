@@ -12,9 +12,18 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-module OLE_QA
-  module RegressionTest
-    # Version number.
-    VERSION = '1.4.0'
+module OLE_QA::RegressionTest
+  # Select an EOCR record from the data/eocr directory.
+  class EOCR
+    # File and path information.
+    attr_reader   :marc_file, :edi_file, :filename
+    alias         :mrc_file :marc_file
+
+    def initialize
+      full_mrc_paths  = Dir[File.expand_path('data/eocr/mrc/*.mrc')].sort
+      @marc_file      = full_mrc_paths.sample
+      @edi_file       = @marc_file.gsub('mrc','edi')
+      @filename       = @marc_file.split('mrc')[1].delete('/').delete('.')
+    end
   end
 end

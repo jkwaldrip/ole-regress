@@ -20,12 +20,12 @@ module OLE_QA::RegressionTest
     INTERVAL = 1
 
     # Repeat an assertion until success or timeout, and report true or false outcome.
-    # @param [Fixnum] timeoue     The timeout interval, in seconds.
+    # @param [Fixnum] timeout     The timeout interval, in seconds.
     # @param [Object] ole_session The OLE QA Framework session to run the assertion in.
     #
     # @note This assertion will not return any errors, only a value of false.
     #   This is necessary to ensure that assertions fail gracefully.  Be sure the
-    #   assertion would normally evalute to true while writing the lambda to use with this method.
+    #   assertion would normally evaluate to true while writing the lambda to use with this method.
     #
     # @usage 
     #   if assert { loan_page.loan_popup_box.present? }
