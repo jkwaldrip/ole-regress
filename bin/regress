@@ -14,8 +14,12 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-# A quick-and-easy script to silently run all specs in the project and log the output.
-require 'fileutils'
+dir = File.expand_path(File.dirname(__FILE__) + '/../')
+$:<< dir unless $:.include?(dir)
 
-FileUtils.mkdir('logs') unless File.directory?('logs')
-`rake spec > logs/#{Time.now.strftime('%Y-%m-%d-%H%M')}.log`
+require 'lib/ole-regress.rb'
+require 'rspec'
+require 'spec/spec_helper.rb'
+
+RSpec::Core::Runner::run(Dir["spec/*/*_spec.rb"].sort,$stderr,$stdout)
+exit
