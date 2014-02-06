@@ -101,6 +101,16 @@ describe 'The Batch Export process' do
       export_profile.batch_process_type_field.when_present.value.should eq('Batch Export')
     end
 
+    it 'with a description' do
+      export_profile.description_field.when_present.set("QA Regression Test #{@bib_record.key_str}")
+      export_profile.description_field.value.should  eq("QA Regression Test #{@bib_record.key_str}")
+    end
+
+    it 'with a name' do
+      export_profile.batch_profile_name_field.when_present.set("QART-#{@bib_record.key_str}")
+      export_profile.batch_profile_name_field.value.should  eq("QART-#{@bib_record.key_str}")
+    end
+
     it 'with filter criteria' do
       export_profile.filter_criteria_toggle.click
       export_profile.filter_field_name_field.when_present.set('245 $a')
