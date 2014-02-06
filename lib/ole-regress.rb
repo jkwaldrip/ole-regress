@@ -21,6 +21,7 @@ require 'chronic'
 
 require 'ostruct'
 require 'yaml'
+require 'timeout'
 
 module OLE_QA
   module RegressionTest
