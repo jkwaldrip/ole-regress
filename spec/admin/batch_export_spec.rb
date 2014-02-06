@@ -27,6 +27,7 @@ describe 'The Batch Export process' do
   let(:batch_type_lookup)         {OLE_QA::Framework::OLELS::Batch_Type_Lookup.new(@ole)}
   let(:batch_process)             {OLE_QA::Framework::OLELS::Batch_Process.new(@ole)}
   let(:job_details)               {OLE_QA::Framework::OLELS::Batch_Job_Details.new(@ole)}
+  let(:job_report)                {OLE_QA::Framework::OLELS::Batch_Job_Report.new(@ole)}
 
   before :all do
     @export                       = OpenStruct.new()
@@ -182,12 +183,69 @@ describe 'The Batch Export process' do
 
     it 'and finds the job in the job details window' do
       Timeout::timeout(300) do
-        until verify(4) {job_details.text_in_results(@export.name).present? && job_details.job_status_by_text.text.strip == 'COMPLETED'} do
+        until verify(4) {job_details.text_in_results(@export.name).present? && job_details.job_status_by_text(@export.name).text.strip == 'COMPLETED'} do
           job_details.next_page.click
           job_details.wait_for_page_to_load
         end
       end
-      job_details.job_status_by_text.text.strip.should eq('COMPLETED')
+      job_details.job_status_by_text(@export.name).text.strip.should eq('COMPLETED')
+    end
+
+    it 'and opens the job details report' do
+      job_details.job_report_by_text(@export.name).click
+      @ole.windows.count.should eq(3)
+      @ole.windows[-1].use
+      job_report.wait_for_page_to_load
+    end
+  end
+
+  context 'creates a job details report' do
+    it 'with a job ID' do
+      @export.job_id = job_report.job_id.when_present.text
+      @export.job_id.should =~ /\d+/
+    end
+
+    it 'with a job name' do
+      job_report.job_name.when_present.text.should eq(@export.batch_process_name)
+    end
+
+    it 'with a batch process id' do
+      @export.batch_id = job_report.batch_process_id.text
+      @export.batch_id.should =~ /\d+/
+    end
+
+    it 'with a username of admin' do
+      job_report.user_name.text.should =~ /admin/
+    end
+
+    it 'with a records total count' do
+      @export.records_total = job_report.total_records.text
+      @export.records_total.should =~ /\d+/
+    end
+
+    it 'with a records processed count' do
+      @export.records_processed = job_report.records_processed.text
+      @export.records_processed.should =~ /\d+/
+    end
+
+    it 'with a successful records count' do
+      @export.records_successful = job_report.success_records.text
+      @export.records_successful.should=~ /\d+/
+    end
+
+    it 'with a failed records count' do
+      @export.records_failed = job_report.failure_records.text
+      @export.records_processed.should =~ /\d+/
+    end
+
+    it 'with a percent completed value of 100' do
+      @export.percent_completed = job_report.percent_completed.text
+      @export.percent_completed.should =~ /100/
+    end
+
+    it 'with a status of completed' do
+      @export.status = job_report.status.text
+      @export.status.should =~ /COMPLETED/
     end
   end
 end
