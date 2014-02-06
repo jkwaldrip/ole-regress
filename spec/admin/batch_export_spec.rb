@@ -248,4 +248,18 @@ describe 'The Batch Export process' do
       @export.status.should =~ /COMPLETED/
     end
   end
+
+  context 'exports a .mrc record' do
+    it 'and downloads it' do
+      @export.mrc_filepath = 'data/downloads/' + @export.filename
+      @export.mrc_url      = @ole.url + 'home/' + @export.filename
+      open(@export.mrc_filepath,'wb') do |file|
+        file << open(@export.mrc_url).read
+      end
+    end
+
+    it 'and verifies the download' do
+      File.exists?(@export.mrc_filepath).should be_true
+    end
+  end
 end
