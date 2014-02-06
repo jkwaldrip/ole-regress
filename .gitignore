@@ -1,7 +1,8 @@
 config/*
 bin/*.sh
 logs/
-data/
+data/downloads/
+data/uploads/
 *.gem
 *.rbc
 .bundle
