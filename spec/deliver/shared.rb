@@ -12,19 +12,19 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-shared_context 'Checkin' do
+shared_context 'Checkout' do
 
   let(:loan_page)    { OLE_QA::Framework::OLELS::Loan.new(@ole) }
   
   def select_desk(loan_page,desk)
     loan_page.circulation_desk_selector.when_present.select(desk)
-    loan_page.circulation_desk_yes.when_present.click
+    loan_page.circulation_desk_yes.click if loan_page.circulation_desk_yes.present?
     loan_page.loan_popup_box.wait_while_present if loan_page.loan_popup_box.present?
     loan_page.circulation_desk_selector.selected?('BL_EDUC').should be_true
   end
 end
 
-shared_context 'Checkout' do
+shared_context 'Checkin' do
 
   let(:return_page) { OLE_QA::Framework::OLELS::Return.new(@ole) }
   
