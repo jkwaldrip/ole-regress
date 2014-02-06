@@ -253,6 +253,7 @@ describe 'The Batch Export process' do
     it 'and downloads it' do
       @export.mrc_filepath = 'data/downloads/' + @export.filename
       @export.mrc_url      = @ole.url + 'home/' + @export.filename
+      FileUtils::mkdir('data/downloads') unless File.directory?('data/downloads')
       open(@export.mrc_filepath,'wb') do |file|
         file << open(@export.mrc_url).read
       end
