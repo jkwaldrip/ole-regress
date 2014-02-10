@@ -27,4 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency             'cucumber'
   spec.add_dependency             'bundler'
   spec.add_dependency             'rake'
+  spec.add_dependency             'marc'
 end
