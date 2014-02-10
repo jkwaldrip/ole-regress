@@ -23,6 +23,7 @@ require 'ostruct'
 require 'yaml'
 require 'timeout'
 require 'fileutils'
+require 'marc'
 
 module OLE_QA
   module RegressionTest
