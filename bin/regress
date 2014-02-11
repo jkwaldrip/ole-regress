@@ -22,4 +22,3 @@ require 'rspec'
 require 'spec/spec_helper.rb'
 
 RSpec::Core::Runner::run(Dir["spec/*/*_spec.rb"].sort,$stderr,$stdout)
-exit
