@@ -20,6 +20,8 @@ require 'lib/ole-regress.rb'
 require 'rspec'
 require 'spec/spec_helper.rb'
 
+
+results  = []
 browsers = ['firefox','chrome','internet_explorer']
 browsers.each do |browser|
   # Record which browser is being run.
@@ -37,7 +39,9 @@ browsers.each do |browser|
     end
   end
   # Run all specs
-  RSpec::Core::Runner::run(Dir["spec/*/*_spec.rb"].sort,$stderr,$stdout)
+  results << RSpec::Core::Runner::run(Dir["spec/*/*_spec.rb"].sort,$stderr,$stdout)
 end
 
-exit
+# Set the exit status to if any of the exit statuses collected in the results array are 1.
+status = results.include?(1) ? 1 : 0
+exit status
