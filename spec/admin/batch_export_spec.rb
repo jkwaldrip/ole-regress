@@ -259,7 +259,7 @@ describe 'The Batch Export process' do
     end
   end
 
-  context 'exports a .mrc record' do
+  context 'exports a .mrc file' do
     it 'and downloads it' do
       @export.mrc_filepath = 'data/downloads/' + @export.filename
       @export.mrc_url      = "#{@ole.url}home/#{@export.filename}/#{@export.job_id}/#{@export.filename}"
@@ -269,8 +269,23 @@ describe 'The Batch Export process' do
       end
     end
 
-    it 'and verifies the download' do
+    it 'and verifies it' do
       File.exists?(@export.mrc_filepath).should be_true
+    end
+
+    it 'with 3 records' do
+      reader = MARC::Reader.new(@export.mrc_filepath)
+      @export.records = []
+      reader.each {|record| @export.records << record}
+      @export.records.count.should eq(3)
+    end
+
+    it 'with the target value in each title' do
+      @export.records.each do |record|
+        record.each_by_tag('245') do |datafield|
+          datafield.value.should =~ /#{@bib_record.key_str}/
+        end
+      end
     end
   end
 end
