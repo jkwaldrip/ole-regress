@@ -30,6 +30,7 @@ describe 'The Batch Export process' do
   let(:job_report)                {OLE_QA::Framework::OLELS::Batch_Job_Report.new(@ole)}
 
   before :all do
+    FileUtils::mkdir('data/downloads') unless File.directory?('data/downloads')
     @export                       = OpenStruct.new()
     @bib_record                   = OpenStruct.new(:key_str => OLE_QA::Framework::String_Factory.alphanumeric)
     @bib_record.one               = [
@@ -264,7 +265,6 @@ describe 'The Batch Export process' do
     it 'and downloads it' do
       @export.mrc_filepath = 'data/downloads/' + @export.filename
       @export.mrc_url      = "#{@ole.url}home/#{@export.filename}/#{@export.job_id}/#{@export.filename}"
-      FileUtils::mkdir('data/downloads') unless File.directory?('data/downloads')
       open(@export.mrc_filepath,'wb') do |file|
         file << open(@export.mrc_url).read
       end
