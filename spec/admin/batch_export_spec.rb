@@ -112,13 +112,14 @@ describe 'The Batch Export process' do
     end
 
     it 'with filter criteria' do
+      export_profile.export_scope_selector.when_present.select('Filter')
       export_profile.filter_criteria_toggle.click
       export_profile.filter_field_name_field.when_present.set('245 $a')
       export_profile.filter_field_value_field.when_present.set(@bib_record.key_str)
       export_profile.add_filter_line_button.click
-      export_profile.filter_line.name.text.should eq('245 $a')
-      export_profile.filter_line.name_readonly.text.should eq('245 $a')
-      export_profile.filter_line.value.text.should eq(@bib_record.key_str)
+      export_profile.filter_line.name.when_present.text.should eq('245 $a')
+      export_profile.filter_line.name_readonly.when_present.text.should eq('245 $a')
+      export_profile.filter_line.value.when_present.text.should eq(@bib_record.key_str)
     end
 
     it 'and approves it' do
