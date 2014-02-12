@@ -38,6 +38,7 @@ describe 'A Patron' do
 
     it 'by name' do
       patron_lookup.clear_button.click
+      patron_lookup.wait_for_page_to_load
       patron_lookup.first_name_field.when_present.set(@patron.first)
       patron_lookup.last_name_field.when_present.set(@patron.last)
       patron_lookup.search_button.click
@@ -47,6 +48,7 @@ describe 'A Patron' do
 
     it 'by email' do
       patron_lookup.clear_button.click
+      patron_lookup.wait_for_page_to_load
       patron_lookup.email_address_field.when_present.set(@patron.email)
       patron_lookup.search_button.click
       patron_lookup.wait_for_page_to_load
