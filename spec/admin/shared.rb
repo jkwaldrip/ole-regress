@@ -15,6 +15,7 @@
 shared_context 'Create Location' do
   
   include OLE_QA::RegressionTest::Location
+  include OLE_QA::RegressionTest::Assertions
 
   let(:location_page)                   { OLE_QA::Framework::OLELS::Location.new(@ole) }
   let(:location_lookup)                 { OLE_QA::Framework::OLELS::Location_Lookup.new(@ole) }
@@ -39,10 +40,18 @@ shared_context 'Create Location' do
   end
 
   def verify_location(struct)
-    location_lookup.open
-    results = find_location(location_lookup, struct)
-    results[1].should be_nil 
-    results[0].should be_true
+    verify(90) {
+      location_lookup.open
+      location_lookup.wait_for_page_to_load
+      location_lookup.location_id_field.when_present.set(struct.id) unless struct.id.nil?
+      location_lookup.location_code_field.set(struct.code)
+      location_lookup.location_name_field.set(struct.name)
+      location_lookup.location_level_field.set(struct.level)
+      location_lookup.search_button.click
+      location_lookup.wait_for_page_to_load
+      location_lookup.text_in_results?(struct.code)
+    }
+    location_lookup.text_in_results?(struct.code).should be_true
   end
 
 end
