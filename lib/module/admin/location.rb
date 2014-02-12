@@ -50,35 +50,6 @@ module OLE_QA::RegressionTest
       results << e.message
       results
     end
-
-    # Find a location in OLE.
-    # @param [Object] page    The OLE QA Framework location lookup page instance to use.
-    # @param [Object] struct  A struct containing a location code, name, level, and option id.
-    #
-    # @note Returns an array containing a true or false value for success or failure, and the error message if any.
-    #
-    # @note For best results, use with an OpenStruct created with:
-    #   ostruct = OpenStruct.new(OLE_QA::Framework::Location_Factory.new_location)
-    #
-    def find_location(page, struct)
-      page.wait_for_page_to_load
-      page.location_id_field.when_present.set(struct.id) unless struct.id.nil?
-      page.location_code_field.when_present.set(struct.code)
-      page.location_name_field.set(struct.name)
-      page.location_level_field.set(struct.level)
-      page.search_button.click
-      page.wait_for_page_to_load
-      if page.text_in_results?(struct.code) || page.text_in_results?(struct.id)
-        results = [true]
-      else
-        results = [false]
-        results << "#{struct.code} not found in search results."
-      end
-      results
-    rescue => e
-      results = [false]
-      results << e.message
-      results
-    end
+  
   end
 end
