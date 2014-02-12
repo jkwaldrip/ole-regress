@@ -31,6 +31,7 @@ describe 'A Patron' do
         patron_lookup.clear_button.click
         patron_lookup.barcode_field.when_present.set(@patron.barcode)
         patron_lookup.search_button.click
+        patron_lookup.wait_for_page_to_load
         patron_lookup.text_in_results?(@patron.barcode)
       }.should be_true
     end
@@ -40,14 +41,16 @@ describe 'A Patron' do
       patron_lookup.first_name_field.when_present.set(@patron.first)
       patron_lookup.last_name_field.when_present.set(@patron.last)
       patron_lookup.search_button.click
-      patron_lookup.text_in_results?(@patron.barcode).should be_true
+      patron_lookup.wait_for_page_to_load
+      verify {patron_lookup.text_in_results?(@patron.barcode)}.should be_true
     end
 
     it 'by email' do
       patron_lookup.clear_button.click
       patron_lookup.email_address_field.when_present.set(@patron.email)
       patron_lookup.search_button.click
-      patron_lookup.text_in_results?(@patron.barcode).should be_true
+      patron_lookup.wait_for_page_to_load
+      verify {patron_lookup.text_in_results?(@patron.barcode)}.should be_true
       patron_lookup.clear_button.click
     end
   end
@@ -59,6 +62,7 @@ describe 'A Patron' do
       patron_lookup.first_name_field.when_present.set(@patron.first)
       patron_lookup.last_name_field.when_present.set(@patron.last)
       patron_lookup.search_button.click
+      patron_lookup.wait_for_page_to_load
       Watir::Wait.until { patron_lookup.text_in_results?(@patron.barcode) }
       patron_lookup.edit_by_text(@patron.barcode).when_present.click
       patron_page.wait_for_page_to_load
