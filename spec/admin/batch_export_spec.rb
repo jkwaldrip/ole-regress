@@ -101,14 +101,25 @@ describe 'The Batch Export process' do
       export_profile.batch_process_type_field.when_present.value.should eq('Batch Export')
     end
 
+    it 'with a description' do
+      export_profile.description_field.when_present.set("QA Regression Test #{@bib_record.key_str}")
+      export_profile.description_field.value.should  eq("QA Regression Test #{@bib_record.key_str}")
+    end
+
+    it 'with a name' do
+      export_profile.batch_profile_name_field.when_present.set("QART-#{@bib_record.key_str}")
+      export_profile.batch_profile_name_field.value.should  eq("QART-#{@bib_record.key_str}")
+    end
+
     it 'with filter criteria' do
+      export_profile.export_scope_selector.when_present.select('Filter')
       export_profile.filter_criteria_toggle.click
       export_profile.filter_field_name_field.when_present.set('245 $a')
       export_profile.filter_field_value_field.when_present.set(@bib_record.key_str)
       export_profile.add_filter_line_button.click
-      export_profile.filter_line.name.text.should eq('245 $a')
-      export_profile.filter_line.name_readonly.text.should eq('245 $a')
-      export_profile.filter_line.value.text.should eq(@bib_record.key_str)
+      export_profile.filter_line.name.when_present.text.should eq('245 $a')
+      export_profile.filter_line.name_readonly.when_present.text.should eq('245 $a')
+      export_profile.filter_line.value.when_present.text.should eq(@bib_record.key_str)
     end
 
     it 'and approves it' do
@@ -249,7 +260,7 @@ describe 'The Batch Export process' do
     end
   end
 
-  context 'exports a .mrc record' do
+  context 'exports a .mrc file' do
     it 'and downloads it' do
       @export.mrc_filepath = 'data/downloads/' + @export.filename
       @export.mrc_url      = "#{@ole.url}home/#{@export.filename}/#{@export.job_id}/#{@export.filename}"
@@ -259,8 +270,23 @@ describe 'The Batch Export process' do
       end
     end
 
-    it 'and verifies the download' do
+    it 'and verifies it' do
       File.exists?(@export.mrc_filepath).should be_true
+    end
+
+    it 'with 3 records' do
+      reader = MARC::Reader.new(@export.mrc_filepath)
+      @export.records = []
+      reader.each {|record| @export.records << record}
+      @export.records.count.should eq(3)
+    end
+
+    it 'with the target value in each title' do
+      @export.records.each do |record|
+        record.each_by_tag('245') do |datafield|
+          datafield.value.should =~ /#{@bib_record.key_str}/
+        end
+      end
     end
   end
 end
