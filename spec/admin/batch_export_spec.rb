@@ -46,6 +46,7 @@ describe 'The Batch Export process' do
                                       :value    => "|aRecord Three #{@bib_record.key_str}"}
     ]
     @export.name                  = "QART-#{@bib_record.key_str}"
+    @export.filename              = "#{@export.name}.mrc"
   end
 
   context 'creates target record' do
@@ -82,8 +83,8 @@ describe 'The Batch Export process' do
     end
 
     it 'with a description' do
-      export_profile.description_field.when_present.set("QA Regression Test #{@bib_record.key_str}")
-      export_profile.description_field.value.should  eq("QA Regression Test #{@bib_record.key_str}")
+      export_profile.description_field.when_present.set("Regression Export #{@bib_record.key_str}")
+      export_profile.description_field.value.should  eq("Regression Export #{@bib_record.key_str}")
     end
 
     it 'with a name' do
@@ -96,15 +97,15 @@ describe 'The Batch Export process' do
       batch_type_lookup.wait_for_page_to_load
       batch_type_lookup.name_field.when_present.set('Batch Export')
       batch_type_lookup.search_button.when_present.click
-      verify {batch_type_lookup.text_in_results('Batch Export')}
+      verify {batch_type_lookup.text_in_results?('Batch Export')}
       batch_type_lookup.return_by_text('Batch Export').when_present.click
       export_profile.wait_for_page_to_load
       export_profile.batch_process_type_field.when_present.value.should eq('Batch Export')
     end
 
     it 'with a description' do
-      export_profile.description_field.when_present.set("QA Regression Test #{@bib_record.key_str}")
-      export_profile.description_field.value.should  eq("QA Regression Test #{@bib_record.key_str}")
+      export_profile.description_field.when_present.set("Regression Export #{@bib_record.key_str}")
+      export_profile.description_field.value.should  eq("Regression Export #{@bib_record.key_str}")
     end
 
     it 'with a name' do
@@ -174,7 +175,6 @@ describe 'The Batch Export process' do
     end
 
     it 'with an output filename' do
-      @export.filename = "#{@export.name}.mrc"
       batch_process.output_file_field.when_present.set(@export.filename)
       batch_process.output_file_field.value.should eq(@export.filename)
     end
@@ -195,7 +195,7 @@ describe 'The Batch Export process' do
 
     it 'and finds the job in the job details window' do
       Timeout::timeout(300) do
-        until verify(4) {job_details.text_in_results(@export.name).present? && job_details.job_status_by_text(@export.name).text.strip == 'COMPLETED'} do
+        until verify(2) {job_details.text_in_results(@export.name).present? && job_details.job_status_by_text(@export.name).text.strip == 'COMPLETED'} do
           job_details.next_page.click
           job_details.wait_for_page_to_load
         end
