@@ -26,7 +26,7 @@ describe 'The Batch Export process' do
 
   before :all do
     FileUtils::mkdir('data/downloads') unless File.directory?('data/downloads')
-    @export                       = OpenStruct.new()
+    @info                         = OpenStruct.new()
     @bib_record                   = OpenStruct.new(:key_str => OLE_QA::Framework::String_Factory.alphanumeric)
     @bib_record.one               = [
                                       {:tag     => '245',
@@ -40,8 +40,8 @@ describe 'The Batch Export process' do
                                       {:tag     => '245',
                                       :value    => "|aRecord Three #{@bib_record.key_str}"}
     ]
-    @export.name                  = "QART-#{@bib_record.key_str}"
-    @export.filename              = "#{@export.name}.mrc"
+    @info.name                    = "QART-#{@bib_record.key_str}"
+    @info.filename                = "#{@info.name}.mrc"
   end
 
   context 'creates target record' do
@@ -65,7 +65,7 @@ describe 'The Batch Export process' do
     end
   end
 
-  context 'creates a new profile' do
+  context 'creates a new base profile' do
     it 'logged in as admin' do
       profile_lookup.open
       profile_lookup.login('admin').should be_true
@@ -83,10 +83,12 @@ describe 'The Batch Export process' do
     end
 
     it 'with a name' do
-      profile.batch_profile_name_field.when_present.set(@export.name)
-      profile.batch_profile_name_field.value.should  eq(@export.name)
+      profile.batch_profile_name_field.when_present.set(@info.name)
+      profile.batch_profile_name_field.value.should  eq(@info.name)
     end
+  end
 
+  context 'sets up an export profile' do
     it 'using the batch export process type' do
       profile.batch_process_type_icon.when_present.click
       batch_type_lookup.wait_for_page_to_load
@@ -96,16 +98,6 @@ describe 'The Batch Export process' do
       batch_type_lookup.return_by_text('Batch Export').when_present.click
       profile.wait_for_page_to_load
       profile.batch_process_type_field.when_present.value.should eq('Batch Export')
-    end
-
-    it 'with a description' do
-      profile.description_field.when_present.set("Regression Export #{@bib_record.key_str}")
-      profile.description_field.value.should  eq("Regression Export #{@bib_record.key_str}")
-    end
-
-    it 'with a name' do
-      profile.batch_profile_name_field.when_present.set("QART-#{@bib_record.key_str}")
-      profile.batch_profile_name_field.value.should  eq("QART-#{@bib_record.key_str}")
     end
 
     it 'with filter criteria' do
@@ -134,7 +126,7 @@ describe 'The Batch Export process' do
     end
 
     it 'by name' do
-      profile_lookup.profile_name_field.when_present.set(@export.name)
+      profile_lookup.profile_name_field.when_present.set(@info.name)
     end
 
     it 'by profile type' do
@@ -144,34 +136,34 @@ describe 'The Batch Export process' do
     it 'and finds it' do
       profile_lookup.search_button.click
       profile_lookup.wait_for_page_to_load
-      verify {profile_lookup.text_in_results(@export.name).present?}.should be_true
+      verify {profile_lookup.text_in_results(@info.name).present?}.should be_true
     end
 
     it 'and saves the profile ID' do
-      @export.id = profile_lookup.id_by_text(@export.name).text
-      @export.id.should =~ /\d+/
+      @info.id = profile_lookup.id_by_text(@info.name).text
+      @info.id.should =~ /\d+/
     end
   end
 
   context 'creates a batch job' do
     it 'with the new profile' do
-      @export.batch_process_name = "RegressionTest-Export#{@export.id}"
+      @info.batch_process_name = "RegressionTest-Export#{@info.id}"
       batch_process.open
-      batch_process.name_field.when_present.set(@export.batch_process_name)
+      batch_process.name_field.when_present.set(@info.batch_process_name)
       batch_process.profile_search_icon.when_present.click
       profile_lookup.wait_for_page_to_load
-      profile_lookup.profile_name_field.when_present.set(@export.name)
+      profile_lookup.profile_name_field.when_present.set(@info.name)
       profile_lookup.profile_type_selector.when_present.select('Batch Export')
       profile_lookup.search_button.click
       profile_lookup.wait_for_page_to_load
-      profile_lookup.return_by_text(@export.name).when_present.click
+      profile_lookup.return_by_text(@info.name).when_present.click
       batch_process.wait_for_page_to_load
-      batch_process.profile_name_field.when_present.value.should eq(@export.name)
+      batch_process.profile_name_field.when_present.value.should eq(@info.name)
     end
 
     it 'with an output filename' do
-      batch_process.output_file_field.when_present.set(@export.filename)
-      batch_process.output_file_field.value.should eq(@export.filename)
+      batch_process.output_file_field.when_present.set(@info.filename)
+      batch_process.output_file_field.value.should eq(@info.filename)
     end
   end
 
@@ -190,16 +182,16 @@ describe 'The Batch Export process' do
 
     it 'and finds the job in the job details window' do
       Timeout::timeout(300) do
-        until verify(2) {job_details.text_in_results(@export.name).present? && job_details.job_status_by_text(@export.name).text.strip == 'COMPLETED'} do
+        until verify(2) {job_details.text_in_results(@info.name).present? && job_details.job_status_by_text(@info.name).text.strip == 'COMPLETED'} do
           job_details.next_page.click
           job_details.wait_for_page_to_load
         end
       end
-      job_details.job_status_by_text(@export.name).text.strip.should eq('COMPLETED')
+      job_details.job_status_by_text(@info.name).text.strip.should eq('COMPLETED')
     end
 
     it 'and opens the job details report' do
-      job_details.job_report_by_text(@export.name).click
+      job_details.job_report_by_text(@info.name).click
       @ole.windows.count.should eq(3)
       @ole.windows[-1].use
       job_report.wait_for_page_to_load
@@ -208,17 +200,17 @@ describe 'The Batch Export process' do
 
   context 'creates a job details report' do
     it 'with a job ID' do
-      @export.job_id = job_report.job_id.when_present.text
-      @export.job_id.should =~ /\d+/
+      @info.job_id = job_report.job_id.when_present.text
+      @info.job_id.should =~ /\d+/
     end
 
     it 'with a job name' do
-      job_report.job_name.when_present.text.should eq(@export.batch_process_name)
+      job_report.job_name.when_present.text.should eq(@info.batch_process_name)
     end
 
     it 'with a batch process id' do
-      @export.batch_id = job_report.batch_process_id.text
-      @export.batch_id.should =~ /\d+/
+      @info.batch_id = job_report.batch_process_id.text
+      @info.batch_id.should =~ /\d+/
     end
 
     it 'with a username of admin' do
@@ -226,58 +218,58 @@ describe 'The Batch Export process' do
     end
 
     it 'with a records total count' do
-      @export.records_total = job_report.total_records.text
-      @export.records_total.should =~ /\d+/
+      @info.records_total = job_report.total_records.text
+      @info.records_total.should =~ /\d+/
     end
 
     it 'with a records processed count' do
-      @export.records_processed = job_report.records_processed.text
-      @export.records_processed.should =~ /\d+/
+      @info.records_processed = job_report.records_processed.text
+      @info.records_processed.should =~ /\d+/
     end
 
     it 'with a successful records count' do
-      @export.records_successful = job_report.success_records.text
-      @export.records_successful.should=~ /\d+/
+      @info.records_successful = job_report.success_records.text
+      @info.records_successful.should=~ /\d+/
     end
 
     it 'with a failed records count' do
-      @export.records_failed = job_report.failure_records.text
-      @export.records_processed.should =~ /\d+/
+      @info.records_failed = job_report.failure_records.text
+      @info.records_processed.should =~ /\d+/
     end
 
     it 'with a percent completed value of 100' do
-      @export.percent_completed = job_report.percent_completed.text
-      @export.percent_completed.should =~ /100/
+      @info.percent_completed = job_report.percent_completed.text
+      @info.percent_completed.should =~ /100/
     end
 
     it 'with a status of completed' do
-      @export.status = job_report.status.text
-      @export.status.should =~ /COMPLETED/
+      @info.status = job_report.status.text
+      @info.status.should =~ /COMPLETED/
     end
   end
 
   context 'exports a .mrc file' do
     it 'and downloads it' do
-      @export.mrc_filepath = 'data/downloads/' + @export.filename
-      @export.mrc_url      = "#{@ole.url}home/#{@export.filename}/#{@export.job_id}/#{@export.filename}"
-      open(@export.mrc_filepath,'wb') do |file|
-        file << open(@export.mrc_url).read
+      @info.mrc_filepath = 'data/downloads/' + @info.filename
+      @info.mrc_url      = "#{@ole.url}home/#{@info.filename}/#{@info.job_id}/#{@info.filename}"
+      open(@info.mrc_filepath,'wb') do |file|
+        file << open(@info.mrc_url).read
       end
     end
 
     it 'and verifies it' do
-      File.exists?(@export.mrc_filepath).should be_true
+      File.exists?(@info.mrc_filepath).should be_true
     end
 
     it 'with 3 records' do
-      reader = MARC::Reader.new(@export.mrc_filepath)
-      @export.records = []
-      reader.each {|record| @export.records << record}
-      @export.records.count.should eq(3)
+      reader = MARC::Reader.new(@info.mrc_filepath)
+      @info.records = []
+      reader.each {|record| @info.records << record}
+      @info.records.count.should eq(3)
     end
 
     it 'with the target value in each title' do
-      @export.records.each do |record|
+      @info.records.each do |record|
         record.each_by_tag('245') do |datafield|
           datafield.value.should =~ /#{@bib_record.key_str}/
         end
