@@ -19,6 +19,7 @@ describe 'The Batch Import process' do
 
   include_context 'Describe Workbench'
   include_context 'Batch Process'
+  include_context 'New Batch Profile'
 
   let(:profile)            {OLE_QA::Framework::OLELS::Batch_Import_Profile.new(@ole)}
   let(:describe_workbench)        {OLE_QA::Framework::OLELS::Describe_Workbench.new(@ole)}
@@ -58,29 +59,6 @@ describe 'The Batch Import process' do
 
     it 'and saves it to a .mrc file' do
       @writer.close
-    end
-  end
-
-  context 'creates a new base profile' do
-    it 'logged in as admin' do
-      profile_lookup.open
-      profile_lookup.login('admin').should be_true
-      profile_lookup.open
-    end
-
-    it 'from the profile lookup' do
-      profile_lookup.create_new.when_present.click
-      profile.wait_for_page_to_load
-    end
-
-    it 'with a description' do
-      profile.description_field.when_present.set("Regression Import #{@bib_record.key_str}")
-      profile.description_field.value.should  eq("Regression Import #{@bib_record.key_str}")
-    end
-
-    it 'with a name' do
-      profile.batch_profile_name_field.when_present.set(@info.name)
-      profile.batch_profile_name_field.value.should  eq(@info.name)
     end
   end
 

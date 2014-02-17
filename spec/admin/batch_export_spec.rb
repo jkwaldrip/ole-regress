@@ -20,6 +20,7 @@ describe 'The Batch Export process' do
   include OLE_QA::RegressionTest::MarcEditor
 
   include_context 'Batch Process'
+  include_context 'New Batch Profile'
 
   let(:bib_editor)                {OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)}
   let(:profile)            {OLE_QA::Framework::OLELS::Batch_Export_Profile.new(@ole)}
@@ -42,50 +43,6 @@ describe 'The Batch Export process' do
     ]
     @info.name                    = "QART-#{@bib_record.key_str}"
     @info.filename                = "#{@info.name}.mrc"
-  end
-
-  context 'creates target record' do
-
-    it 'one' do
-      bib_editor.open
-      results = create_bib(bib_editor, @bib_record.one)
-      results[:message].should =~ /success/
-    end
-
-    it 'two' do
-      bib_editor.open
-      results = create_bib(bib_editor, @bib_record.two)
-      results[:message].should =~ /success/
-    end
-
-    it 'three' do
-      bib_editor.open
-      results = create_bib(bib_editor, @bib_record.three)
-      results[:message].should =~ /success/
-    end
-  end
-
-  context 'creates a new base profile' do
-    it 'logged in as admin' do
-      profile_lookup.open
-      profile_lookup.login('admin').should be_true
-      profile_lookup.open
-    end
-
-    it 'from the profile lookup' do
-      profile_lookup.create_new.when_present.click
-      profile.wait_for_page_to_load
-    end
-
-    it 'with a description' do
-      profile.description_field.when_present.set("Regression Export #{@bib_record.key_str}")
-      profile.description_field.value.should  eq("Regression Export #{@bib_record.key_str}")
-    end
-
-    it 'with a name' do
-      profile.batch_profile_name_field.when_present.set(@info.name)
-      profile.batch_profile_name_field.value.should  eq(@info.name)
-    end
   end
 
   context 'sets up an export profile' do
@@ -142,6 +99,26 @@ describe 'The Batch Export process' do
     it 'and saves the profile ID' do
       @info.id = profile_lookup.id_by_text(@info.name).text
       @info.id.should =~ /\d+/
+    end
+  end
+
+  context 'creates target record' do
+    it 'one' do
+      bib_editor.open
+      results = create_bib(bib_editor, @bib_record.one)
+      results[:message].should =~ /success/
+    end
+
+    it 'two' do
+      bib_editor.open
+      results = create_bib(bib_editor, @bib_record.two)
+      results[:message].should =~ /success/
+    end
+
+    it 'three' do
+      bib_editor.open
+      results = create_bib(bib_editor, @bib_record.three)
+      results[:message].should =~ /success/
     end
   end
 
