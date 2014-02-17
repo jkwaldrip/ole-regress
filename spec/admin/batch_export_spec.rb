@@ -22,7 +22,7 @@ describe 'The Batch Export process' do
   include_context 'Batch Process'
 
   let(:bib_editor)                {OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)}
-  let(:export_profile)            {OLE_QA::Framework::OLELS::Batch_Export_Profile.new(@ole)}
+  let(:profile)            {OLE_QA::Framework::OLELS::Batch_Export_Profile.new(@ole)}
 
   before :all do
     FileUtils::mkdir('data/downloads') unless File.directory?('data/downloads')
@@ -74,55 +74,55 @@ describe 'The Batch Export process' do
 
     it 'from the profile lookup' do
       profile_lookup.create_new.when_present.click
-      export_profile.wait_for_page_to_load
+      profile.wait_for_page_to_load
     end
 
     it 'with a description' do
-      export_profile.description_field.when_present.set("Regression Export #{@bib_record.key_str}")
-      export_profile.description_field.value.should  eq("Regression Export #{@bib_record.key_str}")
+      profile.description_field.when_present.set("Regression Export #{@bib_record.key_str}")
+      profile.description_field.value.should  eq("Regression Export #{@bib_record.key_str}")
     end
 
     it 'with a name' do
-      export_profile.batch_profile_name_field.when_present.set(@export.name)
-      export_profile.batch_profile_name_field.value.should  eq(@export.name)
+      profile.batch_profile_name_field.when_present.set(@export.name)
+      profile.batch_profile_name_field.value.should  eq(@export.name)
     end
 
     it 'using the batch export process type' do
-      export_profile.batch_process_type_icon.when_present.click
+      profile.batch_process_type_icon.when_present.click
       batch_type_lookup.wait_for_page_to_load
       batch_type_lookup.name_field.when_present.set('Batch Export')
       batch_type_lookup.search_button.when_present.click
       verify {batch_type_lookup.text_in_results?('Batch Export')}
       batch_type_lookup.return_by_text('Batch Export').when_present.click
-      export_profile.wait_for_page_to_load
-      export_profile.batch_process_type_field.when_present.value.should eq('Batch Export')
+      profile.wait_for_page_to_load
+      profile.batch_process_type_field.when_present.value.should eq('Batch Export')
     end
 
     it 'with a description' do
-      export_profile.description_field.when_present.set("Regression Export #{@bib_record.key_str}")
-      export_profile.description_field.value.should  eq("Regression Export #{@bib_record.key_str}")
+      profile.description_field.when_present.set("Regression Export #{@bib_record.key_str}")
+      profile.description_field.value.should  eq("Regression Export #{@bib_record.key_str}")
     end
 
     it 'with a name' do
-      export_profile.batch_profile_name_field.when_present.set("QART-#{@bib_record.key_str}")
-      export_profile.batch_profile_name_field.value.should  eq("QART-#{@bib_record.key_str}")
+      profile.batch_profile_name_field.when_present.set("QART-#{@bib_record.key_str}")
+      profile.batch_profile_name_field.value.should  eq("QART-#{@bib_record.key_str}")
     end
 
     it 'with filter criteria' do
-      export_profile.export_scope_selector.when_present.select('Filter')
-      export_profile.filter_criteria_toggle.click
-      export_profile.filter_field_name_field.when_present.set('245 $a')
-      export_profile.filter_field_value_field.when_present.set(@bib_record.key_str)
-      export_profile.add_filter_line_button.click
-      export_profile.filter_line.name.when_present.text.should eq('245 $a')
-      export_profile.filter_line.name_readonly.when_present.text.should eq('245 $a')
-      export_profile.filter_line.value.when_present.text.should eq(@bib_record.key_str)
+      profile.export_scope_selector.when_present.select('Filter')
+      profile.filter_criteria_toggle.click
+      profile.filter_field_name_field.when_present.set('245 $a')
+      profile.filter_field_value_field.when_present.set(@bib_record.key_str)
+      profile.add_filter_line_button.click
+      profile.filter_line.name.when_present.text.should eq('245 $a')
+      profile.filter_line.name_readonly.when_present.text.should eq('245 $a')
+      profile.filter_line.value.when_present.text.should eq(@bib_record.key_str)
     end
 
     it 'and approves it' do
-      export_profile.approve_button.click
-      export_profile.wait_for_page_to_load
-      export_profile.messages.each do |message|
+      profile.approve_button.click
+      profile.wait_for_page_to_load
+      profile.messages.each do |message|
         message.when_present.text.should =~ /successfully/
       end
     end

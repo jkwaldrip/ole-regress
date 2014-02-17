@@ -20,8 +20,7 @@ describe 'The Batch Import process' do
   include_context 'Describe Workbench'
   include_context 'Batch Process'
 
-
-  let(:import_profile)            {OLE_QA::Framework::OLELS::Batch_Import_Profile.new(@ole)}
+  let(:profile)            {OLE_QA::Framework::OLELS::Batch_Import_Profile.new(@ole)}
   let(:describe_workbench)        {OLE_QA::Framework::OLELS::Describe_Workbench.new(@ole)}
   let(:record)                    {MARC::Record.new}
 
@@ -71,34 +70,34 @@ describe 'The Batch Import process' do
 
     it 'from the profile lookup' do
       profile_lookup.create_new.when_present.click
-      import_profile.wait_for_page_to_load
+      profile.wait_for_page_to_load
     end
 
     it 'with a description' do
-      import_profile.description_field.when_present.set("Regression Import #{@bib_record.key_str}")
-      import_profile.description_field.value.should  eq("Regression Import #{@bib_record.key_str}")
+      profile.description_field.when_present.set("Regression Import #{@bib_record.key_str}")
+      profile.description_field.value.should  eq("Regression Import #{@bib_record.key_str}")
     end
 
     it 'with a name' do
-      import_profile.batch_profile_name_field.when_present.set(@import.name)
-      import_profile.batch_profile_name_field.value.should  eq(@import.name)
+      profile.batch_profile_name_field.when_present.set(@import.name)
+      profile.batch_profile_name_field.value.should  eq(@import.name)
     end
     
     it 'using the batch import process type' do
-      import_profile.batch_process_type_icon.when_present.click
+      profile.batch_process_type_icon.when_present.click
       batch_type_lookup.wait_for_page_to_load
       batch_type_lookup.name_field.when_present.set('Bib Import')
       batch_type_lookup.search_button.when_present.click
       verify {batch_type_lookup.text_in_results?('Bib Import')}
       batch_type_lookup.return_by_text('Bib Import').when_present.click
-      import_profile.wait_for_page_to_load
-      import_profile.batch_process_type_field.when_present.value.should eq('Bib Import')
+      profile.wait_for_page_to_load
+      profile.batch_process_type_field.when_present.value.should eq('Bib Import')
     end
 
     it 'and approves it' do
-      import_profile.approve_button.click
-      import_profile.wait_for_page_to_load
-      import_profile.messages.each do |message|
+      profile.approve_button.click
+      profile.wait_for_page_to_load
+      profile.messages.each do |message|
         message.when_present.text.should =~ /successfully/
       end
     end
