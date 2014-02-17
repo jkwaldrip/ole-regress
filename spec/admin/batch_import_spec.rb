@@ -222,7 +222,5 @@ describe 'The Batch Import process' do
       results = describe_workbench.b.tds(:xpath => "//table/tbody/tr/td[div/*[contains(text(),'#{@bib_record.key_str}')]]")
       results.count.should eq(3)
     end
-
   end
-
 end
