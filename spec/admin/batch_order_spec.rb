@@ -21,7 +21,6 @@ describe 'The Order Record Batch Process' do
 
   let(:load_summary_lookup)               {OLE_QA::Framework::OLEFS::Load_Summary_Lookup.new(@ole)}
   let(:load_report)                       {OLE_QA::Framework::OLEFS::Load_Report.new(@ole)}
-  let(:job_details)                        {OLE_QA::Framework::OLELS::Batch_Job_Details.new(@ole)}
 
   before :all do
     eocr       = OLE_QA::RegressionTest::EOCR.new
