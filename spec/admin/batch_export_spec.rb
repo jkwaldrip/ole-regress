@@ -17,17 +17,12 @@ require 'spec_helper.rb'
 
 describe 'The Batch Export process' do
 
-  include OLE_QA::RegressionTest::Assertions
   include OLE_QA::RegressionTest::MarcEditor
 
+  include_context 'Batch Process'
+
   let(:bib_editor)                {OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)}
-  let(:batch_profile)             {OLE_QA::Framework::OLELS::Batch_Profile.new(@ole)}
-  let(:profile_lookup)            {OLE_QA::Framework::OLELS::Batch_Profile_Lookup.new(@ole)}
   let(:export_profile)            {OLE_QA::Framework::OLELS::Batch_Export_Profile.new(@ole)}
-  let(:batch_type_lookup)         {OLE_QA::Framework::OLELS::Batch_Type_Lookup.new(@ole)}
-  let(:batch_process)             {OLE_QA::Framework::OLELS::Batch_Process.new(@ole)}
-  let(:job_details)               {OLE_QA::Framework::OLELS::Batch_Job_Details.new(@ole)}
-  let(:job_report)                {OLE_QA::Framework::OLELS::Batch_Job_Report.new(@ole)}
 
   before :all do
     FileUtils::mkdir('data/downloads') unless File.directory?('data/downloads')

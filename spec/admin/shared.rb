@@ -55,3 +55,15 @@ shared_context 'Create Location' do
   end
 
 end
+
+shared_context 'Batch Process' do
+
+  include OLE_QA::RegressionTest::Assertions
+
+  let(:batch_profile)             {OLE_QA::Framework::OLELS::Batch_Profile.new(@ole)}
+  let(:profile_lookup)            {OLE_QA::Framework::OLELS::Batch_Profile_Lookup.new(@ole)}
+  let(:batch_type_lookup)         {OLE_QA::Framework::OLELS::Batch_Type_Lookup.new(@ole)}
+  let(:batch_process)             {OLE_QA::Framework::OLELS::Batch_Process.new(@ole)}
+  let(:job_details)               {OLE_QA::Framework::OLELS::Batch_Job_Details.new(@ole)}
+  let(:job_report)                {OLE_QA::Framework::OLELS::Batch_Job_Report.new(@ole)}
+end

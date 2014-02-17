@@ -17,14 +17,11 @@ require 'spec_helper.rb'
 
 describe 'The Order Record Batch Process' do
 
-  include OLE_QA::RegressionTest::Assertions
+  include_context 'Batch Process'
 
-  let(:batch_process)                     {OLE_QA::Framework::OLELS::Batch_Process.new(@ole)}
-  let(:profile_lookup)                    {OLE_QA::Framework::OLELS::Batch_Profile_Lookup.new(@ole)}
   let(:load_summary_lookup)               {OLE_QA::Framework::OLEFS::Load_Summary_Lookup.new(@ole)}
   let(:load_report)                       {OLE_QA::Framework::OLEFS::Load_Report.new(@ole)}
-  let(:job_lookup)                        {OLE_QA::Framework::OLELS::Batch_Job_Details.new(@ole)}
-  let(:job_report)                        {OLE_QA::Framework::OLELS::Batch_Job_Report.new(@ole)}
+  let(:job_details)                        {OLE_QA::Framework::OLELS::Batch_Job_Details.new(@ole)}
 
   before :all do
     eocr       = OLE_QA::RegressionTest::EOCR.new

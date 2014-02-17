@@ -17,16 +17,10 @@ require 'spec_helper.rb'
 
 describe 'The Batch Import process' do
 
-  include OLE_QA::RegressionTest::Assertions
-
   include_context 'Describe Workbench'
+  include_context 'Batch Process'
 
-  let(:batch_profile)             {OLE_QA::Framework::OLELS::Batch_Profile.new(@ole)}
-  let(:profile_lookup)            {OLE_QA::Framework::OLELS::Batch_Profile_Lookup.new(@ole)}
-  let(:batch_type_lookup)         {OLE_QA::Framework::OLELS::Batch_Type_Lookup.new(@ole)}
-  let(:batch_process)             {OLE_QA::Framework::OLELS::Batch_Process.new(@ole)}
-  let(:job_details)               {OLE_QA::Framework::OLELS::Batch_Job_Details.new(@ole)}
-  let(:job_report)                {OLE_QA::Framework::OLELS::Batch_Job_Report.new(@ole)}
+
   let(:import_profile)            {OLE_QA::Framework::OLELS::Batch_Import_Profile.new(@ole)}
   let(:describe_workbench)        {OLE_QA::Framework::OLELS::Describe_Workbench.new(@ole)}
   let(:record)                    {MARC::Record.new}
