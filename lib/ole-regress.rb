@@ -29,6 +29,9 @@ require 'marc'
 module OLE_QA
   module RegressionTest
 
+    FileUtils::mkdir('logs') unless File.directory?('logs')
+    FileUtils::mkdir('screenshots') unless File.directory?('screenshots')
+
     # Load all *.rb in lib/ole_regress/
     Dir['lib/ole_regress/*.rb'].sort.each do |file|
       require file
