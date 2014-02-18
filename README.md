@@ -25,3 +25,18 @@ basic tasks like starting an OLE QA Framework session.
     git clone https://github.com/jkwaldrip/ole-regress.git
     cd ole-regress
     bundle install
+
+### Usage
+
+To run the full suite of regression tests, use:
+
+    ./bin/regress
+
+To run the full suite of regression tests across multiple browsers with a SauceLabs connection, edit config/sauce.yml
+to enter your SauceLabs configuration information (e.g., username, API key, browser and OS versions to use), then run:
+
+    ./bin/xregress
+
+To rerun a failed spec against a single browser in SauceLabs, use:
+
+    ./bin/xrerun path/to/spec.rb browser
