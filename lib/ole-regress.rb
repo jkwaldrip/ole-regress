@@ -18,6 +18,7 @@ $:<< File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
 
 require 'ole-qa-framework'
 require 'chronic'
+require 'selenium/webdriver/remote/http/persistent'
 
 require 'ostruct'
 require 'yaml'

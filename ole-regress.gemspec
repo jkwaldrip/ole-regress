@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency             'bundler'
   spec.add_dependency             'rake'
   spec.add_dependency             'marc'
+  spec.add_dependency             'net-http-persistent'
 end

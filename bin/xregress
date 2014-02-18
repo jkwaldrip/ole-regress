@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+
+#  Copyright 2005-2013 The Kuali Foundation
+#
+#  Licensed under the Educational Community License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at:
+#
+#    http://www.opensource.org/licenses/ecl2.php
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+dir = File.expand_path(File.dirname(__FILE__) + '/../')
+$:<< dir unless $:.include?(dir)
+
+require 'lib/ole-regress.rb'
+require 'rspec'
+require 'spec/spec_helper.rb'
+
+
+results  = []
+browsers = ['firefox','chrome','internet_explorer']
+browsers.each do |browser|
+  # Record which browser is being run.
+  puts browser.split('_').map(&:capitalize).join(' ')
+  # Configure RSpec
+  RSpec.configure do |config|
+    # Start the SauceLabs connection and the OLE QA Framework session
+    config.before(:all) do
+      OLE_QA::RegressionTest::Sauce.start_browser(browser)
+      @ole = OLE_QA::Framework::Session.new(OLE_QA::RegressionTest::Options)
+    end
+    # Close both the SauceLabs connection and the OLE QA Framework session
+    config.after(:all) do
+      @ole.quit
+    end
+  end
+  # Run all specs
+  results << RSpec::Core::Runner::run(Dir["spec/*/*_spec.rb"].sort,$stderr,$stdout)
+end
+
+# Set the exit status to if any of the exit statuses collected in the results array are 1.
+status = results.include?(1) ? 1 : 0
+exit status
