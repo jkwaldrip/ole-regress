@@ -22,6 +22,7 @@ require 'selenium/webdriver/remote/http/persistent'
 
 require 'ostruct'
 require 'yaml'
+require 'timeout'
 require 'fileutils'
 
 # Make a logs directory if there isn't one already.
@@ -32,6 +33,11 @@ module OLE_QA
 
     # Load all *.rb in lib/ole_regress/
     Dir['lib/ole_regress/*.rb'].sort.each do |file|
+      require file
+    end
+
+    # Load classes in lib/ole_regress/*/
+    Dir['lib/ole_regress/*/*.rb'].sort.each do |file|
       require file
     end
   

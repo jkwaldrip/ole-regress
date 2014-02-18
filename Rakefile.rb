@@ -52,6 +52,21 @@ task :logclean do
   end
 end
 
+desc 'Clean temporary data folders.'
+task :dataclean do
+  downloads = Dir['data/downloads/*']
+  uploads   = Dir['data/uploads/*']
+  files     = downloads.concat(uploads)
+  if files.empty?
+    puts 'No data files found.'
+  else
+    files.each do |file|
+      File.delete(file)
+      puts "#{file} deleted."
+    end
+  end
+end
+
 desc 'Interactively configure config/options.yml'
 task :configurator do
   config_file = File.open('config/options.yml','r')

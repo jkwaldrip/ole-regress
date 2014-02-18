@@ -183,6 +183,6 @@ describe 'The PURAP Workflow' do
   end
 
   it 'waits for the invoice to be department-approved' do
-    page_assert(@info.invoice[:url])    { invoice.document_type_status.when_present.text.strip.include?('Department-Approved') }.should be_true
+    page_assert(@info.invoice[:url],120)    { invoice.document_type_status.when_present.text.strip.include?('Department-Approved') }.should be_true
   end
 end
