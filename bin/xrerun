@@ -58,7 +58,7 @@ end
 puts "Running #{script} on #{browser}..."
 
 # Run the spec...
-status = Spec::Core::Runner::run([script],$stderr,$stdout)
+status = RSpec::Core::Runner::run([script],$stderr,$stdout)
 
 # and we're done!
 exit status
