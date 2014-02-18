@@ -39,8 +39,10 @@ browsers.each do |browser|
       @ole.quit
     end
   end
+  # Gather all specs except those using batch import/export jobs.
+  specs = Dir["spec/*/*_spec.rb"].sort.delete_if {|spec| spec =~ /batch_/}
   # Run all specs
-  results << RSpec::Core::Runner::run(Dir["spec/*/*_spec.rb"].sort,$stderr,$stdout)
+  results << RSpec::Core::Runner::run(specs,$stderr,$stdout)
 end
 
 # Set the exit status to if any of the exit statuses collected in the results array are 1.
