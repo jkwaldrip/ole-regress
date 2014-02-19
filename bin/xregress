@@ -42,8 +42,10 @@ OptionParser.new do |opts|
 end.parse!
 
 
-results  = []
-browsers = ['firefox','chrome','internet_explorer']
+results   = []
+browsers  = ['firefox','chrome','internet_explorer']
+time      = Time.new.strftime('%Y-%m-%d-%H%M')
+
 browsers.each do |browser|
   # Record which browser is being run.
   puts browser.split('_').map(&:capitalize).join(' ')
@@ -62,8 +64,7 @@ browsers.each do |browser|
   # Gather all specs except those using batch import/export jobs.
   specs = Dir["spec/*/*_spec.rb"].sort.delete_if {|spec| spec =~ /batch_/}
   if options[:logging?]
-    time    = Time.new.strftime('%Y-%m-%d-%H%M')
-    logfile = File.open("logs/#{browser}-#{time}.log",'w')
+    logfile = File.open("logs/#{browser}-#{time}.log",'a')
     # Run all specs with logging.
     results << RSpec::Core::Runner::run(specs,logfile,logfile)
   else
