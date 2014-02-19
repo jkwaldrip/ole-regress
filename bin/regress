@@ -20,6 +20,33 @@ $:<< dir unless $:.include?(dir)
 require 'lib/ole-regress.rb'
 require 'rspec'
 require 'spec/spec_helper.rb'
+require 'optparse'
 
-status = RSpec::Core::Runner::run(Dir["spec/*/*_spec.rb"].sort,$stderr,$stdout)
+options = Hash.new
+OptionParser.new do |opts|
+  opts.banner = 'Usage:  regress [-l]'
+
+  opts.on('-h','--help','Display this screen.') do
+    puts opts
+    exit
+  end
+
+  opts.on('-l','--logging','Output to a logfile.') do
+    options[:logging?] = true
+  end
+
+  opts.on('-v','--version','Print the version number.') do
+    puts "OLE Regression Test v#{OLE_QA::RegressionTest::VERSION}"
+    exit
+  end
+end.parse!
+
+if options[:logging?]
+  time    = Time.new.strftime('%Y-%m-%d-%H%M')
+  logfile = File.open("logs/#{time}.log",'a')
+  status = RSpec::Core::Runner::run(Dir["spec/*/*_spec.rb"].sort,logfile,logfile)
+else
+  status = RSpec::Core::Runner::run(Dir["spec/*/*_spec.rb"].sort,$stderr,$stdout)
+end
+
 exit status
