@@ -12,6 +12,17 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+shared_context 'Marc Editor' do
+  let(:bib_editor)                {OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)}
+
+  def add_data_line(tag,value)
+    bib_editor.data_line.add_button.click
+    bib_editor.data_line.line_number += 1
+    bib_editor.data_line.tag_field.when_present.set(tag)
+    bib_editor.data_line.data_field.when_present.set(value)
+  end
+end
+
 shared_context 'Create a Marc Record' do
   
   include OLE_QA::RegressionTest::MarcEditor

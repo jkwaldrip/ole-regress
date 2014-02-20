@@ -1,4 +1,4 @@
 ---
-:url:             http://tst.ole.kuali.org/
-:docstore_url:    http://tst.docstore.ole.kuali.org/
-:headless?:       true
+:url: http://dev.ole.kuali.org/
+:docstore_url: http://dev.docstore.ole.kuali.org/
+:headless?: false
