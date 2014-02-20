@@ -5,11 +5,15 @@ describe 'Non-Latin characters' do
 
   include OLE_QA::RegressionTest::Assertions
   include_context 'Marc Editor'
+  include_context 'Describe Workbench'
+
+  let(:workbench)       { OLE_QA::Framework::OLELS::Describe_Workbench.new(@ole) }
 
   before :all do
     @alpha                         = YAML.load_file('data/alpha/non_latin.yml')
     @bib_record                   = OpenStruct.new
-    @bib_record.line_245a         = "|a#{OLE_QA::Framework::String_Factory.alphanumeric(12)}"
+    @bib_record.title             = OLE_QA::Framework::String_Factory.alphanumeric(12)
+    @bib_record.line_245a         = "|a#{@bib_record.title}"
     @bib_record.line_500a1        = "|aArabic #{@alpha[:arabic]}"
     @bib_record.line_500a2        = "|aCyrillic #{@alpha[:cyrillic]}"
     @bib_record.line_500a3        = "|aGreek #{@alpha[:greek]}"
@@ -46,4 +50,44 @@ describe 'Non-Latin characters' do
       message.when_present.text.should =~ /success/
     end
   end
+
+   context 'persist on a Marc record' do
+     it 'retrieved from a Workbench search' do
+       verify(60) {
+         workbench.open
+         workbench.search_field_1.when_present.set(@bib_record.title)
+         workbench.search_button.click
+         workbench.wait_for_page_to_load
+         workbench.result_present?(@bib_record.title)
+       }.should be_true
+       workbench.view_by_text(@bib_record.title).when_present.click
+     end
+
+     it 'in Arabic' do
+     end
+
+     it 'in Cyrillic' do
+     end
+
+     it 'in Greek' do
+     end
+
+     it 'in Hangul' do
+     end
+
+     it 'in Hebrew' do
+     end
+    
+     it 'in Hiragana' do
+     end
+
+     it 'in Katakana' do
+     end
+
+     it 'in Persian' do
+     end
+
+     it 'in Simplified Hanzi' do
+     end
+   end
 end
