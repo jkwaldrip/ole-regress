@@ -67,10 +67,4 @@ shared_context 'New Patron' do
     @patron = OpenStruct.new( OLE_QA::Framework::Patron_Factory.new_patron )
   end
 
-  def new_patron(page, struct)
-    results = create_patron(page, struct)  
-    results[0].should be_true
-    results[1].should be_nil
-  end
-
 end

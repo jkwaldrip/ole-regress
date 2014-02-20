@@ -17,8 +17,38 @@ describe 'A Patron' do
   it 'has a new record' do
     patron_lookup.open
     patron_lookup.create_new.when_present.click
-    patron_page.wait_for_page_to_load.should be_true
-    new_patron(patron_page, @patron)
+    patron_page.wait_for_page_to_load
+    patron_page.wait_for_page_to_load
+    patron_page.barcode_field.when_present.set(@patron.barcode)
+    patron_page.borrower_type_selector.select(@patron.borrower_type)
+    patron_page.activation_date_field.set(today)
+    patron_page.first_name_field.set(@patron.first)
+    patron_page.last_name_field.set(@patron.last)
+    patron_page.address_line.details_link.click
+    patron_page.address_line.line_1_field.when_present.set(@patron.address)
+    patron_page.address_line.city_field.set(@patron.city)
+    patron_page.address_line.state_selector.select(@patron.state)
+    patron_page.address_line.postal_code_field.set(@patron.postal_code)
+    patron_page.address_line.country_selector.select('United States')
+    patron_page.address_line.valid_from_date_field.set(today)
+    patron_page.address_line.active_checkbox.set(true)
+    patron_page.address_line.add_button.click
+    patron_page.address_line.line_number = 2
+    patron_page.address_line.line_1_field.wait_until_present
+    patron_page.phone_line.phone_number_field.when_present.set(@patron.phone)
+    patron_page.phone_line.country_selector.select('United States')
+    patron_page.phone_line.active_checkbox.set(true)
+    patron_page.phone_line.add_button.click
+    patron_page.phone_line.line_number = 2
+    patron_page.phone_line.phone_number_field.wait_until_present
+    patron_page.email_line.email_address_field.when_present.set(@patron.email)
+    patron_page.email_line.active_checkbox.set(true)
+    patron_page.email_line.add_button.click
+    patron_page.email_line.line_number = 2
+    patron_page.email_line.email_address_field.wait_until_present
+    patron_page.submit_button.click
+    patron_page.wait_for_page_to_load
+    patron_page.message.when_present.text.should =~ /success/
   end
 
   context 'is searchable' do
