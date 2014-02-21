@@ -61,33 +61,44 @@ describe 'Non-Latin characters' do
          workbench.result_present?(@bib_record.title)
        }.should be_true
        workbench.view_by_text(@bib_record.title).when_present.click
+       Watir::Wait.until {@ole.windows.count > 1}
+       @ole.windows[-1].use
      end
 
      it 'in Arabic' do
+       bib_editor.readonly_data_field(2).when_present.text.should include(@alpha[:arabic])
      end
 
      it 'in Cyrillic' do
+       bib_editor.readonly_data_field(3).when_present.text.should include(@alpha[:cyrillic])
      end
 
      it 'in Greek' do
+       bib_editor.readonly_data_field(4).when_present.text.should include(@alpha[:greek])
      end
 
      it 'in Hangul' do
+       bib_editor.readonly_data_field(5).when_present.text.should include(@alpha[:hangul])
      end
 
      it 'in Hebrew' do
+       bib_editor.readonly_data_field(6).when_present.text.should include(@alpha[:hebrew])
      end
     
      it 'in Hiragana' do
+       bib_editor.readonly_data_field(7).when_present.text.should include(@alpha[:hiragana])
      end
 
      it 'in Katakana' do
+       bib_editor.readonly_data_field(8).when_present.text.should include(@alpha[:katakana])
      end
 
      it 'in Persian' do
+       bib_editor.readonly_data_field(9).when_present.text.should include(@alpha[:persian])
      end
 
      it 'in Simplified Hanzi' do
+       bib_editor.readonly_data_field(10).when_present.text.should include(@alpha[:simplified_hanzi_short])
      end
    end
 end
