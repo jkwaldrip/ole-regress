@@ -14,10 +14,14 @@ describe 'The Marc Editor' do
 
   it 'creates a new instance' do
     new_instance
+    @ole.browser.windows[-1].close
+    @ole.browser.windows[0].use
   end
   
   it 'creates a new item' do
     new_item
+    @ole.browser.windows[-1].close
+    @ole.browser.windows[0].use
   end
 
   it 'closes the editor screen' do
