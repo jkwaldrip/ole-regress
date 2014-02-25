@@ -44,7 +44,6 @@ shared_context 'Checkin' do
       return_page.return_button.click
       return_page.checkin_message_box.wait_while_present
     end
-    @ole.windows[-1].close if @ole.windows.count > 1
     return_page.items_returned_toggle.wait_until_present
     return_page.item_barcode_link(1).text.include?(barcode).should            be_true
     return_page.item_checkin_date.text.include?(@checkin.expected_str).should be_true
