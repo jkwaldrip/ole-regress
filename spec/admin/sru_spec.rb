@@ -69,11 +69,45 @@ describe 'The OLE SRU function' do
   end
 
   context 'searches by year' do
+    it '> target value' do
+
+    end
+
+    it '< target value' do
+
+    end
+
     it '>= target value' do
 
     end
 
     it '<= target value' do
+
+    end
+
+    it '= target value' do
+
+    end
+  end
+
+  context 'searches by publication date' do
+    it '> target value' do
+
+    end
+
+    it '< target value' do
+
+    end
+
+    it '>= target value' do
+
+    end
+
+    it '<= target value' do
+
+    end
+
+    it '= target value' do
 
     end
   end
