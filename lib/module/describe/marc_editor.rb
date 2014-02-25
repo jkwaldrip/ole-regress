@@ -119,6 +119,7 @@ module OLE_QA::RegressionTest
 
       # Open instance record.
       instance_editor.holdings_link(instance_info[:instance_number]).when_present.click
+      instance_editor.ole.browser.windows[-1].use
       instance_editor.wait_for_page_to_load
 
       instance_editor.location_field.when_present.set(instance_info[:location])
@@ -165,6 +166,7 @@ module OLE_QA::RegressionTest
         item_editor.item_link(item_info[:item_number]).wait_until_present
       end
       item_editor.item_link(item_info[:item_number]).click
+      item_editor.ole.browser.windows[-1].use
       item_editor.wait_for_page_to_load
       item_editor.item_type_selector.when_present.select(item_info[:item_type])
       hsh_out[:item_type] = true
