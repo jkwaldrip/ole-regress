@@ -15,7 +15,11 @@ describe 'The Describe Workbench' do
     bib_editor.open
     new_bib_record
     new_instance
+    @ole.browser.windows[-1].close
+    @ole.browser.windows[0].use
     new_item
+    @ole.browser.windows[-1].close
+    @ole.browser.windows[0].use
   end
 
   it 'opens' do
@@ -64,19 +68,16 @@ describe 'The Describe Workbench' do
 
     it 'by holdings call number' do
       bib_editor.holdings_link.click
+      @ole.browser.windows[-1].use
       instance_editor.wait_for_page_to_load
-      instance_editor.readonly_call_number.when_present.text.strip.include?(call_number).should be_true
+      instance_editor.call_number_field.when_present.value.strip.include?(call_number).should be_true
     end
 
     it 'by item barcode' do
       instance_editor.item_link.click
+      @ole.browser.windows[-1].use
       item_editor.wait_for_page_to_load
-      item_editor.readonly_barcode.when_present.text.strip.include?(barcode).should be_true
-    end
-
-    it 'and returns to the main window' do
-      @ole.windows[-1].close
-      @ole.windows[0].use
+      item_editor.barcode_field.when_present.value.strip.include?(barcode).should be_true
     end
   end
 end
