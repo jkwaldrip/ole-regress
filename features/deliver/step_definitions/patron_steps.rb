@@ -93,6 +93,10 @@ When /^I add (?:a|the) patron(?:'s)? (?:([\w ]+){1,2}) line$/ do |which|
   end
 end
 
+When /^I click the patron(?:'s)? address details link$/ do
+  @patron_editor.address_line.details_link.when_present.click
+end
+
 When /^I (submit|save|cancel) the patron record$/ do |which|
   case which
     when /submit/

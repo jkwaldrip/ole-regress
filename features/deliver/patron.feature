@@ -7,13 +7,14 @@ Feature:  Patron
     And I set the patron's last name to "Smith"
     And I set the patron's barcode
     And I set the patron's borrower type
-    And I add a patron address line
+    And I click the patron's address details link
     And I set the patron's address type
     And I set the patron's address
     And I set the patron's city
     And I set the patron's state
     And I set the patron's postal code
     And I set the patron's country
+    And I add a patron address line
     And I set the patron's email address
     And I add the patron's email line
     And I set the patron's phone number
