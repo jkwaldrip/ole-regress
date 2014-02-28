@@ -50,7 +50,7 @@ module OLE_QA
           field.select(value)
           field.selected?(value).should be_true
         when /CheckBox/
-          field.set(value)
+          field.when_present.set(value)
           field.set?.should eq(value)
       end
     end
