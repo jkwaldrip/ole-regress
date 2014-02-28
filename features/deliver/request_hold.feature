@@ -1,7 +1,4 @@
-@deliver
-  
-# Written by:
-#   Tod Olson, Cheryl Malmborg, Jain Waldrip, & Keith Welch
+@deliver @request @happy_path
 
 Feature:  Request Hold
 
