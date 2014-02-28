@@ -15,7 +15,7 @@
 include OLE_QA::RegressionTest::Patron
 
 Given /^I have new patron information$/ do
-  @patron = OpenStruct.new(OLE_QA::Framework::Patron_Factory.new_patron)
+  @patron = OLE_QA::Framework::Patron_Factory.new_patron
   @patron[:country]               = 'United States'
   @patron[:phone_number_country]  = 'United States'
   @patron[:email_address]         = @patron[:email]
@@ -36,9 +36,9 @@ When /^I set the patron(?:'s)? ((?:[\w]+ ?)*)\"?((?:[\w]+ ?)*)?\"?$/ do |field,v
   value.gsub!('"','')
   if value.empty? then
     value = @patron[keyify(field)]
-  else
+   else
     @patron[keyify(field)] = value
-  end
+ end
   case field
     when 'first name'
       set_field(@patron_editor.first_name_field,value)
@@ -49,6 +49,7 @@ When /^I set the patron(?:'s)? ((?:[\w]+ ?)*)\"?((?:[\w]+ ?)*)?\"?$/ do |field,v
     when 'borrower type'
       set_field(@patron_editor.borrower_type_selector,value)
     when 'address type'
+      @patron_editor.address_line.details_link.click
       set_field(@patron_editor.address_line.address_type_selector,value)
     when 'address'
       set_field(@patron_editor.address_line.active_checkbox,true)
@@ -76,9 +77,7 @@ end
 When /^I add (?:a|the) patron(?:'s)? (?:([\w ]+){1,2}) line$/ do |which|
   case which
     when /address/
-      # FIXME Patron address line add button ID is currently misnamed in OLE.
-      # @patron.address_line.add_button.when_present.click
-      @patron_editor.b.button(:id => 'addFee_add').when_present.click
+      @patron_editor.address_line.add_button.when_present.click
       @patron_editor.address_line.line_number += 1
       @patron_editor.address_line.line_1_field.wait_until_present
     when /phone( number)?/
@@ -158,7 +157,7 @@ Then /^I see the (?:([\w ?]+){1,2}) in the patron search results$/ do |which|
 end
 
 And /^I edit the patron record$/ do
-  @patron_lookup.edit_by_text(@patron.barcode).when_present.click
+  @patron_lookup.edit_by_text(@patron[:barcode]).when_present.click
   @patron_editor.wait_for_page_to_load
 end
 
