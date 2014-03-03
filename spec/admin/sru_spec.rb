@@ -59,6 +59,10 @@ describe 'The OLE SRU function' do
       records       = get_marc_xml(filename)
       File.zero?("data/downloads/#{filename}").should be_false
       records.count.should eq(2)
+
+      records.each do |record|
+        record['245']['a'].should =~ /Title \w+ #{@bib_records.target_1}/
+      end
     end
 
     it 'with an exact match' do
@@ -68,6 +72,10 @@ describe 'The OLE SRU function' do
       records       = get_marc_xml(filename)
       File.zero?("data/downloads/#{filename}").should be_false
       records.count.should eq(1)
+
+      records.each do |record|
+        record['245']['a'].should =~ /Title One #{@bib_records.target_1}/
+      end
     end
   end
 
@@ -79,6 +87,10 @@ describe 'The OLE SRU function' do
       records       = get_marc_xml(filename)
       File.zero?("data/downloads/#{filename}").should be_false
       records.count.should eq(2)
+
+      records.each do |record|
+        record['100']['a'].should =~ /Author \w+ #{@bib_records.target_2}/
+      end
     end
 
     it 'with an exact match' do
@@ -88,6 +100,10 @@ describe 'The OLE SRU function' do
       records       = get_marc_xml(filename)
       File.zero?("data/downloads/#{filename}").should be_false
       records.count.should eq(1)
+
+      records.each do |record|
+        record['100']['a'].should =~ /Author One #{@bib_records.target_2}/
+      end
     end
   end
 
@@ -115,6 +131,10 @@ describe 'The OLE SRU function' do
       records       = get_marc_xml(filename)
       File.zero?("data/downloads/#{filename}").should be_false
       records.count.should eq(1)
+
+      records.each do |record|
+        record['260']['c'].should =~ /#{@bib_records.year_2}/
+      end
     end
   end
 
