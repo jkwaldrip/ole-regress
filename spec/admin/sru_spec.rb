@@ -5,10 +5,13 @@ describe 'The OLE SRU function' do
 
   include OLE_QA::RegressionTest::Assertions
   include OLE_QA::RegressionTest::MarcEditor
+  include OLE_QA::RegressionTest::SRU
+  include OLE_QA::RegressionTest::Marc
 
   let(:bib_editor)                {OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)}
 
   before :all do
+    @today                        = Time.now.strftime('%Y%m%d-%H%M')
     @bib_records                  = OpenStruct.new
     @bib_records.target_1         = OLE_QA::Framework::String_Factory.alphanumeric(12)
     @bib_records.target_2         = OLE_QA::Framework::String_Factory.alphanumeric(12)
@@ -50,11 +53,21 @@ describe 'The OLE SRU function' do
 
   context 'searches by title' do
     it 'with a general search' do
-
+      query         = "title any #{@bib_records.target_1}"
+      filename      = "sru_title_any-#{@today}.xml"
+      get_sru_file(query,filename,@ole)
+      records       = get_marc_xml(filename)
+      File.zero?("data/downloads/#{filename}").should be_false
+      records.count.should eq(2)
     end
 
     it 'with an exact match' do
-
+      query         = "title = Title One #{@bib_records.target_1}"
+      filename      = "sru_title_exact-#{@today}.xml"
+      get_sru_file(query,filename,@ole)
+      records       = get_marc_xml(filename)
+      File.zero?("data/downloads/#{filename}").should be_false
+      records.count.should eq(1)
     end
   end
 

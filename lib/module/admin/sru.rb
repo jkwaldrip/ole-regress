@@ -49,5 +49,10 @@ module OLE_QA::RegressionTest
       end
     end
 
+
+    def get_sru_file(query,filename,ole_session)
+      url       = get_url(ole_session,query)
+      write_sru(url,filename)
+    end
   end
 end
