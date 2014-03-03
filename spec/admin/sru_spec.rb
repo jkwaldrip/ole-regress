@@ -108,21 +108,25 @@ describe 'The OLE SRU function' do
   end
 
   context 'searches by year' do
-    it '> target value' do
+    # it '> target value' do
+    #  This test cannot be implemented until OLE-5791 is resolved.
+    #    https://jira.kuali.org/browse/OLE-5791
+    # end
 
-    end
+    # it '< target value' do
+    #  This test cannot be implemented until OLE-5791 is resolved.
+    #    https://jira.kuali.org/browse/OLE-5791
+    # end
 
-    it '< target value' do
+    # it '>= target value' do
+    #  This test cannot be implemented until OLE-5791 is resolved.
+    #    https://jira.kuali.org/browse/OLE-5791
+    # end
 
-    end
-
-    it '>= target value' do
-
-    end
-
-    it '<= target value' do
-
-    end
+    # it '<= target value' do
+    #  This test cannot be implemented until OLE-5791 is resolved.
+    #    https://jira.kuali.org/browse/OLE-5791
+    # end
 
     it '= target value' do
       query         = "year = #{@bib_records.year_2}"
@@ -138,25 +142,30 @@ describe 'The OLE SRU function' do
     end
   end
 
-  context 'searches by publication date' do
-    it '> target value' do
+  # context 'searches by publication date' do
+  #   it '> target value' do
+  #     This test cannot be implemented until OLE-5791 is resolved.
+  #       https://jira.kuali.org/browse/OLE-5791
+  #   end
 
-    end
+  #   it '< target value' do
+  #     This test cannot be implemented until OLE-5791 is resolved.
+  #       https://jira.kuali.org/browse/OLE-5791
+  #   end
 
-    it '< target value' do
+  #   it '>= target value' do
+  #     This test cannot be implemented until OLE-5791 is resolved.
+  #       https://jira.kuali.org/browse/OLE-5791
+  #   end
 
-    end
+  #   it '<= target value' do
+  #     This test cannot be implemented until OLE-5791 is resolved.
+  #       https://jira.kuali.org/browse/OLE-5791
+  #   end
 
-    it '>= target value' do
-
-    end
-
-    it '<= target value' do
-
-    end
-
-    it '= target value' do
-
-    end
-  end
+  #   it '= target value' do
+  #     This test cannot be implemented until OLE-5791 is resolved.
+  #       https://jira.kuali.org/browse/OLE-5791
+  #    end
+  # end
 end
