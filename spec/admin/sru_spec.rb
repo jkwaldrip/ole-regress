@@ -73,11 +73,21 @@ describe 'The OLE SRU function' do
 
   context 'searches by author' do
     it 'with a general search' do
-
+      query         = "author any #{@bib_records.target_2}"
+      filename      = "sru_author_any-#{@today}.xml"
+      get_sru_file(query,filename,@ole)
+      records       = get_marc_xml(filename)
+      File.zero?("data/downloads/#{filename}").should be_false
+      records.count.should eq(2)
     end
 
     it 'with an exact match' do
-
+      query         = "author = Author One #{@bib_records.target_2}"
+      filename      = "sru_author_exact-#{@today}.xml"
+      get_sru_file(query,filename,@ole)
+      records       = get_marc_xml(filename)
+      File.zero?("data/downloads/#{filename}").should be_false
+      records.count.should eq(1)
     end
   end
 
