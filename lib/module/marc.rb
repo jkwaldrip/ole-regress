@@ -28,5 +28,16 @@ module OLE_QA::RegressionTest
       records
     end
 
+    # Given an MRC file in data/downloads/, return the contents of that
+    #   file as an array of MARC format records.
+    def get_marc(filename)
+      filename = ( filename =~ /.mrc$/ ? filename : filename + '.mrc')
+      records = Array.new
+      reader  = MARC::Reader.new("data/downloads/#{filename}")
+      reader.each do |record|
+        records << record
+      end
+      records
+    end
   end
 end
