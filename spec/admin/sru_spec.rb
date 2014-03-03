@@ -83,7 +83,7 @@ describe 'The OLE SRU function' do
 
     it 'with an exact match' do
       query         = "author = Author One #{@bib_records.target_2}"
-      filename      = "sru_author_exact-#{@today}.xml"
+      filename      = "sru_year_exact-#{@today}.xml"
       get_sru_file(query,filename,@ole)
       records       = get_marc_xml(filename)
       File.zero?("data/downloads/#{filename}").should be_false
@@ -109,7 +109,12 @@ describe 'The OLE SRU function' do
     end
 
     it '= target value' do
-
+      query         = "year = #{@bib_records.year_2}"
+      filename      = "sru_author_exact-#{@today}.xml"
+      get_sru_file(query,filename,@ole)
+      records       = get_marc_xml(filename)
+      File.zero?("data/downloads/#{filename}").should be_false
+      records.count.should eq(1)
     end
   end
 
