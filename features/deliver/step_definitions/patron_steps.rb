@@ -166,4 +166,3 @@ And /^I edit the patron record$/ do
   @patron_lookup.edit_by_text(@patron[:barcode]).when_present.click
   @patron_editor.wait_for_page_to_load
 end
-

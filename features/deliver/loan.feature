@@ -11,13 +11,13 @@ Feature: Loan Item
     And I create an item record
     Then I log in as dev2
 
-  Scenario: Make a Hold/Hold Request
-    When I open the Loan page
+  Scenario: Loan an Item to a Patron
+    When I open the loan page
     And I select a Circulation Desk of "BL_EDUC"
-    Then I wait for the Confirmation dialogue to appear
-    When I click the "Yes" button
+    Then I wait for the confirmation dialogue to appear
+    When I click the "yes" button
     Then the loan screen will appear
-    When I enter the patron barcode
+    When I select a patron by barcode
     Then the item field appears
-    And I enter the item barcode
-    Then I see a success message
+    And I select the item by barcode
+    Then I see the item barcode in current items
