@@ -14,3 +14,9 @@
 
 include OLE_QA::RegressionTest::Assertions
 
+When /^I log in as \"?([\w]+)\"?$/ do |as_who|
+  @ole.open
+  page = OLE_QA::Framework::Page.new(@ole,@ole.url)
+  page.wait_for_page_to_load
+  page.login(as_who).should be_true
+end
