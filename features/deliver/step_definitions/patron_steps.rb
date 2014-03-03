@@ -16,6 +16,8 @@ include OLE_QA::RegressionTest::Patron
 
 Given /^I have new patron information$/ do
   @patron = OLE_QA::Framework::Patron_Factory.new_patron
+  @patron[:first_name]            = @patron[:first]
+  @patron[:last_name]             = @patron[:last]
   @patron[:country]               = 'United States'
   @patron[:phone_number_country]  = 'United States'
   @patron[:email_address]         = @patron[:email]
@@ -32,13 +34,12 @@ Given /^I (?:open|visit|go to)? the patron editor$/ do
 end
 
 When /^I set the patron(?:'s)? ((?:[\w]+ ?)*)\"?((?:[\w]+ ?)*)?\"?$/ do |field,value|
-  field = field.split(' to ').join
-  value.gsub!('"','')
+  field = field.split(' to ')[0]
   if value.empty? then
     value = @patron[keyify(field)]
-   else
+  else
     @patron[keyify(field)] = value
- end
+  end
   case field
     when 'first name'
       set_field(@patron_editor.first_name_field,value)
@@ -49,7 +50,6 @@ When /^I set the patron(?:'s)? ((?:[\w]+ ?)*)\"?((?:[\w]+ ?)*)?\"?$/ do |field,v
     when 'borrower type'
       set_field(@patron_editor.borrower_type_selector,value)
     when 'address type'
-      @patron_editor.address_line.details_link.click
       set_field(@patron_editor.address_line.address_type_selector,value)
     when 'address'
       set_field(@patron_editor.address_line.active_checkbox,true)
@@ -94,7 +94,8 @@ When /^I add (?:a|the) patron(?:'s)? (?:([\w ]+){1,2}) line$/ do |which|
 end
 
 When /^I click the patron(?:'s)? address details link$/ do
-  @patron_editor.address_line.details_link.when_present.click
+  @patron_editor.address_line.details_link.click
+  @patron_editor.address_line.line_1_field.wait_until_present
 end
 
 When /^I (submit|save|cancel) the patron record$/ do |which|
@@ -116,17 +117,18 @@ When /^I create a new patron record$/ do
   steps %{
     Given I have new patron information
     Given I open the patron editor
-    When I set the patron's first name to "Darren"
-    And I set the patron's last name to "Smith"
+    When I set the patron's first name
+    And I set the patron's last name
     And I set the patron's barcode
     And I set the patron's borrower type
-    And I add a patron address line
+    And I click the patron's address details link
     And I set the patron's address type
     And I set the patron's address
     And I set the patron's city
     And I set the patron's state
     And I set the patron's postal code
     And I set the patron's country
+    And I add a patron address line
     And I set the patron's email address
     And I add the patron's email line
     And I set the patron's phone number
