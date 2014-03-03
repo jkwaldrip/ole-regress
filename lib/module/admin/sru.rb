@@ -49,16 +49,5 @@ module OLE_QA::RegressionTest
       end
     end
 
-    # Given an XML file in data/downloads/, return the contents of that
-    #   file as an array of MARC XML format records.
-    def get_marc_xml(filename)
-      filename = ( filename =~ /.xml$/ ? filename : filename + '.xml')
-      records = Array.new
-      reader  = MARC::XMLReader.new("data/downloads/#{filename}")
-      reader.each do |record|
-        records << record
-      end
-      records
-    end
   end
 end
