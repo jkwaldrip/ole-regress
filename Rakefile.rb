@@ -32,8 +32,8 @@ task :scnclean do
   else
     files.each do |file|
       File.delete(file)
-      puts "#{file} deleted."
     end
+    puts "#{files.count} screenshots deleted."
   end
 end
 
@@ -47,8 +47,8 @@ task :logclean do
   else
     logs.each do |logfile|
       File.delete(logfile)
-      puts "#{logfile} deleted."
     end
+    puts "#{logs.count} logfiles deleted."
   end
 end
 
@@ -62,8 +62,8 @@ task :dataclean do
   else
     files.each do |file|
       File.delete(file)
-      puts "#{file} deleted."
     end
+    puts "#{files.count} data files deleted."
   end
 end
 
