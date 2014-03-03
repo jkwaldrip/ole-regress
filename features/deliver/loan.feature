@@ -1,11 +1,15 @@
-@deliver @Loan @happy_path
+@deliver @loan @happy_path
 
 Feature: Loan Item
 
   Background:
     Given I create a new patron record
+    Given I have a resource
+    And I use the Marc Editor
+    Then I create a bib record
+    And I create an instance record
     And I create an item record
-    And I log in as dev2
+    Then I log in as dev2
 
   Scenario: Make a Hold/Hold Request
     When I open the Loan page
