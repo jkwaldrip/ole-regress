@@ -166,3 +166,75 @@ And /^I edit the patron record$/ do
   @patron_lookup.edit_by_text(@patron[:barcode]).when_present.click
   @patron_editor.wait_for_page_to_load
 end
+
+When /^I create a second new patron record$/ do
+  @second_patron                          = OLE_QA::Framework::Patron_Factory.new_patron
+  @second_patron[:first_name]             = @second_patron[:first]
+  @second_patron[:last_name]              = @second_patron[:last]
+  @second_patron[:country]                = 'United States'
+  @second_patron[:phone_number_country]   = 'United States'
+  @second_patron[:email_address]          = @second_patron[:email]
+  @second_patron[:phone_number]           = @second_patron[:phone]
+  @second_patron[:address_type]           = 'Home'
+  steps %{
+    Given I open the patron editor
+    When I set the second patron's first name
+    And I set the second patron's last name
+    And I set the second patron's barcode
+    And I set the second patron's borrower type
+    And I click the patron's address details link
+    And I set the second patron's address type
+    And I set the second patron's address
+    And I set the second patron's city
+    And I set the second patron's state
+    And I set the second patron's postal code
+    And I set the second patron's country
+    And I add a patron address line
+    And I set the second patron's email address
+    And I add the patron's email line
+    And I set the second patron's phone number
+    And I add the patron's phone number line
+    Then I submit the patron record
+        }
+end
+
+When /^I set the second patron(?:'s)? ((?:[\w]+ ?)*)\"?((?:[\w]+ ?)*)?\"?$/ do |field,value|
+  field = field.split(' to ')[0]
+  if value.empty? then
+    value = @second_patron[keyify(field)]
+  else
+    @second_patron[keyify(field)] = value
+  end
+  case field
+    when 'first name'
+      set_field(@patron_editor.first_name_field,value)
+    when 'last name'
+      set_field(@patron_editor.last_name_field,value)
+    when 'barcode'
+      set_field(@patron_editor.barcode_field,value)
+    when 'borrower type'
+      set_field(@patron_editor.borrower_type_selector,value)
+    when 'address type'
+      set_field(@patron_editor.address_line.address_type_selector,value)
+    when 'address'
+      set_field(@patron_editor.address_line.active_checkbox,true)
+      set_field(@patron_editor.address_line.line_1_field,value)
+    when 'city'
+      set_field(@patron_editor.address_line.city_field,value)
+    when 'state'
+      set_field(@patron_editor.address_line.state_selector,value)
+    when 'postal code'
+      set_field(@patron_editor.address_line.postal_code_field,value)
+    when 'country'
+      set_field(@patron_editor.address_line.country_selector,value)
+      set_field(@patron_editor.phone_line.country_selector,value)
+    when 'email address'
+      set_field(@patron_editor.email_line.email_address_field,value)
+      set_field(@patron_editor.email_line.active_checkbox,true)
+    when 'phone number'
+      set_field(@patron_editor.phone_line.phone_number_field,value)
+      set_field(@patron_editor.phone_line.active_checkbox,true)
+    else
+      raise OLE_QA::RegressionTest::Error,"Field does not exist on patron editor:  #{field}"
+  end
+end
