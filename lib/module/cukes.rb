@@ -44,7 +44,7 @@ module OLE_QA
       case field.class.name
         when /TextField/
           field.when_present.set(value)
-          field.value.should eq(value)
+          field.value.should eq(value.chomp)
         when /Select/
           Watir::Wait.until {field.present? || field.include?(value)}
           field.select(value)

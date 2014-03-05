@@ -8,7 +8,7 @@ Feature:  Request Hold
     
   Scenario:  Make a Hold/Hold Request
     When I open the Request lookup page
-    And I click the "Create New" link
+    And I click the "Create New Request" link
     And I select an operator type of "Patron"
     And I select a request type of "Hold/Hold Request"
     And I enter the second patron's barcode
