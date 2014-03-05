@@ -13,7 +13,7 @@ Feature:  Request Hold
     And I select a request type of "Hold/Hold Request"
     And I enter the second patron's barcode
     Then I wait for the patron's name to appear in the patron name field
-    When I click the item search icon
+    When I click the item search icon on the request page
     Then the Item Search screen will appear
     When I enter the item's barcode in the item barcode field
     And I click the search button on the item search screen

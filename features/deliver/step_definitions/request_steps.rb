@@ -44,3 +44,8 @@ Then /^I wait for the patron's name to appear in the patron name field$/ do
   patron_name = "#{@second_patron[:first_name]} #{@second_patron[:last_name]}"
   @request_page.patron_name_field.when_present.value.should eq(patron_name)
 end
+
+When /^I click the item search icon on the request page$/ do
+  @request_page.item_search_icon.when_present.click
+end
+
