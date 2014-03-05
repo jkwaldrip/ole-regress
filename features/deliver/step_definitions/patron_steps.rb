@@ -195,7 +195,7 @@ When /^I create a second new patron record$/ do
     And I set the second patron's phone number
     And I add the patron's phone number line
     Then I submit the patron record
-        }
+  }
 end
 
 When /^I set the second patron(?:'s)? ((?:[\w]+ ?)*)\"?((?:[\w]+ ?)*)?\"?$/ do |field,value|

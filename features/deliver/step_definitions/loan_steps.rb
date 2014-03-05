@@ -14,11 +14,10 @@
 
 include OLE_QA::RegressionTest::Assertions
 
-When /^I log in as \"?([\w]+)\"?$/ do |as_who|
-  @ole.open
-  page = OLE_QA::Framework::Page.new(@ole,@ole.url)
-  page.wait_for_page_to_load
-  page.login(as_who).should be_true
+When /^I log in as ([\w]+)?$/ do |as_who|
+  @page = OLE_QA::Framework::Page.new(@ole,@ole.url)
+  @page.open
+  @page.login(as_who).should be_true
 end
 
 When /^I open the loan page$/ do
@@ -77,4 +76,23 @@ Then /^I see the item (\w+) in current items$/ do |which|
     when 'barcode'
       @loan_page.item_barcode_link(1).when_present.text.strip.should =~ /#{@resource.barcode}/
   end
+end
+
+When 'I loan an item to a patron' do
+  steps %{
+    Given I create a new patron record
+    Given I have a resource
+    Given I create a resource
+    Then I exit the Marc Editor
+    When I log in as dev2
+    And I open the loan page
+    And I select a Circulation Desk of "BL_EDUC"
+    Then I wait for the confirmation dialogue to appear
+    When I click the "yes" button
+    Then the loan screen will appear
+    When I select a patron by barcode
+    Then the item field appears
+    And I select the item by barcode
+    Then I see the item barcode in current items
+  }
 end

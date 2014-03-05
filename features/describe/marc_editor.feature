@@ -17,3 +17,4 @@ Feature:  Marc Editor
     And I select an item status of Available
     And I enter a barcode
     Then I can save the item record
+    And I return to the bib editor window

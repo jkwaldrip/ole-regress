@@ -54,10 +54,6 @@ Then /^I (?:can )?save the (bib|instance|item) record$/ do |which|
   editor = instance_variable_get("@#{which}_editor".to_sym)
   save_msg = editor.save_record
   save_msg.should =~ /success/
-  if @ole.windows.count > 1
-    @ole.windows[-1].close
-    @ole.windows[0].use
-  end
 end
 
 When /^I create a bib record$/ do
@@ -101,13 +97,14 @@ When /^I create an instance record$/ do
     And I enter a call number
     And I select a call number type
     Then I can save the instance record
+    And I return to the bib editor window
   }
 end
 
 When /^I add an item record$/ do
   @item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
-  @instance_editor.holdings_icon(1).when_present.click
-  @instance_editor.item_link(1).when_present.click
+  @bib_editor.holdings_icon(1).when_present.click
+  @bib_editor.item_link(1).when_present.click
   Watir::Wait.until {@ole.windows.count > 1}
   @ole.windows[-1].use
   @item_editor.wait_for_page_to_load
@@ -138,5 +135,33 @@ When /^I create an item record$/ do
     And I select an item status
     And I enter a barcode
     Then I can save the item record
+    And I return to the bib editor window
+  }
+end
+
+When /^I exit the Marc Editor$/ do
+  @ole.open(@ole.base_url)
+end
+
+When /^I return to the bib editor window$/ do
+  if @ole.windows.count > 1
+    @ole.windows[-1].close
+    @ole.windows[0].use
+  end
+end
+
+When /^I create a resource$/ do
+  steps %{
+    Given I have a resource
+    Given I am using the Marc Editor
+    When I create a bib record
+    And I create an instance record
+    Then I add an item record
+    And I select an item type of Book
+    And I select an item status of Available
+    And I enter a barcode
+    Then I can save the item record
+    And I return to the bib editor window
+    And I exit the Marc Editor
   }
 end

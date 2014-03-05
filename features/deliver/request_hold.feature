@@ -3,14 +3,8 @@
 Feature:  Request Hold
 
   Background:
-    Given I create a new patron record
+    Given I loan an item to a patron
     Given I create a second new patron record
-    Given I use the Marc Editor
-    And I have a library resource
-    And I create a bib record
-    And I create an instance record
-    And I create an item record
-    And I loan the item to the first patron
     
   Scenario:  Make a Hold/Hold Request
     When I open the Request lookup page
