@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 include OLE_QA::RegressionTest::Patron
+include OLE_QA::RegressionTest::Assertions
 
 Given /^I have new patron information$/ do
   @patron = OLE_QA::Framework::Patron_Factory.new_patron
@@ -103,7 +104,7 @@ When /^I (submit|save|cancel) the patron record$/ do |which|
     when /submit/
       @patron_editor.submit_button.click
       @patron_editor.wait_for_page_to_load
-      @patron_editor.message.text.should =~ /success/
+      verify(60) { @patron_editor.message.text =~ /success/ }.should be_true
     when /save/
       @patron_editor.save_button.click
       @patron_editor.wait_for_page_to_load
