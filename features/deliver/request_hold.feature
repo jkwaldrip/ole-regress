@@ -20,5 +20,5 @@ Feature:  Request Hold
     And I click the return link for the item's barcode
     Then I wait for the item's title to appear in the title field
     When I enter a pickup location of "BL_EDUC"
-    Then I click the submit button on the request page
-    And I see a success message
+    And I click the submit button on the request page
+    Then I see a success message on the request page

@@ -27,7 +27,9 @@ end
 
 
 When /^I select a [Cc]irculation [Dd]esk of \"?([\w\_]+)\"?$/ do |desk|
-  set_field(@loan_page.circulation_desk_selector,desk)
+  Watir::Wait.until {@loan_page.circulation_desk_selector.present? && @loan_page.circulation_desk_selector.include?(desk) }
+  @loan_page.circulation_desk_selector.select(desk)
+  @loan_page.loading_message.wait_while_present if @loan_page.loading_message.present?
 end
 
 When /^I wait for the confirmation dialogue to appear$/ do

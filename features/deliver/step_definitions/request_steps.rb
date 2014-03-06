@@ -71,3 +71,21 @@ When /^I click the return link for the item(?:\'s)? ([\w\s]+)$/ do |what_value|
   value = @resource.send(keyify(what_value.strip))
   @item_lookup.return_by_text(value).when_present.click
 end
+
+Then /^I wait for the item's title to appear in the title field$/ do
+  verify(30) {@request_page.item_title_field.value.should eq(@resource.title)}
+end
+
+When /^I enter a pickup location of \"?(\w+)\"?$/ do |pickup_location|
+  @request_page.pickup_location_selector.wait_until_present
+  set_field(@request_page.pickup_location_selector,pickup_location)
+end
+
+When /^I click the submit button on the request page$/ do
+  @request_page.submit_button.when_present.click
+end
+
+Then /^I see a success message on the request page$/ do
+  @request_page.wait_for_page_to_load
+  verify(60) { @request_page.message.text.should =~ /success/ }.should be_true
+end
