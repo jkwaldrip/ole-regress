@@ -29,9 +29,12 @@ When /^I select an operator type of \"?(\w+)\"?$/ do |operator_type|
 end
 
 When /^I select a request type of \"?([\w\/\s]+)\"?$/ do |request_type|
-  @request_page.wait_for_page_to_load
   @request_page.request_type_selector.wait_until_present
-  set_field(@request_page.request_type_selector,request_type)
+  Watir::Wait.until {@request_page.request_type_selector.present? && @request_page.request_type_selector.include?(request_type)}
+  @request_page.request_type_selector.select(request_type)
+  @request_page.loading_message.wait_while_present if @request_page.loading_message.present?
+  @request_page.request_type_selector.when_present.selected?(request_type).should be_true
+  @request_page.item_barcode_field.wait_until_present
 end
 
 When /^I enter the second patron's barcode$/ do
@@ -47,5 +50,24 @@ end
 
 When /^I click the item search icon on the request page$/ do
   @request_page.item_search_icon.when_present.click
+  @request_page.loading_message.wait_while_present if @request_page.loading_message.present?
 end
 
+Then /^the item lookup screen will appear$/ do
+  @item_lookup = OLE_QA::Framework::OLELS::Item_Lookup.new(@ole)
+  @item_lookup.wait_for_page_to_load.should be_true
+end
+
+When /^I enter the item's barcode on the item lookup screen$/ do
+  barcode = @resource.barcode
+  set_field(@item_lookup.barcode_field,barcode)
+end
+
+When /^I click the ([\w\s]+) on the item lookup screen$/ do |what_to_click|
+  @item_lookup.send(keyify(what_to_click.strip)).when_present.click
+end
+
+When /^I click the return link for the item(?:\'s)? ([\w\s]+)$/ do |what_value|
+  value = @resource.send(keyify(what_value.strip))
+  @item_lookup.return_by_text(value).when_present.click
+end

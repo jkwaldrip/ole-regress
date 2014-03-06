@@ -46,7 +46,7 @@ module OLE_QA
           field.when_present.set(value)
           field.value.should eq(value.chomp)
         when /Select/
-          Watir::Wait.until {field.present? || field.include?(value)}
+          Watir::Wait.until {field.present? && field.include?(value)}
           field.select(value)
           field.selected?(value).should be_true
         when /CheckBox/
