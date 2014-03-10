@@ -2,3 +2,4 @@
 :url: http://tst.ole.kuali.org/
 :docstore_url: http://tst.docstore.ole.kuali.org/
 :headless?: true
+:explicit_wait: 30
