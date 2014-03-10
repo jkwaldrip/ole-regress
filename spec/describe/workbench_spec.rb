@@ -70,14 +70,14 @@ describe 'The Describe Workbench' do
       bib_editor.holdings_link.click
       @ole.browser.windows[-1].use
       instance_editor.wait_for_page_to_load
-      instance_editor.call_number_field.when_present.value.strip.include?(call_number).should be_true
+      instance_editor.readonly_call_number.when_present.text.strip.include?(call_number).should be_true
     end
 
     it 'by item barcode' do
       instance_editor.item_link.click
       @ole.browser.windows[-1].use
       item_editor.wait_for_page_to_load
-      item_editor.barcode_field.when_present.value.strip.include?(barcode).should be_true
+      item_editor.readonly_barcode.when_present.text.strip.include?(barcode).should be_true
     end
   end
 end
