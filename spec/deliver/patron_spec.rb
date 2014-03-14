@@ -24,13 +24,13 @@ describe 'A Patron' do
     patron_page.activation_date_field.set(today)
     patron_page.first_name_field.set(@patron.first)
     patron_page.last_name_field.set(@patron.last)
+    patron_page.address_line.address_source_selector.when_present.select('Operator')
     patron_page.address_line.details_link.click
     patron_page.address_line.line_1_field.when_present.set(@patron.address)
     patron_page.address_line.city_field.set(@patron.city)
     patron_page.address_line.state_selector.select(@patron.state)
     patron_page.address_line.postal_code_field.set(@patron.postal_code)
     patron_page.address_line.country_selector.select('United States')
-    patron_page.address_line.valid_from_date_field.set(today)
     patron_page.address_line.active_checkbox.set(true)
     patron_page.address_line.add_button.click
     patron_page.address_line.line_number = 2
