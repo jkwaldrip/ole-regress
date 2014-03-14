@@ -5,7 +5,7 @@ Feature:  Patron
     Given I open the patron editor
     When I set the patron's first name to "Darren"
     And I set the patron's last name to "Smith"
-    And I set the patron's barcode to "123456789"
+    And I set the patron's barcode
     And I set the patron's borrower type
     And I select a patron address source of "Operator"
     And I click the patron's address details link
@@ -54,7 +54,8 @@ Feature:  Patron
     And I click the search button on the patron lookup page
     Then I see the barcode in the patron search results
     And I edit the patron record
-    And I set the patron's barcode to "000111222"
+    And I set the patron's first name to "Phil"
+    And I set the patron's last name to "Also Phil"
     And I submit the patron record
     When I use the Patron Search
     And I enter the patron first name
