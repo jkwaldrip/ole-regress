@@ -29,7 +29,7 @@ When /^I select an operator type of \"?(\w+)\"?$/ do |operator_type|
 end
 
 Then /^I wait for the operator ID to appear in the operator ID field$/ do
-  @request_page.user_id.when_present.text.should eq('dev2')
+  @request_page.user_name.when_present.text.should eq('dev2')
 end
 
 When /^I select a request type of \"?([\w\/\s]+)\"?$/ do |request_type|
