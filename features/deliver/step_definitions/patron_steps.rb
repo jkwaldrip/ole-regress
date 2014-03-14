@@ -99,6 +99,11 @@ When /^I click the patron(?:'s)? address details link$/ do
   @patron_editor.address_line.line_1_field.wait_until_present
 end
 
+When /^I select a patron address source of \"?(\w+)\"?$/ do |source|
+  @patron_editor.address_line.address_source_selector.when_present.select(source)
+  @patron_editor.address_line.address_source_selector.selected?(source).should be_true
+end
+
 When /^I (submit|save|cancel) the patron record$/ do |which|
   case which
     when /submit/
@@ -122,6 +127,7 @@ When /^I create a new patron record$/ do
     And I set the patron's last name
     And I set the patron's barcode
     And I set the patron's borrower type
+    And I select a patron address source of "Operator"
     And I click the patron's address details link
     And I set the patron's address type
     And I set the patron's address

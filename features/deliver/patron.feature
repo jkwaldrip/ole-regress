@@ -7,6 +7,7 @@ Feature:  Patron
     And I set the patron's last name to "Smith"
     And I set the patron's barcode to "123456789"
     And I set the patron's borrower type
+    And I select a patron address source of "Operator"
     And I click the patron's address details link
     And I set the patron's address type
     And I set the patron's address
