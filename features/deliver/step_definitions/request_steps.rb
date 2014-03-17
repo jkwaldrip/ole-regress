@@ -29,15 +29,15 @@ When /^I select an operator type of \"?(\w+)\"?$/ do |operator_type|
 end
 
 Then /^I wait for the operator ID to appear in the operator ID field$/ do
+  @request_page.wait_for_page_to_load
   @request_page.user_name.when_present.text.should eq('dev2')
 end
 
 When /^I select a request type of \"?([\w\/\s]+)\"?$/ do |request_type|
-  @request_page.request_type_selector.wait_until_present
+  @request_page.wait_for_page_to_load
   Watir::Wait.until {@request_page.request_type_selector.present? && @request_page.request_type_selector.include?(request_type)}
   @request_page.request_type_selector.select(request_type)
-  @request_page.loading_message.wait_while_present if @request_page.loading_message.present?
-  @request_page.request_type_selector.when_present.selected?(request_type).should be_true
+  @request_page.wait_for_page_to_load
   @request_page.item_barcode_field.wait_until_present
 end
 
