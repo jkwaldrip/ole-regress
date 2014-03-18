@@ -1,13 +1,13 @@
 PATH
   remote: .
   specs:
-    ole-regress (1.11.5)
+    ole-regress (1.11.6)
       bundler
       chronic
       cucumber
       marc
       net-http-persistent
-      ole-qa-framework (>= 3.12.3)
+      ole-qa-framework (>= 3.12.5)
       rake
       rspec
 
@@ -36,7 +36,7 @@ GEM
     multi_json (1.8.4)
     multi_test (0.0.3)
     net-http-persistent (2.9.4)
-    ole-qa-framework (3.12.3)
+    ole-qa-framework (3.12.5)
       headless
       rspec
       watir-webdriver (>= 0.6.5)
