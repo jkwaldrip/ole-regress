@@ -27,5 +27,11 @@ Before do |scenario|
 end
 
 After do |scenario|
+  if scenario.failed?
+    time = Time.now.strftime('%Y%m%d-%I%M%p')
+    name = scenario.name.gsub(/\s/,'_').gsub('/','-')
+    file = "#{name}-#{time}.png"
+    @ole.browser.screenshot.save("screenshots/#{file}")
+  end
   @ole.quit
 end
