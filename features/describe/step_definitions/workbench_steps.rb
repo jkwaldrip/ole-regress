@@ -32,8 +32,9 @@ When /^I search for an? (bib|instance|holdings|item) record$/ do |type|
 end
 
 When /^I enter the ([A-Za-z\s]+) in the (first|second) search field$/ do |term,line|
-  search_field = @workbench.send("search_field_#{numerize(line)}".to_sym)
-  search_field.when_present.set(@resource[keyify(term)])
+  search_field  = @workbench.send("search_field_#{numerize(line)}".to_sym)
+  search_term   = @resource.send(keyify(term))
+  set_field(search_field,search_term)
 end
 
 When /^I set the (first|second) search selector to (.*)$/ do |line,value|
@@ -54,5 +55,5 @@ When /^I click (?:the )?(search|clear)(?: button)?(?: on the )?([A-Za-z\s]+) pag
 end
 
 Then /^I (?:should )?see the ([A-Za-z\s]+) in the workbench search results$/ do |term|
-  @workbench.result_present?(@resource[keyify(term)]).should be_true
+  @workbench.result_present?(@resource.send(keyify(term))).should be_true
 end
