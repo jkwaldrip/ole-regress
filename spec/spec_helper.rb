@@ -16,7 +16,9 @@ RSpec.configure do |config|
   end
 
   config.after(:all) do
-    @ole.browser.close
+    # Close browser if OLE session is still active.
+    #   (Prevents error messages from frozen or aborted sessions.)
+    @ole.browser.close if @ole.class == OLE_QA::Framework::Session
   end
 
   config.after(:each) do
