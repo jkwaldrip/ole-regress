@@ -24,6 +24,7 @@ When /^I click the \"?Create New Request\"? link$/ do
 end
 
 When /^I select an operator type of \"?(\w+)\"?$/ do |operator_type|
+  @request_page.wait_for_page_to_load
   set_field(@request_page.user_type_selector,operator_type)
   @request_page.wait_for_page_to_load
 end
