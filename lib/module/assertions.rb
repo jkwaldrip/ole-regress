@@ -19,6 +19,25 @@ module OLE_QA::RegressionTest
     # The interval in seconds to wait between retrying an assertion.
     INTERVAL = 1
 
+    # Set a given field element to a given value, then verify that that value was set properly.
+    # e.g.
+    #   set_field(@patron_editor.first_name_field,'Bob')
+    def set_field(field,value)
+      case field.class.name
+        when /TextField/
+          field.when_present.set(value)
+          field.value.should eq(value.chomp)
+        when /Select/
+          Watir::Wait.until {field.present? && field.include?(value)}
+          field.select(value)
+          field.selected?(value).should be_true
+        when /CheckBox/
+          field.when_present.set(value)
+          field.set?.should eq(value)
+      end
+    end
+    alias_method(:set_selector,:set_field)
+
     # Repeat an assertion until success or timeout, and report true or false outcome.
     # @param [Fixnum] timeout     The timeout interval, in seconds.
     #
