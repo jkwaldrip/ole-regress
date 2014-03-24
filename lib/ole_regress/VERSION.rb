@@ -15,6 +15,6 @@
 module OLE_QA
   module RegressionTest
     # Version number.
-    VERSION = '1.11.10'
+    VERSION = '1.11.11'
   end
 end

@@ -11,6 +11,7 @@ describe 'The OLE SRU function' do
   let(:bib_editor)                {OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)}
 
   before :all do
+    FileUtils::mkdir('data/downloads') unless File.directory?('data/downloads')
     @today                        = Time.now.strftime('%Y%m%d-%H%M')
     @bib_records                  = OpenStruct.new
     @bib_records.target_1         = OLE_QA::Framework::String_Factory.alphanumeric(12)
