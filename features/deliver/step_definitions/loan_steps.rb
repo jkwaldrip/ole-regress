@@ -12,8 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-include OLE_QA::RegressionTest::Assertions
-
 When /^I log in as ([\w]+)?$/ do |as_who|
   @page = OLE_QA::Framework::Page.new(@ole,@ole.url)
   @page.open

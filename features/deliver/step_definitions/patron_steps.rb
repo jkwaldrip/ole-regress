@@ -13,7 +13,6 @@
 #  limitations under the License.
 
 include OLE_QA::RegressionTest::Patron
-include OLE_QA::RegressionTest::Assertions
 
 Given /^I have new patron information$/ do
   @patron = OLE_QA::Framework::Patron_Factory.new_patron
