@@ -29,29 +29,31 @@ describe 'The Describe Workbench' do
 
   context 'searches for a bib record' do
     it 'by title' do
-
+      verify(60) {title_search(title)}.should be_true
     end
 
     it 'by author' do
+      author_search(author).should be_true
     end
   end
 
   context 'searches for a holdings record' do
     it 'by call number' do
+      # TODO add call number search
+      raise StandardError,"This test has not yet been implemented."
     end
   end
 
   context 'searches for an item record' do
     it 'by barcode' do
+      # TODO add barcode search.
+      raise StandardError,"This test has not yet been implemented."
     end
   end
 
   context 'verifies a Marc record' do
     it 'with a title search' do
-      workbench.search_line.search_field.when_present.set(title)
-      Watir::Wait.until {workbench.search_line.field_selector.present? && workbench.search_line.field_selector.include?('Title')}
-      ('Title')
-      workbench.search_line.add_button.click
+      title_search(title)
       workbench.title_in_results(title).when_present.click
       @ole.windows.count.should eq(2)
       @ole.windows[-1].use
@@ -59,8 +61,9 @@ describe 'The Describe Workbench' do
     end
 
     it 'by title and author' do
-      bib_editor.readonly_data_field(1).when_present.text.strip.include?(author).should be_true
-      bib_editor.readonly_data_field(2).when_present.text.strip.include?(title).should  be_true
+      bib_editor.data_line.data_field.when_present.value.strip.include?(author).should be_true
+      bib_editor.data_line.line_number += 1
+      bib_editor.data_line.data_field.when_present.value.strip.include?(title).should  be_true
     end
 
     it 'by holdings call number' do
