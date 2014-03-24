@@ -22,7 +22,6 @@ describe 'The Batch Import process' do
   include_context 'New Batch Profile'
 
   let(:profile)            {OLE_QA::Framework::OLELS::Batch_Import_Profile.new(@ole)}
-  let(:describe_workbench)        {OLE_QA::Framework::OLELS::Describe_Workbench.new(@ole)}
   let(:record)                    {MARC::Record.new}
 
   before :all do
@@ -214,12 +213,13 @@ describe 'The Batch Import process' do
   context 'verifies' do
     it 'that the target string is found' do
       verify {
-        describe_workbench.open
-        bib_search(describe_workbench, 'Title', @bib_record.key_str) }
+        workbench.open
+        # Perform a title search on @bib_record.key_str)
+        }
     end
 
     it 'that there are three records in describe workbench' do
-      results = describe_workbench.b.tds(:xpath => "//table/tbody/tr/td[div/*[contains(text(),'#{@bib_record.key_str}')]]")
+      results = workbench.b.tds(:xpath => "//table/tbody/tr/td[div/*[contains(text(),'#{@bib_record.key_str}')]]")
       results.count.should eq(3)
     end
   end

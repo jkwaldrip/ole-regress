@@ -7,8 +7,6 @@ describe 'Non-Latin characters' do
   include_context 'Marc Editor'
   include_context 'Describe Workbench'
 
-  let(:workbench)       { OLE_QA::Framework::OLELS::Describe_Workbench.new(@ole) }
-
   before :all do
     @alpha                         = YAML.load_file('data/alpha/non_latin.yml')
     @bib_record                   = OpenStruct.new

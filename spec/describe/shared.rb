@@ -77,33 +77,5 @@ shared_context 'Create a Marc Record' do
 end
 
 shared_context 'Describe Workbench' do
-
-  def search(workbench_page, search_type, value)
-    workbench_page.wait_for_page_to_load
-    workbench_page.search_field_1.when_present.set(value)
-    workbench_page.search_field_selector_1.wait_until_present
-    Watir::Wait.until { workbench_page.search_field_selector_1.include?(search_type) }
-    workbench_page.search_field_selector_1.select(search_type)
-    workbench_page.search_button.click
-    workbench_page.wait_for_page_to_load
-    workbench_page.result_present?(value).should be_true
-  end
-
-  def bib_search(workbench_page, search_type, value)
-    workbench_page.wait_for_page_to_load
-    workbench_page.doc_type_bib.when_present.set
-    search(workbench_page, search_type, value)
-  end
-
-  def holdings_search(workbench_page, search_type, value)
-    workbench_page.wait_for_page_to_load
-    workbench_page.doc_type_holdings.when_present.set
-    search(workbench_page, search_type, value)
-  end
-
-  def item_search(workbench_page, search_type, value)
-    workbench_page.wait_for_page_to_load
-    workbench_page.doc_type_item.when_present.set
-    search(workbench_page, search_type, value)
-  end
+  let(:workbench)       { OLE_QA::Framework::OLELS::Describe_Workbench.new(@ole) }
 end

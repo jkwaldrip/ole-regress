@@ -2,10 +2,11 @@ require 'rspec'
 require 'spec_helper.rb'
 
 describe 'The Describe Workbench' do
+  include OLE_QA::RegressionTest::Assertions
+
   include_context 'Create a Marc Record'
   include_context 'Describe Workbench'
 
-  let(:workbench)       { OLE_QA::Framework::OLELS::Describe_Workbench.new(@ole) } 
   let(:author)          { @marc_record.bib_info[0][:value].gsub('|a','') }
   let(:title)           { @marc_record.bib_info[1][:value].gsub('|a','') }
   let(:call_number)     { @marc_record.instance_info[:call_number] }
@@ -28,34 +29,30 @@ describe 'The Describe Workbench' do
 
   context 'searches for a bib record' do
     it 'by title' do
-      bib_search(workbench, 'Title', title)
-      workbench.clear_button.when_present.click
+
     end
 
     it 'by author' do
-      bib_search(workbench, 'Author', author)
-      workbench.clear_button.when_present.click
     end
   end
 
   context 'searches for a holdings record' do
     it 'by call number' do
-      holdings_search(workbench, 'Call Number', call_number)
-      workbench.clear_button.when_present.click
     end
   end
 
   context 'searches for an item record' do
     it 'by barcode' do
-      item_search(workbench, 'Item Barcode', barcode)
-      workbench.clear_button.when_present.click
     end
   end
 
   context 'verifies a Marc record' do
     it 'with a title search' do
-      bib_search(workbench, 'Title', title)
-      workbench.view_by_text(title).when_present.click
+      workbench.search_line.search_field.when_present.set(title)
+      Watir::Wait.until {workbench.search_line.field_selector.present? && workbench.search_line.field_selector.include?('Title')}
+      ('Title')
+      workbench.search_line.add_button.click
+      workbench.title_in_results(title).when_present.click
       @ole.windows.count.should eq(2)
       @ole.windows[-1].use
       bib_editor.wait_for_page_to_load
