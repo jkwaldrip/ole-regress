@@ -1,3 +1,4 @@
+@editor @describe @happy_path
 Feature:  Marc Editor
 
   Background:

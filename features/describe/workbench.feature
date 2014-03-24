@@ -1,3 +1,4 @@
+@workbench @describe @happy_path
 Feature:  Describe Workbench
 
   Background:

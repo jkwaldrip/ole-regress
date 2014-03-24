@@ -1,3 +1,4 @@
+@patron @deliver @happy_path
 Feature:  Patron
 
   Scenario:  Enter a New Patron
