@@ -20,6 +20,7 @@ require 'rspec/expectations'
 
 World(RSpec::Matchers)
 World(OLE_QA::Cukes)
+World(OLE_QA::RegressionTest::Assertions)
 
 Before do |scenario|
   opts = OLE_QA::RegressionTest::Options
