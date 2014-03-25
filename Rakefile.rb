@@ -67,6 +67,20 @@ task :dataclean do
   end
 end
 
+desc 'Clean performance profile data.'
+task :profclean do
+  files = Dir['performance/*']
+  if files.empty?
+    puts 'No files found.'
+  else
+    files.each do |file|
+      File.delete(file)
+    end
+    puts "#{files.count} performance profile files deleted."
+  end
+end
+
+
 desc 'Interactively configure config/options.yml'
 task :configurator do
   config_file = File.open('config/options.yml','r')
