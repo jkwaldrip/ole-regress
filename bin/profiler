@@ -15,31 +15,30 @@ FileUtils::mkdir('performance') unless File.directory?('performance')
 
 csv_filename = "PerfomanceTest-#{Time.now.strftime('%Y-%m-%d-%I%M_%p')}.csv"
 
-# Format a test's runtime into a string.
-# @return [String] HH:MM:SS (seconds are rounded)
-def format_time(time_in_seconds)
-  min, sec = time_in_seconds.divmod(60)
-  hrs, min = min.divmod(60)
-  "#{format("%02d",hrs)}:#{format("%02d",min)}:#{format("%02d",sec.round)}"
-end
-
-@ole = OLE_QA::Framework::Session.new(OLE_QA::RegressionTest::Options)
-
-
 results = []
 results << ['Test Name','Start Time','Total Test Time']
+
+ole_start
 
 puts "#{'Test Name'.ljust(45)} #{'Time Now'.ljust(15)} Time Elapsed"
 
 5.times do
   test_name = 'Portal Tab Sprint'
   test_time = format_time(Benchmark.realtime {tab_sprint})
-  time_now  = Time.now.strftime('%I:%M:%S %p')
+  time_now  = current_time
   puts "#{test_name.ljust(45)} #{time_now.ljust(15)} #{test_time}"
   results << [test_name,time_now,test_time]
 end
 
-@ole.quit
+5.times do
+  test_name = 'Requisition Submission'
+  test_time = format_time(Benchmark.realtime {submit_req})
+  time_now  = current_time
+  puts "#{test_name.ljust(45)} #{time_now.ljust(15)} #{test_time}"
+  results << [test_name,time_now,test_time]
+end
+
+ole_stop
 
 CSV.open("performance/#{csv_filename}",'wb') do |csv|
   results.each do |line|

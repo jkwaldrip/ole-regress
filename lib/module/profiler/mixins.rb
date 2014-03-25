@@ -16,5 +16,28 @@ module OLE_QA::Profiler
   # This module contains mix-in methods to be used by the OLE QA Profiler app.
   module Mixins
 
+    # Start an OLE Framework session.
+    def ole_start
+      @ole = OLE_QA::Framework::Session.new(OLE_QA::RegressionTest::Options)
+    end
+
+    # Stop the OLE Framework session.
+    def ole_stop
+      @ole.quit
+    end
+
+    # Format a test's runtime into a string.
+    # @return [String] HH:MM:SS (seconds are rounded)
+    def format_time(time_in_seconds)
+      min, sec = time_in_seconds.divmod(60)
+      hrs, min = min.divmod(60)
+      "#{format("%02d",hrs)}:#{format("%02d",min)}:#{format("%02d",sec.round)}"
+    end
+
+    # Return a pre-formatted time string reflecting the current time.
+    def current_time
+      Time.now.strftime('%I:%M:%S %p')
+    end
+
   end
 end
