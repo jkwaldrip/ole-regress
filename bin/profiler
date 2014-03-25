@@ -2,9 +2,14 @@
 dir = File.expand_path(File.dirname(__FILE__) + '/../')
 $:<< dir unless $:.include?(dir)
 
+require 'rspec/expectations'
+require 'rspec/matchers'
 require 'lib/ole-regress.rb'
 require 'csv'
 require 'benchmark'
+
+include OLE_QA::Profiler::Mixins
+include OLE_QA::Profiler::Tests
 
 FileUtils::mkdir('performance') unless File.directory?('performance')
 
@@ -20,14 +25,6 @@ end
 
 @ole = OLE_QA::Framework::Session.new(OLE_QA::RegressionTest::Options)
 
-def tab_sprint
-  @ole.open
-  @ole.browser.link(:text => 'Admin').when_present.click
-  @ole.browser.link(:text => 'Maintenance').when_present.click
-  @ole.browser.link(:text => 'Select/Acquire').when_present.click
-  @ole.browser.link(:text => 'Describe').when_present.click
-  @ole.browser.link(:text => 'Deliver').when_present.click
-end
 
 results = []
 results << ['Test Name','Start Time','Total Test Time']
