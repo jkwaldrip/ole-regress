@@ -1,3 +1,4 @@
+performance/
 config/
 bin/*.sh
 logs/
