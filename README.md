@@ -40,3 +40,8 @@ to enter your SauceLabs configuration information (e.g., username, API key, brow
 To rerun a failed spec against a single browser in SauceLabs, use:
 
     ./bin/xrerun path/to/spec.rb browser
+
+To run the performance profiler, which performs a series of tests and records their run times in a CSV file, use:
+
+    ./bin/profiler
+
