@@ -24,9 +24,8 @@ results << ['Test Name','1st Run','2nd Run','3rd Run','4th Run','5th Run']
 
 puts "#{'Test Name'.ljust(45)} #{'Start Time'.ljust(15)} Time Elapsed"
 
-
 out = ['Portal Tab Sprint']
-# Run Portal Tab Sprint test 5 times and gather times into results array.
+# Run Portal Tab Sprint test 5 times and gather completion times into results array.
 5.times do
   test_name = 'Portal Tab Sprint'
   time_now  = current_time
@@ -36,9 +35,12 @@ out = ['Portal Tab Sprint']
 end
 
 results << out
+ole_stop
+sleep 30
+ole_start
 
 out = ['Requisition Submission']
-# Run Requisition Submission test 5 times and gather times into results array.
+# Run Requisition Submission test 5 times and gather completion times into results array.
 5.times do
   test_name = 'Requisition Submission'
   time_now  = current_time
@@ -48,7 +50,21 @@ out = ['Requisition Submission']
 end
 
 results << out
+ole_stop
+sleep 30
+ole_start
 
+out = ['Checkout/Checkin']
+# Run Checkout/Checkin test 5 times and gather completion times into results array.
+5.times do
+  test_name = 'Checkout/Checkin'
+  time_now  = current_time
+  test_time = format_time(Benchmark.realtime {checkout_checkin})
+  puts "#{test_name.ljust(45)} #{time_now.ljust(15)} #{test_time}"
+  out << test_time
+end
+
+results << out
 ole_stop
 
 CSV.open("performance/#{csv_filename}",'wb') do |csv|
