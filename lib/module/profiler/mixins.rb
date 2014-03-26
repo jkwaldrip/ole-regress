@@ -39,5 +39,25 @@ module OLE_QA::Profiler
       Time.now.strftime('%I:%M:%S %p')
     end
 
+    def run_test(test_name,test)
+      out = [test_name]
+
+      5.times do
+        ole_start
+        begin
+          time_now  = current_time
+          test_time = format_time(Benchmark.realtime {self.send(test)})
+          puts "#{test_name.ljust(45)} #{time_now.ljust(15)} #{test_time}"
+          out << test_time
+        rescue => e
+          test_time = format_time(0)
+          puts "#{test_name.ljust(45)} #{time_now.ljust(15)} ERROR"
+          out << test_time
+        end
+        ole_stop
+        sleep 15
+      end
+      out
+    end
   end
 end
