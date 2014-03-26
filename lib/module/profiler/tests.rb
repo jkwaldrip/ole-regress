@@ -18,6 +18,8 @@ module OLE_QA::Profiler
   module Tests
     include OLE_QA::RegressionTest::Assertions
     include OLE_QA::RegressionTest::MarcEditor
+    include OLE_QA::RegressionTest::SRU
+    include OLE_QA::RegressionTest::Marc
 
     # Start at the rightmost OLE Portal Tab, "Admin," and click across
     #   all main portal tabs, one by one.
@@ -240,22 +242,30 @@ module OLE_QA::Profiler
     #
     def sru_response
       # Create bib record.
+      title_str   = OLE_QA::Framework::String_Factory.alphanumeric(12)
+      author_str  = OLE_QA::Framework::String_Factory.alphanumeric(14)
+      today       = Time.now.strftime('%Y%m%d-%H%M')
       bib_ary     = [{
                          :tag      => '245',
                          :ind_1    => '',
                          :ind_2    => '',
-                         :value    => '|a' + OLE_QA::Framework::String_Factory.alphanumeric(12)
+                         :value    => '|a' + title_str
                      },
                      {
                          :tag      => '100',
                          :ind_1    => '',
                          :ind_2    => '',
-                         :value    => '|a' + OLE_QA::Framework::String_Factory.alphanumeric(14)
+                         :value    => '|a' + author_str
                      }]
       bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
       bib_editor.open
       create_bib(bib_editor,bib_ary)
-
+      query         = "title any #{title_str}"
+      filename      = "sru_perf-#{today}.xml"
+      get_sru_file(query,filename,@ole)
+      records       = get_marc_xml(filename)
+      verify(5) {File.zero?("data/downloads/#{filename}") == false}
+      verify(5) {records.count == 1}
     end
   end
 end

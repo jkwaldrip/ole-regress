@@ -27,11 +27,17 @@ puts "#{'Test Name'.ljust(45)} #{'Start Time'.ljust(15)} Time Elapsed"
 out = ['Portal Tab Sprint']
 # Run Portal Tab Sprint test 5 times and gather completion times into results array.
 5.times do
-  test_name = 'Portal Tab Sprint'
-  time_now  = current_time
-  test_time = format_time(Benchmark.realtime {tab_sprint})
-  puts "#{test_name.ljust(45)} #{time_now.ljust(15)} #{test_time}"
-  out << test_time
+  begin
+    test_name = 'Portal Tab Sprint'
+    time_now  = current_time
+    test_time = format_time(Benchmark.realtime {tab_sprint})
+    puts "#{test_name.ljust(45)} #{time_now.ljust(15)} #{test_time}"
+    out << test_time
+  rescue => e
+    test_time = format_time(0)
+    puts "#{test_name.ljust(45)} #{time_now.ljust(15)} ERROR"
+    out << test_time
+  end
 end
 
 results << out
@@ -42,11 +48,17 @@ ole_start
 out = ['Requisition Submission']
 # Run Requisition Submission test 5 times and gather completion times into results array.
 5.times do
-  test_name = 'Requisition Submission'
-  time_now  = current_time
-  test_time = format_time(Benchmark.realtime {submit_req})
-  puts "#{test_name.ljust(45)} #{time_now.ljust(15)} #{test_time}"
-  out << test_time
+  begin
+    test_name = 'Requisition Submission'
+    time_now  = current_time
+    test_time = format_time(Benchmark.realtime {submit_req})
+    puts "#{test_name.ljust(45)} #{time_now.ljust(15)} #{test_time}"
+    out << test_time
+  rescue => e
+    test_time = format_time(0)
+    puts "#{test_name.ljust(45)} #{time_now.ljust(15)} ERROR"
+    out << test_time
+  end
 end
 
 results << out
@@ -57,11 +69,38 @@ ole_start
 out = ['Checkout/Checkin']
 # Run Checkout/Checkin test 5 times and gather completion times into results array.
 5.times do
-  test_name = 'Checkout/Checkin'
-  time_now  = current_time
-  test_time = format_time(Benchmark.realtime {checkout_checkin})
-  puts "#{test_name.ljust(45)} #{time_now.ljust(15)} #{test_time}"
-  out << test_time
+  begin
+    test_name = 'Checkout/Checkin'
+    time_now  = current_time
+    test_time = format_time(Benchmark.realtime {checkout_checkin})
+    puts "#{test_name.ljust(45)} #{time_now.ljust(15)} #{test_time}"
+    out << test_time
+  rescue => e
+    test_time = format_time(0)
+    puts "#{test_name.ljust(45)} #{time_now.ljust(15)} ERROR"
+    out << test_time
+  end
+end
+
+results << out
+ole_stop
+sleep 30
+ole_start
+
+out = ['SRU Title Search']
+# Run SRU test 5 times and gather completion times into results array.
+5.times do
+  begin
+    test_name = 'SRU Title Search'
+    time_now  = current_time
+    test_time = format_time(Benchmark.realtime {sru_response})
+    puts "#{test_name.ljust(45)} #{time_now.ljust(15)} #{test_time}"
+    out << test_time
+  rescue => e
+    test_time = format_time(0)
+    puts "#{test_name.ljust(45)} #{time_now.ljust(15)} ERROR"
+    out << test_time
+  end
 end
 
 results << out
