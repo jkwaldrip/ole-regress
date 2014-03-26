@@ -20,7 +20,7 @@ shared_context 'Checkout' do
     loan_page.circulation_desk_selector.when_present.select(desk)
     loan_page.circulation_desk_yes.click if loan_page.circulation_desk_yes.present?
     loan_page.loan_popup_box.wait_while_present if loan_page.loan_popup_box.present?
-    loan_page.circulation_desk_selector.selected?('BL_EDUC').should be_true
+    loan_page.circulation_desk_selector.selected?(desk).should be_true
   end
 end
 
