@@ -7,7 +7,7 @@ PATH
       cucumber
       marc
       net-http-persistent
-      ole-qa-framework (>= 3.12.5)
+      ole-qa-framework (>= 3.13.2)
       rake
       rspec
 
@@ -36,7 +36,7 @@ GEM
     multi_json (1.9.0)
     multi_test (0.1.1)
     net-http-persistent (2.9.4)
-    ole-qa-framework (3.13.0)
+    ole-qa-framework (3.13.2)
       headless
       rspec
       watir-webdriver (>= 0.6.5)

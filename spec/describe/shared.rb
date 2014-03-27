@@ -77,6 +77,8 @@ shared_context 'Create a Marc Record' do
 end
 
 shared_context 'Describe Workbench' do
+  include OLE_QA::RegressionTest::Assertions
+
   let(:workbench)       {OLE_QA::Framework::OLELS::Describe_Workbench.new(@ole)}
 
   # Seach for a bibliographic record by title and verify that it comes up in the search results.
@@ -99,11 +101,10 @@ shared_context 'Describe Workbench' do
     workbench.search_line.search_scope_selector.value.should eq('phrase')
 
     set_field(workbench.search_line.field_selector,'Title')
-    workbench.search_line.add_button.when_present.click
     workbench.wait_for_page_to_load
     workbench.search_button.click
     workbench.wait_for_page_to_load
-    workbench.title_in_results?(title)
+    verify(5) {workbench.title_in_results?(title)}
   end
 
   # Seach for a bibliographic record by author and verify that it comes up in the search results.
@@ -126,10 +127,43 @@ shared_context 'Describe Workbench' do
     workbench.search_line.search_scope_selector.value.should eq('phrase')
 
     set_field(workbench.search_line.field_selector,'Author')
-    workbench.search_line.add_button.when_present.click
     workbench.wait_for_page_to_load
     workbench.search_button.click
     workbench.wait_for_page_to_load
-    workbench.text_in_results?(author)
+    verify(5) {workbench.text_in_results?(author)}
+  end
+
+  # Search for a holdings record by call number and verify that it comes up in the search results.
+  def call_number_search(call_number)
+    workbench.open
+    set_field(workbench.document_type_selector,'Holdings')
+    workbench.wait_for_page_to_load
+    set_field(workbench.search_type_selector,'Search')
+    workbench.wait_for_page_to_load
+    set_field(workbench.search_line.search_field,call_number)
+    workbench.search_line.search_scope_selector.when_present.select_value('phrase')
+    workbench.search_line.search_scope_selector.value.should eq('phrase')
+    set_field(workbench.search_line.field_selector,'Call Number')
+    workbench.wait_for_page_to_load
+    workbench.search_button.click
+    workbench.wait_for_page_to_load
+    verify(5) {workbench.text_in_results?(call_number)}
+  end
+
+  # Search for an item record by barcode and verify that it comes up in the search results.
+  def barcode_search(barcode)
+    workbench.open
+    set_field(workbench.document_type_selector,'Item')
+    workbench.wait_for_page_to_load
+    set_field(workbench.search_type_selector,'Search')
+    workbench.wait_for_page_to_load
+    set_field(workbench.search_line.search_field,barcode)
+    workbench.search_line.search_scope_selector.when_present.select_value('phrase')
+    workbench.search_line.search_scope_selector.value.should eq('phrase')
+    set_field(workbench.search_line.field_selector,'Item Barcode')
+    workbench.wait_for_page_to_load
+    workbench.search_button.click
+    workbench.wait_for_page_to_load
+    verify(5) {workbench.text_in_results?(barcode)}
   end
 end
