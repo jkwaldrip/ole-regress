@@ -212,10 +212,21 @@ describe 'The Batch Import process' do
 
   context 'verifies' do
     it 'that the target string is found' do
-      verify {
-        workbench.open
-        # Perform a title search on @bib_record.key_str)
-        }
+      workbench.open
+      set_field(workbench.document_type_selector,'Bibliographic')
+      workbench.wait_for_page_to_load
+      set_field(workbench.search_type_selector,'Search')
+      workbench.wait_for_page_to_load
+      set_field(workbench.search_line.search_field,@bib_record.key_str)
+      workbench.search_line.search_scope_selector.when_present.select_value('phrase')
+      workbench.search_line.search_scope_selector.value.should eq('phrase')
+      set_field(workbench.search_line.field_selector,'Title')
+      workbench.wait_for_page_to_load
+      workbench.search_button.click
+      workbench.wait_for_page_to_load
+      workbench.title_in_results?("Record One #{@bib_record.key_str}").should be_true
+      workbench.title_in_results?("Record Two #{@bib_record.key_str}").should be_true
+      workbench.title_in_results?("Record Three #{@bib_record.key_str}").should be_true
     end
 
     it 'that there are three records in describe workbench' do
