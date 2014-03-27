@@ -43,7 +43,6 @@ describe 'The Order Record Batch Process' do
     profile_lookup.search_button.when_present.click
     Watir::Wait.until {profile_lookup.text_in_results('Test_Order_Import').present?}.should be_true
     profile_lookup.return_by_text('Test_Order_Import').click
-    batch_process.wait_for_page_to_load
   end
 
   it 'gives the job a name' do
