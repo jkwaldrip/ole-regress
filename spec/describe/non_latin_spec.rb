@@ -51,52 +51,55 @@ describe 'Non-Latin characters' do
 
    context 'persist on a Marc record' do
      it 'retrieved from a Workbench search' do
-       verify(60) {
-         workbench.open
-         workbench.search_field_1.when_present.set(@bib_record.title)
-         workbench.search_button.click
-         workbench.wait_for_page_to_load
-         workbench.result_present?(@bib_record.title)
-       }.should be_true
-       workbench.view_by_text(@bib_record.title).when_present.click
+       verify(60) { title_search(@bib_record.title) }
+       workbench.title_in_results(@bib_record.title).when_present.click
        Watir::Wait.until {@ole.windows.count > 1}
        @ole.windows[-1].use
      end
 
      it 'in Arabic' do
-       bib_editor.readonly_data_field(2).when_present.text.should include(@alpha[:arabic])
+       bib_editor.data_line.line_number = 2
+       bib_editor.data_line.data_field.when_present.value.should include(@alpha[:arabic])
      end
 
      it 'in Cyrillic' do
-       bib_editor.readonly_data_field(3).when_present.text.should include(@alpha[:cyrillic])
+       bib_editor.data_line.line_number = 3
+       bib_editor.data_line.data_field.when_present.value.should include(@alpha[:cyrillic])
      end
 
      it 'in Greek' do
-       bib_editor.readonly_data_field(4).when_present.text.should include(@alpha[:greek])
+       bib_editor.data_line.line_number = 4
+       bib_editor.data_line.data_field.when_present.value.should include(@alpha[:greek])
      end
 
      it 'in Hangul' do
-       bib_editor.readonly_data_field(5).when_present.text.should include(@alpha[:hangul])
+       bib_editor.data_line.line_number = 5
+       bib_editor.data_line.data_field.when_present.value.should include(@alpha[:hangul])
      end
 
      it 'in Hebrew' do
-       bib_editor.readonly_data_field(6).when_present.text.should include(@alpha[:hebrew])
+       bib_editor.data_line.line_number = 6
+       bib_editor.data_line.data_field.when_present.value.should include(@alpha[:hebrew])
      end
     
      it 'in Hiragana' do
-       bib_editor.readonly_data_field(7).when_present.text.should include(@alpha[:hiragana])
+       bib_editor.data_line.line_number = 7
+       bib_editor.data_line.data_field.when_present.value.should include(@alpha[:hiragana])
      end
 
      it 'in Katakana' do
-       bib_editor.readonly_data_field(8).when_present.text.should include(@alpha[:katakana])
+       bib_editor.data_line.line_number = 8
+       bib_editor.data_line.data_field.when_present.value.should include(@alpha[:katakana])
      end
 
      it 'in Persian' do
-       bib_editor.readonly_data_field(9).when_present.text.should include(@alpha[:persian])
+       bib_editor.data_line.line_number = 9
+       bib_editor.data_line.data_field.when_present.value.should include(@alpha[:persian])
      end
 
      it 'in Simplified Hanzi' do
-       bib_editor.readonly_data_field(10).when_present.text.should include(@alpha[:simplified_hanzi_short])
+       bib_editor.data_line.line_number = 10
+       bib_editor.data_line.data_field.when_present.value.should include(@alpha[:simplified_hanzi_short])
      end
    end
 end
