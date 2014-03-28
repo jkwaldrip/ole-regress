@@ -25,6 +25,7 @@ require 'yaml'
 require 'timeout'
 require 'fileutils'
 require 'marc'
+require 'numerizer'
 
 module OLE_QA
   module RegressionTest

@@ -18,7 +18,7 @@ module OLE_QA
 
     # Given a string containing an English-language ordinal, return an integer.
     def numerize(str)
-      Chronic::Numerizer.numerize(str).to_i
+      Numerizer.numerize(str).to_i
     end
 
     # Given a string from user-generated Gherkin input, return it as a suitable hash key.

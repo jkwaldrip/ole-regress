@@ -22,31 +22,26 @@ When /^I search for an? (bib|instance|holdings|item) record$/ do |type|
   type.strip!
   case type
     when 'bib'
-      @workbench.doc_type_bib.when_present.set
+      set_field(@workbench.document_type_selector,'Bibliographic')
     when 'instance','holdings'
-      @workbench.doc_type_holdings.when_present.set
+      set_field(@workbench.document_type_selector,'Holdings')
     when 'item'
-      @workbench.doc_type_item.when_present.set
+      set_field(@workbench.document_type_selector,'Item')
   end
   @workbench.wait_for_page_to_load
+  set_field(@workbench.search_type_selector,'Search')
 end
 
-When /^I enter the ([A-Za-z\s]+) in the (first|second) search field$/ do |term,line|
-  search_field  = @workbench.send("search_field_#{numerize(line)}".to_sym)
+When /^I enter the ([A-Za-z\s]+) in the search field$/ do |term|
   search_term   = @resource.send(keyify(term))
-  set_field(search_field,search_term)
+  set_field(@workbench.search_line.search_field,search_term)
 end
 
-When /^I set the (first|second) search selector to (.*)$/ do |line,value|
-  case line
-    when 'first'
-      selector = @workbench.search_field_selector_1
-    when 'second'
-      selector = @workbench.search_field_selector_2
-  end
+When /^I set the search selector to (.*)$/ do |value|
+  selector = @workbench.search_line.field_selector
   value.strip!
   Watir::Wait.until {selector.include?(value)}
-  selector.select(value)
+  set_field(selector,value)
 end
 
 When /^I click (?:the )?(search|clear)(?: button)?(?: on the )?([A-Za-z\s]+) page$/ do |button,page|
@@ -55,5 +50,15 @@ When /^I click (?:the )?(search|clear)(?: button)?(?: on the )?([A-Za-z\s]+) pag
 end
 
 Then /^I (?:should )?see the ([A-Za-z\s]+) in the workbench search results$/ do |term|
-  @workbench.result_present?(@resource.send(keyify(term))).should be_true
+  @workbench.wait_for_page_to_load
+  if (term =~ /[Tt]itle/) then
+    @workbench.title_in_results?(@resource.send(keyify(term))).should be_true
+  else
+    @workbench.text_in_results?(@resource.send(keyify(term))).should be_true
+  end
+end
+
+When /^I add the workbench search line$/ do
+  @workbench.search_line.add_button.when_present.click
+  @workbench.wait_for_page_to_load
 end
