@@ -53,8 +53,7 @@ describe 'The Batch Export process' do
       batch_type_lookup.search_button.when_present.click
       verify {batch_type_lookup.text_in_results?('Batch Export')}
       batch_type_lookup.return_by_text('Batch Export').when_present.click
-      fancy_box = @ole.browser.iframe(:class => 'fancybox-iframe')
-      fancy_box.wait_while_present if fancy_box.present?
+      @ole.browser.iframe(:id => 'iframeportlet').wait_until_present
       profile.batch_process_type_field.when_present.value.should eq('Batch Export')
     end
 
