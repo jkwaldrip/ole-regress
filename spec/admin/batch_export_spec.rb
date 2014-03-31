@@ -53,7 +53,8 @@ describe 'The Batch Export process' do
       batch_type_lookup.search_button.when_present.click
       verify {batch_type_lookup.text_in_results?('Batch Export')}
       batch_type_lookup.return_by_text('Batch Export').when_present.click
-      profile.wait_for_page_to_load
+      fancy_box = @ole.browser.iframe(:class => 'fancybox-iframe')
+      fancy_box.wait_while_present if fancy_box.present?
       profile.batch_process_type_field.when_present.value.should eq('Batch Export')
     end
 
@@ -158,12 +159,10 @@ describe 'The Batch Export process' do
     end
 
     it 'and finds the job in the job details window' do
-      Timeout::timeout(300) do
-        until verify(2) {job_details.text_in_results(@info.name).present? && job_details.job_status_by_text(@info.name).text.strip == 'COMPLETED'} do
-          job_details.next_page.click
-          job_details.wait_for_page_to_load
-        end
-      end
+      page_assert(job_details.url,300) {
+        job_details.next_page.click unless job_details.text_in_results(@info.name).present?
+        job_details.job_status_by_text
+        job_details.job_status_by_text(@info.name).text.strip == 'COMPLETED' }
       job_details.job_status_by_text(@info.name).text.strip.should eq('COMPLETED')
     end
 
