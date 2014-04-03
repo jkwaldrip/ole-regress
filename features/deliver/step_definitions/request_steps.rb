@@ -42,14 +42,22 @@ When /^I select a request type of \"?([\w\/\s]+)\"?$/ do |request_type|
   @request_page.item_barcode_field.wait_until_present
 end
 
-When /^I enter the second patron's barcode$/ do
+When /^I select the (second)? ?patron by barcode on the request page$/ do |which|
   @request_page.patron_barcode_field.wait_until_present
-  set_field(@request_page.patron_barcode_field,"#{@second_patron[:barcode]}\n")
+  if which.nil?
+    set_field(@request_page.patron_barcode_field,"#{@patron[:barcode]}\n")
+  else
+    set_field(@request_page.patron_barcode_field,"#{@second_patron[:barcode]}\n")
+  end
 end
 
-Then /^I wait for the patron's name to appear in the patron name field$/ do
+Then /^I wait for the (second)? ?patron's name to appear in the patron name field$/ do |which|
   @request_page.wait_for_page_to_load
-  patron_name = "#{@second_patron[:first_name]} #{@second_patron[:last_name]}"
+  if which.nil?
+    patron_name = "#{@patron[:first_name]} #{@patron[:last_name]}"
+  else
+    patron_name = "#{@second_patron[:first_name]} #{@second_patron[:last_name]}"
+  end
   @request_page.patron_name_field.when_present.value.should eq(patron_name)
 end
 

@@ -12,8 +12,8 @@ Feature:  Request Recall
     When I select a request type of "Recall/Hold Request"
     And I select an operator type of "Operator"
     Then I wait for the operator ID to appear in the operator ID field
-    When I enter the second patron's barcode
-    Then I wait for the patron's name to appear in the patron name field
+    When I select the second patron by barcode on the request page
+    Then I wait for the second patron's name to appear in the patron name field
     When I click the item search icon on the request page
     Then the item lookup screen will appear
     When I enter the item's barcode on the item lookup screen

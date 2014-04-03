@@ -1,16 +1,20 @@
 @deliver @request @happy_path
 
-Feature:  Request Hold
+Feature:  Request Page
 
   Background:
-    Given I loan an item to a patron
-    Given I create a second new patron record
-    
-  Scenario:  Make a Hold/Hold Request
+    Given I have a resource
+    Given I use the Marc Editor
+    Given I create a bib record
+    Given I create an instance record
+    Given I create an item record
+    Given I create a new patron record
+ 
+  Scenario:  Make a Page/Hold Request
     When I open the Request lookup page
     And I click the "Create New Request" link
     And I select an operator type of "Patron"
-    And I select a request type of "Hold/Hold Request"
+    And I select a request type of "Page/Hold Request"
     And I select the second patron by barcode on the request page
     Then I wait for the second patron's name to appear in the patron name field
     When I click the item search icon on the request page
@@ -23,11 +27,11 @@ Feature:  Request Hold
     And I click the submit button on the request page
     Then I see a success message on the request page
 
-  Scenario:  Make a Hold/Delivery Request
+  Scenario:  Make a Page/Delivery Request
     When I open the Request lookup page
     And I click the "Create New Request" link
     And I select an operator type of "Patron"
-    And I select a request type of "Hold/Delivery Request"
+    And I select a request type of "Page/Delivery Request"
     And I select the second patron by barcode on the request page
     Then I wait for the second patron's name to appear in the patron name field
     When I click the item search icon on the request page
