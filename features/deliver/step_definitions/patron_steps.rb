@@ -125,7 +125,7 @@ When /^I create a new patron record$/ do
     When I set the patron's first name
     And I set the patron's last name
     And I set the patron's barcode
-    And I set the patron's borrower type
+    And I set the patron's borrower type to "UnderGrad"
     And I select a patron address source of "Operator"
     And I click the patron's address details link
     And I set the patron's address type
