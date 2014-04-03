@@ -74,7 +74,8 @@ end
 
 When /^I click the return link for the item(?:\'s)? ([\w\s]+)$/ do |what_value|
   value = @resource.send(keyify(what_value.strip))
-  @item_lookup.return_by_text(value).when_present.click
+  verify(30)  {@item_lookup.text_in_results?(value)}
+  @item_lookup.return_by_text(value).click
 end
 
 Then /^I wait for the item's title to appear in the title field$/ do
