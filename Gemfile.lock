@@ -5,6 +5,7 @@ PATH
       bundler
       chronic
       cucumber
+      headless
       marc
       net-http-persistent
       numerizer
