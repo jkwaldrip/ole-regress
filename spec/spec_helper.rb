@@ -21,10 +21,13 @@ RSpec.configure do |config|
     @ole.browser.close if @ole.class == OLE_QA::Framework::Session
   end
 
+=begin
   config.after(:each) do
     if example.exception != nil && @ole.class == OLE_QA::Framework::Session
       filename = "#{example.description.to_s.capitalize} - #{Time.now.strftime("%Y\-%m\-%d \- %I-%M-%S %p %Z")}.png"
       @ole.browser.screenshot.save('screenshots/' + filename)
     end
   end
+=end
+
 end
