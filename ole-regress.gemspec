@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency             'ole-qa-framework', '>= 3.13.2'
   spec.add_dependency             'headless'
-  spec.add_dependency             'rspec', '~> 2.14.1'
+  spec.add_dependency             'rspec'
   spec.add_dependency             'chronic'
   spec.add_dependency             'cucumber'
   spec.add_dependency             'bundler'

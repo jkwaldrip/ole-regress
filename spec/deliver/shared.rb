@@ -20,7 +20,7 @@ shared_context 'Checkout' do
     loan_page.circulation_desk_selector.when_present.select(desk)
     loan_page.circulation_desk_yes.click if loan_page.circulation_desk_yes.present?
     loan_page.loan_popup_box.wait_while_present if loan_page.loan_popup_box.present?
-    loan_page.circulation_desk_selector.selected?(desk).should be_true
+    expect(loan_page.circulation_desk_selector.selected?(desk)).to be_true
   end
 end
 
@@ -45,8 +45,8 @@ shared_context 'Checkin' do
       return_page.checkin_message_box.wait_while_present
     end
     return_page.items_returned_toggle.wait_until_present
-    return_page.item_barcode_link(1).text.include?(barcode).should            be_true
-    return_page.item_checkin_date.text.include?(@checkin.expected_str).should be_true
+    expect(return_page.item_barcode_link(1).text.include?(barcode)).to            be_true
+    expect(return_page.item_checkin_date.text.include?(@checkin.expected_str)).to be_true
   end
 
   def end_session(return_page)

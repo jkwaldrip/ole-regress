@@ -27,7 +27,7 @@ shared_context 'Create Location' do
 
   def login(who = 'admin')
     location_lookup.open
-    location_lookup.login('admin').should be_true
+    expect(location_lookup.login('admin')).to be_true
   end
 
   def new_location(struct)
@@ -35,8 +35,8 @@ shared_context 'Create Location' do
     location_lookup.create_new.when_present.click
     location_page.wait_for_page_to_load
     results = create_location(location_page, struct)
-    results[1].should be_nil
-    results[0].should be_true
+    expect(results[1]).to be_nil
+    expect(results[0]).to be_true
   end
 
   def verify_location(struct)
@@ -51,7 +51,7 @@ shared_context 'Create Location' do
       location_lookup.wait_for_page_to_load
       location_lookup.text_in_results?(struct.code)
     }
-    location_lookup.text_in_results?(struct.code).should be_true
+    expect(location_lookup.text_in_results?(struct.code)).to be_true
   end
 
 end
@@ -74,7 +74,7 @@ shared_context 'New Batch Profile' do
   context 'creates a new profile' do
     it 'logged in as admin' do
       profile_lookup.open
-      profile_lookup.login('admin').should be_true
+      expect(profile_lookup.login('admin')).to be_true
       profile_lookup.open
     end
 
@@ -85,12 +85,12 @@ shared_context 'New Batch Profile' do
 
     it 'with a description' do
       profile.description_field.when_present.set("Regression Import #{@bib_record.key_str}")
-      profile.description_field.value.should  eq("Regression Import #{@bib_record.key_str}")
+      expect(profile.description_field.value).to  eq("Regression Import #{@bib_record.key_str}")
     end
 
     it 'with a name' do
       profile.batch_profile_name_field.when_present.set(@info.name)
-      profile.batch_profile_name_field.value.should  eq(@info.name)
+      expect(profile.batch_profile_name_field.value).to  eq(@info.name)
     end
   end
 end

@@ -29,23 +29,23 @@ describe 'The Describe Workbench' do
 
   context 'searches for a bib record' do
     it 'by title' do
-      verify(60) {title_search(title)}.should be_true
+      expect(verify(60) {title_search(title)}).to be_true
     end
 
     it 'by author' do
-      author_search(author).should be_true
+      expect(author_search(author)).to be_true
     end
   end
 
   context 'searches for a holdings record' do
     it 'by call number' do
-      call_number_search(call_number).should be_true
+      expect(call_number_search(call_number)).to be_true
     end
   end
 
   context 'searches for an item record' do
     it 'by barcode' do
-      barcode_search(barcode).should be_true
+      expect(barcode_search(barcode)).to be_true
     end
   end
 
@@ -53,29 +53,29 @@ describe 'The Describe Workbench' do
     it 'with a title search' do
       title_search(title)
       workbench.title_in_results(title).when_present.click
-      @ole.windows.count.should eq(2)
+      expect(@ole.windows.count).to eq(2)
       @ole.windows[-1].use
       bib_editor.wait_for_page_to_load
     end
 
     it 'by title and author' do
-      bib_editor.data_line.data_field.when_present.value.strip.include?(author).should be_true
+      expect(bib_editor.data_line.data_field.when_present.value.strip.include?(author)).to be_true
       bib_editor.data_line.line_number += 1
-      bib_editor.data_line.data_field.when_present.value.strip.include?(title).should  be_true
+      expect(bib_editor.data_line.data_field.when_present.value.strip.include?(title)).to  be_true
     end
 
     it 'by holdings call number' do
       bib_editor.holdings_link.click
       @ole.browser.windows[-1].use
       instance_editor.wait_for_page_to_load
-      instance_editor.call_number_field.when_present.value.strip.include?(call_number).should be_true
+      expect(instance_editor.call_number_field.when_present.value.strip.include?(call_number)).to be_true
     end
 
     it 'by item barcode' do
       instance_editor.item_link.click
       @ole.browser.windows[-1].use
       item_editor.wait_for_page_to_load
-      item_editor.barcode_field.when_present.value.strip.include?(barcode).should be_true
+      expect(item_editor.barcode_field.when_present.value.strip.include?(barcode)).to be_true
     end
   end
 end

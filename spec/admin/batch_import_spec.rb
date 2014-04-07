@@ -70,14 +70,14 @@ describe 'The Batch Import process' do
       verify {batch_type_lookup.text_in_results?('Bib Import')}
       batch_type_lookup.return_by_text('Bib Import').when_present.click
       @ole.browser.iframe(:id => 'iframeportlet').wait_until_present
-      profile.batch_process_type_field.when_present.value.should eq('Bib Import')
+      expect(profile.batch_process_type_field.when_present.value).to eq('Bib Import')
     end
 
     it 'and approves it' do
       profile.approve_button.click
       profile.wait_for_page_to_load
       profile.messages.each do |message|
-        message.when_present.text.should =~ /successfully/
+        expect(message.when_present.text).to match(/successfully/)
       end
     end
   end
@@ -98,12 +98,12 @@ describe 'The Batch Import process' do
     it 'and finds it' do
       profile_lookup.search_button.click
       profile_lookup.wait_for_page_to_load
-      verify {profile_lookup.text_in_results(@info.name).present?}.should be_true
+      expect(verify {profile_lookup.text_in_results(@info.name).present?}).to be_true
     end
 
     it 'and saves the profile ID' do
       @info.id = profile_lookup.id_by_text(@info.name).text
-      @info.id.should =~ /\d+/
+      expect(@info.id).to match(/\d+/)
     end
   end
   
@@ -120,12 +120,12 @@ describe 'The Batch Import process' do
       profile_lookup.wait_for_page_to_load
       profile_lookup.return_by_text(@info.name).when_present.click
       batch_process.wait_for_page_to_load
-      batch_process.profile_name_field.when_present.value.should eq(@info.name)
+      expect(batch_process.profile_name_field.when_present.value).to eq(@info.name)
     end
 
     it 'with a .mrc upload' do
       batch_process.input_file_field.when_present.set(@info.filepath)
-      batch_process.input_file_field.value.should  eq(@info.filename)
+      expect(batch_process.input_file_field.value).to  eq(@info.filename)
     end
   end
 
@@ -133,11 +133,11 @@ describe 'The Batch Import process' do
     it 'running the batch process' do
       batch_process.run_button.click
       batch_process.wait_for_page_to_load
-      batch_process.message.when_present.text.should =~ /successfully saved/
+      expect(batch_process.message.when_present.text).to match(/successfully saved/)
     end
 
     it 'and opens the job details window' do
-      @ole.browser.windows.count.should eq(2)
+      expect(@ole.browser.windows.count).to eq(2)
       @ole.browser.windows[-1].use
       job_details.wait_for_page_to_load
     end
@@ -147,12 +147,12 @@ describe 'The Batch Import process' do
         job_details.next_page.click unless job_details.text_in_results(@info.name).present?
         job_details.job_status_by_text
         job_details.job_status_by_text(@info.name).text.strip == 'COMPLETED' }
-      job_details.job_status_by_text(@info.name).text.strip.should eq('COMPLETED')
+      expect(job_details.job_status_by_text(@info.name).text.strip).to eq('COMPLETED')
     end
 
     it 'and opens the job details report' do
       job_details.job_report_by_text(@info.name).click
-      @ole.windows.count.should eq(3)
+      expect(@ole.windows.count).to eq(3)
       @ole.windows[-1].use
       job_report.wait_for_page_to_load
     end
@@ -161,50 +161,50 @@ describe 'The Batch Import process' do
   context 'creates a job details report' do
     it 'with a job ID' do
       @info.job_id = job_report.job_id.when_present.text
-      @info.job_id.should =~ /\d+/
+      expect(@info.job_id).to match(/\d+/)
     end
 
     it 'with a job name' do
-      job_report.job_name.when_present.text.should eq(@info.batch_process_name)
+      expect(job_report.job_name.when_present.text).to eq(@info.batch_process_name)
     end
 
     it 'with a batch process id' do
       @info.batch_id = job_report.batch_process_id.text
-      @info.batch_id.should =~ /\d+/
+      expect(@info.batch_id).to match(/\d+/)
     end
 
     it 'with a username of admin' do
-      job_report.user_name.text.should =~ /admin/
+      expect(job_report.user_name.text).to match(/admin/)
     end
 
     it 'with a records total count' do
       @info.records_total = job_report.total_records.text
-      @info.records_total.should =~ /\d+/
+      expect(@info.records_total).to match(/\d+/)
     end
 
     it 'with a records processed count' do
       @info.records_processed = job_report.records_processed.text
-      @info.records_processed.should =~ /\d+/
+      expect(@info.records_processed).to match(/\d+/)
     end
 
     it 'with a successful records count' do
       @info.records_successful = job_report.success_records.text
-      @info.records_successful.should=~ /\d+/
+      expect(@info.records_successful).to match(/\d+/)
     end
 
     it 'with a failed records count' do
       @info.records_failed = job_report.failure_records.text
-      @info.records_processed.should =~ /\d+/
+      expect(@info.records_processed).to match(/\d+/)
     end
 
     it 'with a percent completed value of 100' do
       @info.percent_completed = job_report.percent_completed.text
-      @info.percent_completed.should =~ /100/
+      expect(@info.percent_completed).to match(/100/)
     end
 
     it 'with a status of completed' do
       @info.status = job_report.status.text
-      @info.status.should =~ /COMPLETED/
+      expect(@info.status).to match(/COMPLETED/)
     end
   end
 
@@ -217,19 +217,19 @@ describe 'The Batch Import process' do
       workbench.wait_for_page_to_load
       set_field(workbench.search_line.search_field,@bib_record.key_str)
       workbench.search_line.search_scope_selector.when_present.select_value('phrase')
-      workbench.search_line.search_scope_selector.value.should eq('phrase')
+      expect(workbench.search_line.search_scope_selector.value).to eq('phrase')
       set_field(workbench.search_line.field_selector,'Title')
       workbench.wait_for_page_to_load
       workbench.search_button.click
       workbench.wait_for_page_to_load
-      workbench.title_in_results?("Record One #{@bib_record.key_str}").should be_true
-      workbench.title_in_results?("Record Two #{@bib_record.key_str}").should be_true
-      workbench.title_in_results?("Record Three #{@bib_record.key_str}").should be_true
+      expect(workbench.title_in_results?("Record One #{@bib_record.key_str}")).to be_true
+      expect(workbench.title_in_results?("Record Two #{@bib_record.key_str}")).to be_true
+      expect(workbench.title_in_results?("Record Three #{@bib_record.key_str}")).to be_true
     end
 
     it 'that there are three records in describe workbench' do
       results = workbench.b.tds(:xpath => "//table/tbody/tr/td[div/*[contains(text(),'#{@bib_record.key_str}')]]")
-      results.count.should eq(3)
+      expect(results.count).to eq(3)
     end
   end
 end

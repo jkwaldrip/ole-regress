@@ -51,7 +51,7 @@ describe 'The Circulation module' do
     patron_page.email_line.email_address_field.wait_until_present
     patron_page.submit_button.click
     patron_page.wait_for_page_to_load
-    patron_page.message.when_present.text.should =~ /success/
+    expect(patron_page.message.when_present.text).to match(/success/)
   end
 
   it 'starts with a Marc record' do
@@ -67,7 +67,7 @@ describe 'The Circulation module' do
 
   it 'uses the dev2 login' do
     main_menu.open
-    main_menu.login('dev2').should be_true
+    expect(main_menu.login('dev2')).to be_true
   end
 
   it 'opens the loan screen' do
@@ -92,7 +92,7 @@ describe 'The Circulation module' do
   end
 
   it 'has the item barcode in current items' do
-    loan_page.item_barcode_link(1).when_present.text.strip.include?(item_barcode).should be_true
+    expect(loan_page.item_barcode_link(1).when_present.text.strip.include?(item_barcode)).to be_true
   end
 
   it 'opens the return screen' do

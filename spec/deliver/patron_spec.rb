@@ -48,7 +48,7 @@ describe 'A Patron' do
     patron_page.email_line.email_address_field.wait_until_present
     patron_page.submit_button.click
     patron_page.wait_for_page_to_load
-    patron_page.message.when_present.text.should =~ /success/
+    expect(patron_page.message.when_present.text).to match(/success/)
   end
 
   context 'is searchable' do
@@ -57,13 +57,13 @@ describe 'A Patron' do
     # in a premature failure.
     it 'by barcode' do
       patron_lookup.open
-      verify {
+      expect(verify {
         patron_lookup.clear_button.click
         patron_lookup.barcode_field.when_present.set(@patron.barcode)
         patron_lookup.search_button.click
         patron_lookup.wait_for_page_to_load
         patron_lookup.text_in_results?(@patron.barcode)
-      }.should be_true
+      }).to be_true
     end
 
     it 'by name' do
@@ -73,7 +73,7 @@ describe 'A Patron' do
       patron_lookup.last_name_field.when_present.set(@patron.last)
       patron_lookup.search_button.click
       patron_lookup.wait_for_page_to_load
-      verify {patron_lookup.text_in_results?(@patron.barcode)}.should be_true
+      expect(verify {patron_lookup.text_in_results?(@patron.barcode)}).to be_true
     end
 
     it 'by email' do
@@ -82,7 +82,7 @@ describe 'A Patron' do
       patron_lookup.email_address_field.when_present.set(@patron.email)
       patron_lookup.search_button.click
       patron_lookup.wait_for_page_to_load
-      verify {patron_lookup.text_in_results?(@patron.barcode)}.should be_true
+      expect(verify {patron_lookup.text_in_results?(@patron.barcode)}).to be_true
       patron_lookup.clear_button.click
     end
   end
@@ -102,12 +102,12 @@ describe 'A Patron' do
 
     it 'and takes a new borrower type' do
       patron_page.borrower_type_selector.when_present.select(@patron.new_borrower_type)
-      patron_page.borrower_type_selector.selected?(@patron.new_borrower_type).should be_true
+      expect(patron_page.borrower_type_selector.selected?(@patron.new_borrower_type)).to be_true
     end
 
     it 'and persists changes' do
       patron_page.submit_button.click
-      verify { patron_page.message.text =~ /success/ }.should be_true
+      expect(verify { patron_page.message.text =~ /success/ }).to be_true
     end
 
     it 'and verified via search' do

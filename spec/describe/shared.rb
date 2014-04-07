@@ -54,21 +54,21 @@ shared_context 'Create a Marc Record' do
   def new_bib_record
     bib_editor.wait_for_page_to_load
     results = create_bib(bib_editor, @marc_record.bib_info)
-    results[:error].should be_nil
-    results[:message].should =~ /success/
-    results[:pass?].should be_true
+    expect(results[:error]).to be_nil
+    expect(results[:message]).to match(/success/)
+    expect(results[:pass?]).to be_true
   end
 
   def new_instance
     results = create_instance(instance_editor, @marc_record.instance_info)
-    results[:error].should be_nil
-    results[:pass?].should be_true
+    expect(results[:error]).to be_nil
+    expect(results[:pass?]).to be_true
   end
 
   def new_item
     results = create_item(item_editor, @marc_record.item_info)
-    results[:error].should be_nil
-    results[:pass?].should be_true
+    expect(results[:error]).to be_nil
+    expect(results[:pass?]).to be_true
   end
 
   def close_editor
@@ -98,7 +98,7 @@ shared_context 'Describe Workbench' do
     #     <option selected="selected" value="AND"></option>
     #   in the page source).
     workbench.search_line.search_scope_selector.when_present.select_value('phrase')
-    workbench.search_line.search_scope_selector.value.should eq('phrase')
+    expect(workbench.search_line.search_scope_selector.value).to eq('phrase')
 
     set_field(workbench.search_line.field_selector,'Title')
     workbench.wait_for_page_to_load
@@ -124,7 +124,7 @@ shared_context 'Describe Workbench' do
     #     <option selected="selected" value="AND"></option>
     #   in the page source).
     workbench.search_line.search_scope_selector.when_present.select_value('phrase')
-    workbench.search_line.search_scope_selector.value.should eq('phrase')
+    expect(workbench.search_line.search_scope_selector.value).to eq('phrase')
 
     set_field(workbench.search_line.field_selector,'Author')
     workbench.wait_for_page_to_load
@@ -142,7 +142,7 @@ shared_context 'Describe Workbench' do
     workbench.wait_for_page_to_load
     set_field(workbench.search_line.search_field,call_number)
     workbench.search_line.search_scope_selector.when_present.select_value('phrase')
-    workbench.search_line.search_scope_selector.value.should eq('phrase')
+    expect(workbench.search_line.search_scope_selector.value).to eq('phrase')
     set_field(workbench.search_line.field_selector,'Call Number')
     workbench.wait_for_page_to_load
     workbench.search_button.click
@@ -159,7 +159,7 @@ shared_context 'Describe Workbench' do
     workbench.wait_for_page_to_load
     set_field(workbench.search_line.search_field,barcode)
     workbench.search_line.search_scope_selector.when_present.select_value('phrase')
-    workbench.search_line.search_scope_selector.value.should eq('phrase')
+    expect(workbench.search_line.search_scope_selector.value).to eq('phrase')
     set_field(workbench.search_line.field_selector,'Item Barcode')
     workbench.wait_for_page_to_load
     workbench.search_button.click

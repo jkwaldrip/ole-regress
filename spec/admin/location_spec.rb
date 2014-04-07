@@ -6,7 +6,7 @@ describe 'A location' do
 
   context 'with level 1' do
     it 'is created by admin' do
-      login('admin').should be_true
+      expect(login('admin')).to be_true
       new_location(@location)
     end
 
@@ -16,14 +16,14 @@ describe 'A location' do
 
     it 'has an id' do
       @location.id = location_lookup.id_by_text(@location.code).text.strip
-      @location.id.should_not be_empty
-      @location.id.should =~ /\d/
+      expect(@location.id).not_to be_empty
+      expect(@location.id).to match(/\d/)
     end
   end
 
   context 'with level 2' do
     it 'is created by admin' do
-      login('admin').should be_true
+      expect(login('admin')).to be_true
       new_location(@child_loc)
     end
 
@@ -33,8 +33,8 @@ describe 'A location' do
 
     it 'has a parent location' do
       @child_loc.parent_id = location_lookup.parent_id_by_text(@child_loc.code).text.strip
-      @child_loc.parent_id.should_not be_empty
-      @child_loc.parent_id.should eq(@location.id)
+      expect(@child_loc.parent_id).not_to be_empty
+      expect(@child_loc.parent_id).to eq(@location.id)
     end
   end
 

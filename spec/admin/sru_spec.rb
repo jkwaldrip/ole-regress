@@ -40,15 +40,15 @@ describe 'The OLE SRU function' do
     it 'one Marc record' do
       bib_editor.open
       results = create_bib(bib_editor, @bib_records.record_1)
-      results[:error].should be_nil
-      results[:message].should =~ /success/
+      expect(results[:error]).to be_nil
+      expect(results[:message]).to match(/success/)
     end
 
     it 'two Marc records' do
       bib_editor.open
       results = create_bib(bib_editor, @bib_records.record_2)
-      results[:error].should be_nil
-      results[:message].should =~ /success/
+      expect(results[:error]).to be_nil
+      expect(results[:message]).to match(/success/)
     end
   end
 
@@ -58,11 +58,11 @@ describe 'The OLE SRU function' do
       filename      = "sru_title_any-#{@today}.xml"
       get_sru_file(query,filename,@ole)
       records       = get_marc_xml(filename)
-      File.zero?("data/downloads/#{filename}").should be_false
-      records.count.should eq(2)
+      expect(File.zero?("data/downloads/#{filename}")).to be_false
+      expect(records.count).to eq(2)
 
       records.each do |record|
-        record['245']['a'].should =~ /Title \w+ #{@bib_records.target_1}/
+        expect(record['245']['a']).to match(/Title \w+ #{@bib_records.target_1}/)
       end
     end
 
@@ -71,11 +71,11 @@ describe 'The OLE SRU function' do
       filename      = "sru_title_exact-#{@today}.xml"
       get_sru_file(query,filename,@ole)
       records       = get_marc_xml(filename)
-      File.zero?("data/downloads/#{filename}").should be_false
-      records.count.should eq(1)
+      expect(File.zero?("data/downloads/#{filename}")).to be_false
+      expect(records.count).to eq(1)
 
       records.each do |record|
-        record['245']['a'].should =~ /Title One #{@bib_records.target_1}/
+        expect(record['245']['a']).to match(/Title One #{@bib_records.target_1}/)
       end
     end
   end
@@ -86,11 +86,11 @@ describe 'The OLE SRU function' do
       filename      = "sru_author_any-#{@today}.xml"
       get_sru_file(query,filename,@ole)
       records       = get_marc_xml(filename)
-      File.zero?("data/downloads/#{filename}").should be_false
-      records.count.should eq(2)
+      expect(File.zero?("data/downloads/#{filename}")).to be_false
+      expect(records.count).to eq(2)
 
       records.each do |record|
-        record['100']['a'].should =~ /Author \w+ #{@bib_records.target_2}/
+        expect(record['100']['a']).to match(/Author \w+ #{@bib_records.target_2}/)
       end
     end
 
@@ -99,11 +99,11 @@ describe 'The OLE SRU function' do
       filename      = "sru_year_exact-#{@today}.xml"
       get_sru_file(query,filename,@ole)
       records       = get_marc_xml(filename)
-      File.zero?("data/downloads/#{filename}").should be_false
-      records.count.should eq(1)
+      expect(File.zero?("data/downloads/#{filename}")).to be_false
+      expect(records.count).to eq(1)
 
       records.each do |record|
-        record['100']['a'].should =~ /Author One #{@bib_records.target_2}/
+        expect(record['100']['a']).to match(/Author One #{@bib_records.target_2}/)
       end
     end
   end
@@ -134,11 +134,11 @@ describe 'The OLE SRU function' do
       filename      = "sru_author_exact-#{@today}.xml"
       get_sru_file(query,filename,@ole)
       records       = get_marc_xml(filename)
-      File.zero?("data/downloads/#{filename}").should be_false
-      records.count.should eq(1)
+      expect(File.zero?("data/downloads/#{filename}")).to be_false
+      expect(records.count).to eq(1)
 
       records.each do |record|
-        record['260']['c'].should =~ /#{@bib_records.year_2}/
+        expect(record['260']['c']).to match(/#{@bib_records.year_2}/)
       end
     end
   end
