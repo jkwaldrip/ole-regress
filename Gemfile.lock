@@ -11,7 +11,7 @@ PATH
       numerizer
       ole-qa-framework (>= 3.13.2)
       rake
-      rspec
+      rspec (~> 2.14.1)
 
 GEM
   remote: https://rubygems.org/
