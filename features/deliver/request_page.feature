@@ -15,8 +15,8 @@ Feature:  Request Page
     And I click the "Create New Request" link
     And I select an operator type of "Patron"
     And I select a request type of "Page/Hold Request"
-    And I select the second patron by barcode on the request page
-    Then I wait for the second patron's name to appear in the patron name field
+    And I select the patron by barcode on the request page
+    Then I wait for the patron's name to appear in the patron name field
     When I click the item search icon on the request page
     Then the item lookup screen will appear
     When I enter the item's barcode on the item lookup screen
@@ -32,8 +32,8 @@ Feature:  Request Page
     And I click the "Create New Request" link
     And I select an operator type of "Patron"
     And I select a request type of "Page/Delivery Request"
-    And I select the second patron by barcode on the request page
-    Then I wait for the second patron's name to appear in the patron name field
+    And I select the patron by barcode on the request page
+    Then I wait for the patron's name to appear in the patron name field
     When I click the item search icon on the request page
     Then the item lookup screen will appear
     When I enter the item's barcode on the item lookup screen
