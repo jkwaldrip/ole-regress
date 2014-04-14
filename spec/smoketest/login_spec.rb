@@ -16,7 +16,7 @@ require 'rspec'
 require 'spec_helper.rb'
 
 describe 'The OLE Login function' do
-  let(:page)            {OLE_QA::Framework::Page.new(@ole,@ole.url)}
+  include_context 'Smoketest'
 
   it 'logs in as admin' do
     page.open

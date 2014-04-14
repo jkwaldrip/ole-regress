@@ -16,7 +16,7 @@ require 'rspec'
 require 'spec_helper.rb'
 
 describe 'The OLE Loan Page' do
-  let(:loan_page)           {OLE_QA::Framework::OLELS::Loan.new(@ole)}
+  include_context 'Smoketest'
 
   before :all do
     page                    = OLE_QA::Framework::Page.new(@ole,@ole.url)

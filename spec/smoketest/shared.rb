@@ -18,4 +18,6 @@ shared_context 'Smoketest' do
   let(:page)              {OLE_QA::Framework::Page.new(@ole,@ole.url)}
   let(:loan_page)         {OLE_QA::Framework::OLELS::Loan.new(@ole)}
   let(:return_page)       {OLE_QA::Framework::OLELS::Return.new(@ole)}
+  let(:portal_page)       {OLE_QA::Framework::Page.new(@ole,@ole.url)}
+  let(:docstore_page)     {OLE_QA::Framework::Page.new(@ole,@ole.docstore_url)}
 end

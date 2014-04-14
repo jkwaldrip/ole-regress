@@ -18,8 +18,6 @@ require 'spec_helper.rb'
 describe 'The OLE Portal' do
   include_context 'Smoketest'
 
-  let(:page)      {OLE_QA::Framework::Page.new(@ole,@ole.url)}
-
   it 'opens in a browser' do
     expect(page.open).to be_true
   end

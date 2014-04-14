@@ -18,9 +18,6 @@ require 'spec_helper.rb'
 describe 'The OLE Environment' do
   include_context 'Smoketest'
 
-  let(:portal_page)           {OLE_QA::Framework::Page.new(@ole,@ole.url)}
-  let(:docstore_page)         {OLE_QA::Framework::Page.new(@ole,@ole.docstore_url)}
-
   it 'is accessible' do
     expect(portal_page.open).to be_true
   end
