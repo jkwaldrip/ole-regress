@@ -12,7 +12,20 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-shared_context 'Smoketest' do
-  include OLE_QA::RegressionTest::Assertions
+require 'rspec'
+require 'spec_helper.rb'
 
+describe 'The OLE Environment' do
+  include_context 'Smoketest'
+
+  let(:portal_page)           {OLE_QA::Framework::Page.new(@ole,@ole.url)}
+  let(:docstore_page)         {OLE_QA::Framework::Page.new(@ole,@ole.docstore_url)}
+
+  it 'is accessible' do
+    expect(portal_page.open).to be_true
+  end
+
+  it 'has an accessible DocStore installation' do
+    expect(docstore_page.open).to be_true
+  end
 end
