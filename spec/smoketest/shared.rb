@@ -14,5 +14,8 @@
 
 shared_context 'Smoketest' do
   include OLE_QA::RegressionTest::Assertions
-
+  
+  let(:page)              {OLE_QA::Framework::Page.new(@ole,@ole.url)}
+  let(:loan_page)         {OLE_QA::Framework::OLELS::Loan.new(@ole)}
+  let(:return_page)       {OLE_QA::Framework::OLELS::Return.new(@ole)}
 end
