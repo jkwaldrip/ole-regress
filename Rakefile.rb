@@ -119,7 +119,13 @@ task :show_config do
 end
 
 desc 'Run all specs with default configuration.'
-RSpec::Core::RakeTask.new do |task|
+RSpec::Core::RakeTask.new(:all_specs) do |task|
+  task.rspec_opts = '-r spec_helper.rb'
+end
+
+desc 'Run only smoketest specs.'
+RSpec::Core::RakeTask.new(:smoketest) do |task|
+  task.pattern    = 'spec/smoketest/*_spec.rb'
   task.rspec_opts = '-r spec_helper.rb'
 end
 
