@@ -21,4 +21,5 @@ shared_context 'Smoketest' do
   let(:portal_page)       {OLE_QA::Framework::Page.new(@ole,@ole.url)}
   let(:docstore_page)     {OLE_QA::Framework::Page.new(@ole,@ole.docstore_url)}
   let(:bib_editor)        {OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)}
+  let(:requisition)       {OLE_QA::Framework::OLEFS::Requisition.new(@ole)}
 end
