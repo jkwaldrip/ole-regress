@@ -12,13 +12,25 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-shared_context 'Smoketest' do
-  include OLE_QA::RegressionTest::Assertions
-  
-  let(:page)              {OLE_QA::Framework::Page.new(@ole,@ole.url)}
-  let(:loan_page)         {OLE_QA::Framework::OLELS::Loan.new(@ole)}
-  let(:return_page)       {OLE_QA::Framework::OLELS::Return.new(@ole)}
-  let(:portal_page)       {OLE_QA::Framework::Page.new(@ole,@ole.url)}
-  let(:docstore_page)     {OLE_QA::Framework::Page.new(@ole,@ole.docstore_url)}
-  let(:bib_editor)        {OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)}
+require 'rspec'
+require 'spec_helper.rb'
+
+describe 'The OLE bib editor' do
+  include_context 'Smoketest'
+
+  it 'opens via URL' do
+    expect(bib_editor.open).to be_true
+  end
+
+  it 'displays a message for a blank bib record' do
+    bib_editor.message.wait_until_present
+    message = bib_editor.message.text
+    expect(message =~ /enter details for new [Bb]ib record/).to be_true
+  end
+
+  it 'has a blank Marc data line' do
+    field = bib_editor.data_line.data_field
+    field.wait_until_present
+    expect(field.value.empty?).to be_true
+  end
 end
