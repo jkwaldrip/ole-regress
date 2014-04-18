@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ole-regress (1.14.1)
+    ole-regress (1.14.2)
       bundler
       chronic
       cucumber
@@ -9,7 +9,7 @@ PATH
       marc
       net-http-persistent
       numerizer
-      ole-qa-framework (>= 3.13.3)
+      ole-qa-framework (>= 3.13.4)
       rake
       rspec
 
