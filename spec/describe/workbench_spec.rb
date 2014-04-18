@@ -16,8 +16,6 @@ describe 'The Describe Workbench' do
     bib_editor.open
     new_bib_record
     new_instance
-    @ole.browser.windows[-1].close
-    @ole.browser.windows[0].use
     new_item
     @ole.browser.windows[-1].close
     @ole.browser.windows[0].use

@@ -66,9 +66,7 @@ end
 
 When /^I add an instance record$/ do
   @instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
-  @bib_editor.holdings_link(1).when_present.click
-  Watir::Wait.until {@ole.windows.count > 1}
-  @ole.windows[-1].use
+  @bib_editor.add_instance_button.when_present.click
   @instance_editor.wait_for_page_to_load
 end
 

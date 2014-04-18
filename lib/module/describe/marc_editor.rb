@@ -118,8 +118,8 @@ module OLE_QA::RegressionTest
       instance_info[:instance_number] = 1 if instance_info[:instance_number].nil?
 
       # Open instance record.
-      instance_editor.holdings_link(instance_info[:instance_number]).when_present.click
-      instance_editor.ole.browser.windows[-1].use
+      # (Assume we're starting from the bib editor.)
+      instance_editor.add_instance_button.click unless instance_editor.holdings_link.present?
       instance_editor.wait_for_page_to_load
 
       instance_editor.location_field.when_present.set(instance_info[:location])

@@ -58,8 +58,6 @@ describe 'The Circulation module' do
     bib_editor.open
     new_bib_record
     new_instance
-    @ole.windows[-1].close
-    @ole.windows[0].use
     new_item
     @ole.windows[-1].close
     @ole.windows[0].use
