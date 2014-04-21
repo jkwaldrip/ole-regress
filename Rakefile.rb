@@ -131,3 +131,8 @@ end
 
 desc 'Default:  Show version.'
 task :default => :version
+
+desc 'Show latest compatible OLE release version.'
+task :works_with do
+  puts OLE_QA::RegressionTest::OLE_VERSION
+end
