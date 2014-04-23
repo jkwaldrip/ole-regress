@@ -17,6 +17,8 @@ $:.unshift(dir) unless $:.include?(dir)
 
 require 'rspec'
 require 'rspec/core/rake_task'
+require 'cucumber'
+require 'cucumber/rake/task'
 require 'lib/ole-regress.rb'
 
 desc 'Print OLE Regression Test Suite version.'
@@ -25,7 +27,7 @@ task :version do
 end
 
 desc 'Clean out the screenshots/ folder.'
-task :scnclean do
+task :scn_clean do
   files = Dir['screenshots/*.png']
   if files.empty?
     puts "No screenshots found."
@@ -38,7 +40,7 @@ task :scnclean do
 end
 
 desc 'Clean out the logs/ folder.'
-task :logclean do
+task :log_clean do
   logs = Dir['logs/*.log']
   txts = Dir['logs/*.txt']
   logs.concat(txts)
@@ -53,7 +55,7 @@ task :logclean do
 end
 
 desc 'Clean temporary data folders.'
-task :dataclean do
+task :data_clean do
   downloads = Dir['data/downloads/*']
   uploads   = Dir['data/uploads/*']
   files     = downloads.concat(uploads)
@@ -68,7 +70,7 @@ task :dataclean do
 end
 
 desc 'Clean performance profile data.'
-task :profclean do
+task :prof_clean do
   files = Dir['performance/*']
   if files.empty?
     puts 'No files found.'
@@ -80,6 +82,13 @@ task :profclean do
   end
 end
 
+desc 'Clean all temporary data directories.'
+task :all_clean do
+  Rake::Task['log_clean'].invoke
+  Rake::Task['scn_clean'].invoke
+  Rake::Task['data_clean'].invoke
+  Rake::Task['prof_clean'].invoke
+end
 
 desc 'Interactively configure config/options.yml'
 task :configurator do
@@ -127,6 +136,18 @@ desc 'Run only smoketest specs.'
 RSpec::Core::RakeTask.new(:smoketest) do |task|
   task.pattern    = 'spec/smoketest/*_spec.rb'
   task.rspec_opts = '-r spec_helper.rb'
+end
+
+desc 'Run all Cucumber tests.'
+Cucumber::Rake::Task.new(:cucumber) do |task|
+  task.cucumber_opts = "features --format pretty"
+end
+
+
+desc 'Run all RSpec & Cucumber tests.'
+task :regress do
+  Rake::Task['all_specs'].invoke
+  Rake::Task['cucumber'].invoke
 end
 
 desc 'Default:  Show version.'
