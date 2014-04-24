@@ -57,13 +57,14 @@ describe 'A Patron' do
     # in a premature failure.
     it 'by barcode' do
       patron_lookup.open
-      expect(verify {
+      barcode_found = verify {
         patron_lookup.clear_button.click
         patron_lookup.barcode_field.when_present.set(@patron.barcode)
         patron_lookup.search_button.click
         patron_lookup.wait_for_page_to_load
         patron_lookup.text_in_results?(@patron.barcode)
-      }).to be_true
+      }
+      expect(barcode_found).to be_true
     end
 
     it 'by name' do
