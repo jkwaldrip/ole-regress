@@ -105,8 +105,9 @@ task :configurator do
       new_val    = STDIN.gets.chomp
       if v.is_a?(TrueClass) || v.is_a?(FalseClass)
         new_val.match(/^[Tt]/) ? new_val = true : new_val = false
+      else
+       new_val = new_val.to_i unless new_val.to_i == 0
       end
-      new_val = new_val.to_i unless new_val.to_i == 0
       options[k] = new_val
       puts "#{k.to_s.ljust(20)} updated to:  #{new_val}"
     end
