@@ -63,7 +63,7 @@ shared_context 'New Patron' do
   let(:today)               { Chronic.parse('today').strftime('%m/%d/%Y') }
 
   before :all do
-    @patron = OpenStruct.new( OLE_QA::Framework::Patron_Factory.new_patron )
+    @patron = OLE_QA::Framework::Patron_Factory.new_patron
   end
 
 end

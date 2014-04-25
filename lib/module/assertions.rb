@@ -26,14 +26,14 @@ module OLE_QA::RegressionTest
       case field.class.name
         when /TextField/
           field.when_present.set(value)
-          field.value.should eq(value.chomp)
+          expect(field.value).to eq(value.chomp)
         when /Select/
           Watir::Wait.until {field.present? && field.include?(value)}
           field.select(value)
-          field.selected?(value).should be_true
+          expect(field.selected?(value)).to be_true
         when /CheckBox/
           field.when_present.set(value)
-          field.set?.should eq(value)
+          expect(field.set?).to eq(value)
       end
     end
     alias_method(:set_selector,:set_field)
