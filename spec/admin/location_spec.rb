@@ -33,8 +33,9 @@ describe 'A location' do
 
     it 'has a parent location' do
       @child_loc.parent_id = location_lookup.parent_id_by_text(@child_loc.code).text.strip
-      expect(@child_loc.parent_id).not_to be_empty
-      expect(@child_loc.parent_id).to eq(@location.id)
+      parent_location_id = @child_loc.parent_id
+      expect(parent_location_id).not_to be_empty
+      expect(parent_location_id).to eq(@location.id)
     end
   end
 

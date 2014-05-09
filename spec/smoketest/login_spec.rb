@@ -20,10 +20,12 @@ describe 'The OLE Login function' do
 
   it 'logs in as admin' do
     page.open
-    expect(page.login('admin')).to be_true
+    logged_in = page.login('admin')
+    expect(logged_in).to be_true
   end
 
   it 'logs out' do
-    expect(page.logout).to be_true
+    logged_out = page.logout
+    expect(logged_out).to be_true
   end
 end

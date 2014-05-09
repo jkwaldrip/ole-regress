@@ -58,11 +58,13 @@ describe 'The OLE SRU function' do
       filename      = "sru_title_any-#{@today}.xml"
       get_sru_file(query,filename,@ole)
       records       = get_marc_xml(filename)
-      expect(File.zero?("data/downloads/#{filename}")).to be_false
+      file_is_emtpy = File.zero?("data/downloads/#{filename}")
+      expect(file_is_empty).to be_false
       expect(records.count).to eq(2)
 
       records.each do |record|
-        expect(record['245']['a']).to match(/Title \w+ #{@bib_records.target_1}/)
+        title_field = record['245']['a']
+        expect(title_field).to match(/Title \w+ #{@bib_records.target_1}/)
       end
     end
 
@@ -71,11 +73,13 @@ describe 'The OLE SRU function' do
       filename      = "sru_title_exact-#{@today}.xml"
       get_sru_file(query,filename,@ole)
       records       = get_marc_xml(filename)
-      expect(File.zero?("data/downloads/#{filename}")).to be_false
+      file_is_empty = File.zero?("data/downloads/#{filename}")
+      expect(file_is_empty).to be_false
       expect(records.count).to eq(1)
 
       records.each do |record|
-        expect(record['245']['a']).to match(/Title One #{@bib_records.target_1}/)
+        title_field = record['245']['a']
+        expect(title_field).to match(/Title One #{@bib_records.target_1}/)
       end
     end
   end
@@ -86,11 +90,13 @@ describe 'The OLE SRU function' do
       filename      = "sru_author_any-#{@today}.xml"
       get_sru_file(query,filename,@ole)
       records       = get_marc_xml(filename)
-      expect(File.zero?("data/downloads/#{filename}")).to be_false
+      file_is_empty = File.zero?("data/downloads/#{filename}")
+      expect(file_is_empty).to be_false
       expect(records.count).to eq(2)
 
       records.each do |record|
-        expect(record['100']['a']).to match(/Author \w+ #{@bib_records.target_2}/)
+        author_field = record['100']['a']
+        expect(author_field).to match(/Author \w+ #{@bib_records.target_2}/)
       end
     end
 
@@ -99,11 +105,13 @@ describe 'The OLE SRU function' do
       filename      = "sru_year_exact-#{@today}.xml"
       get_sru_file(query,filename,@ole)
       records       = get_marc_xml(filename)
-      expect(File.zero?("data/downloads/#{filename}")).to be_false
+      file_is_empty = File.zero?("data/downloads/#{filename}")
+      expect(file_is_empty).to be_false
       expect(records.count).to eq(1)
 
       records.each do |record|
-        expect(record['100']['a']).to match(/Author One #{@bib_records.target_2}/)
+        author_field = record['100']['a']
+        expect(author_field).to match(/Author One #{@bib_records.target_2}/)
       end
     end
   end
@@ -134,11 +142,13 @@ describe 'The OLE SRU function' do
       filename      = "sru_author_exact-#{@today}.xml"
       get_sru_file(query,filename,@ole)
       records       = get_marc_xml(filename)
-      expect(File.zero?("data/downloads/#{filename}")).to be_false
+      file_is_empty = File.zero?("data/downloads/#{filename}")
+      expect(file_is_empty).to be_false
       expect(records.count).to eq(1)
 
       records.each do |record|
-        expect(record['260']['c']).to match(/#{@bib_records.year_2}/)
+        year_field = record['260']['c']
+        expect(year_field).to match(/#{@bib_records.year_2}/)
       end
     end
   end

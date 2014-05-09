@@ -24,31 +24,36 @@ describe 'The OLE Portal' do
 
   it 'has an admin tab' do
     link = page.b.link(:text => /[Aa]dmin/)
-    expect(link.present?).to be_true
+    admin_tab_found = link.present?
+    expect(admin_tab_found).to be_true
     link.click
   end
 
   it 'has a maintenance tab' do
     link = page.b.link(:text => /[Mm]aintenance/)
-    expect(link.present?).to be_true
+    maintenance_tab_found = link.present?
+    expect(maintenance_tab_found).to be_true
     link.click
   end
 
   it 'has a select/acquire tab' do
     link = page.b.link(:text => /[Ss]elect.{1}[Aa]cquire/)
-    expect(link.present?).to be_true
+    select_acquire_tab_found = link.present?
+    expect(select_acquire_tab_found).to be_true
     link.click
   end
 
   it 'has a describe tab' do
     link = page.b.link(:text => /[Dd]escribe/)
-    expect(link.present?).to be_true
+    describe_tab_found = link.present?
+    expect(describe_tab_found).to be_true
     link.click
   end
 
   it 'has a deliver tab' do
     link = page.b.link(:text => /[Dd]eliver/)
-    expect(link.present?).to be_true
+    deliver_tab_found = link.present?
+    expect(deliver_tab_found).to be_true
     link.click
   end
 end

@@ -64,9 +64,12 @@ describe 'The PURAP Workflow' do
 
   it 'has consistent data on a new line item' do
     requisition.line_item.line_number = 1
-    expect(requisition.line_item.list_price_field.when_present.value).to    eq(@info.item[:price])
-    expect(requisition.line_item.location_selector.when_present.value).to   eq('B-EDUC/BED-STACKS')
-    expect(requisition.line_item.copies_field.when_present.value).to        eq('1')
+    list_price_value              = requisition.line_item.list_price_field.when_present.value
+    location_value                = requisition.line_item.location_selector.when_present.value
+    copies_value                  = requisition.line_item.copies_field.when_present.value
+    expect(list_price_value).to   eq(@info.item[:price])
+    expect(location_value).to     eq('B-EDUC/BED-STACKS')
+    expect(copies_value).to       eq('1')
   end
   
   it 'adds an account to the new line' do
@@ -76,54 +79,66 @@ describe 'The PURAP Workflow' do
   end
 
   it 'has consistent data on a new accounting line' do
-    expect(requisition.line_item.accounting_line.chart_selector.selected?(@info.account[:chart])).to  be_true
-    expect(requisition.line_item.accounting_line.account_number_field.value).to   eq(@info.account[:account])
-    expect(requisition.line_item.accounting_line.object_field.value).to           eq(@info.account[:object])
-    expect(requisition.line_item.accounting_line.percent_field.value).to          eq(@info.account[:percent])
+    chart_selected                = requisition.line_item.accounting_line.chart_selector.selected?(@info.account[:chart])
+    account_num_value             = requisition.line_item.accounting_line.account_number_field.value
+    object_code_value             = requisition.line_item.accounting_line.object_field.value
+    percent_value                 = requisition.line_item.accounting_line.percent_field.value
+    expect(chart_selected).to     be_true
+    expect(account_num_value).to  eq(@info.account[:account])
+    expect(object_code_value).to  eq(@info.account[:object])
+    expect(percent_value).to      eq(@info.account[:percent])
   end
 
   it 'can submit the requisition' do
     requisition.submit_button.click
     requisition.wait_for_page_to_load
     requisition.generic_message.wait_until_present
-    expect(requisition.submit_message.present?).to be_true
+    success_message_given         = requisition.submit_message.present?
+    expect(success_message_given).to be_true
   end
 
   it 'can get a requisition ID' do
-    expect(requisition.document_id.present?).to be_true
+    id_found                      = requisition.document_id.present?
+    expect(id_found).to be_true
     @info.requisition             = Hash.new
     @info.requisition[:id]        = requisition.document_id.text.strip
     @info.requisition[:url]       = requisition.lookup_url(@info.requisition[:id])
   end
   
   it 'waits for the requisition status to be Closed' do
-    expect(page_assert(@info.requisition[:url])   { requisition.wait_for_page_to_load
-                                             requisition.document_type_status.text.include?('Closed') }).to be_true
+    status_is_closed              = page_assert(@info.requisition[:url])   { requisition.wait_for_page_to_load
+                                                                             requisition.document_type_status.text.include?('Closed') }
+    expect(status_is_closed).to be_true
   end
 
   it 'should have a valid PO number' do
-    expect(page_assert(@info.requisition[:url])   { requisition.wait_for_page_to_load
-                          requisition.view_related_tab_toggle.click unless requisition.view_related_po_link.present?
-                          requisition.view_related_po_link.wait_until_present
-                          requisition.view_related_po_link.text =~ /[0-9]+/ }).to be_true
-    @info.po        = Hash.new
-    @info.po[:id]   = requisition.view_related_po_link.text.strip
-    @info.po[:url]  = requisition.view_related_po_link.href
+    po_number_found               = page_assert(@info.requisition[:url])   { requisition.wait_for_page_to_load
+                                      requisition.view_related_tab_toggle.click unless requisition.view_related_po_link.present?
+                                      requisition.view_related_po_link.wait_until_present
+                                      requisition.view_related_po_link.text =~ /[0-9]+/ }
+    expect(po_number_found).to be_true
+    @info.po                      = Hash.new
+    @info.po[:id]                 = requisition.view_related_po_link.text.strip
+    @info.po[:url]                = requisition.view_related_po_link.href
   end
 
   it 'opens the PO' do
     @ole.browser.goto(@info.po[:url])
-    expect(purchase_order.wait_for_page_to_load).to be_true
+    po_is_loaded                  = purchase_order.wait_for_page_to_load
+    expect(po_is_loaded).to be_true
   end
 
   it 'retrieves a PO number' do
-    @info.po[:po_id] = purchase_order.document_type_id.text.strip
-    expect(@info.po[:po_id]).to match(/[0-9]+/)
+    @info.po[:po_id]              = purchase_order.document_type_id.text.strip
+    po_number_given               = @info.po[:po_id]
+    expect(po_number_given).to match(/[0-9]+/)
   end
 
   it 'has appropriate PO statuses' do
-    expect(purchase_order.document_status.text.strip).to        match(/FINAL/)
-    expect(purchase_order.document_type_status.text.strip).to   match(/Open/)
+    po_status                     = purchase_order.document_status.text.strip
+    document_status               = purchase_order.document_type_status.text.strip
+    expect(po_status).to          match(/FINAL/)
+    expect(document_status).to    match(/Open/)
   end
 
   it 'can receive the PO' do
@@ -131,7 +146,8 @@ describe 'The PURAP Workflow' do
   end
 
   it 'opens a receiving document' do
-    expect(receiving.wait_for_page_to_load).to be_true
+    receiving_doc_is_loaded       = receiving.wait_for_page_to_load
+    expect(receiving_doc_is_loaded).to be_true
   end
 
   it 'receives the line item' do
@@ -141,7 +157,8 @@ describe 'The PURAP Workflow' do
   it 'submits the receiving document' do
     receiving.submit_button.click
     receiving.wait_for_page_to_load
-    expect(receiving.submit_message.present?).to be_true
+    success_message_given         = receiving.submit_message.present?
+    expect(success_message_given).to be_true
   end
 
   it 'opens a new invoice' do
@@ -167,7 +184,8 @@ describe 'The PURAP Workflow' do
 
   it 'adds the purchase order' do
     invoice.po_line.add_button.when_present.click
-    expect(invoice.current_items_line.po_number.when_present.text.strip).to eq(@info.po[:id])
+    po_id_on_invoice              = invoice.current_items_line.po_number.when_present.text.strip
+    expect(po_id_on_invoice).to eq(@info.po[:id])
   end
 
   it 'saves the invoice' do
@@ -175,7 +193,8 @@ describe 'The PURAP Workflow' do
     @info.invoice[:url] = invoice.lookup_url(@info.invoice[:id])
     invoice.save_button.click
     invoice.wait_for_page_to_load
-    expect(invoice.document_status.when_present.text.strip).to match('SAVED')
+    document_status               = invoice.document_status.when_present.text.strip
+    expect(document_status).to match('SAVED')
   end
 
   it 'approves the invoice' do
@@ -183,6 +202,7 @@ describe 'The PURAP Workflow' do
   end
 
   it 'waits for the invoice to be department-approved' do
-    expect(page_assert(@info.invoice[:url],120)    { invoice.document_type_status.when_present.text.strip.include?('Department-Approved') }).to be_true
+    invoice_approved              = page_assert(@info.invoice[:url],120)    { invoice.document_type_status.when_present.text.strip.include?('Department-Approved') }
+    expect(invoice_approved).to be_true
   end
 end

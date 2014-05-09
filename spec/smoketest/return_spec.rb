@@ -23,18 +23,22 @@ describe 'The OLE Return Page' do
     loan_page.login('dev2')
     loan_page.open
     loan_page.return_button.when_present.click
-    expect(return_page.wait_for_page_to_load).to be_true
+    page_is_loaded = return_page.wait_for_page_to_load
+    expect(page_is_loaded).to be_true
   end
 
   it 'has a checkin date field' do
-    expect(return_page.checkin_date_field.present?).to be_true
+    date_field_found = return_page.checkin_date_field.present?
+    expect(date_field_found).to be_true
   end
 
   it 'has a checkin time field' do
-    expect(return_page.checkin_time_field.present?).to be_true
+    time_field_found = return_page.checkin_time_field.present?
+    expect(time_field_found).to be_true
   end
 
   it 'has an item barcode field' do
-    expect(return_page.item_field.present?).to be_true
+    barcode_field_found = return_page.item_field.present?
+    expect(barcode_field_found).to be_true
   end
 end

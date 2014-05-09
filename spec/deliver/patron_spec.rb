@@ -60,20 +60,27 @@ describe 'A Patron' do
 
     it 'and takes a new borrower type' do
       patron_page.borrower_type_selector.when_present.select(@patron[:new_borrower_type])
-      expect(patron_page.borrower_type_selector.selected?(@patron[:new_borrower_type])).to be_true
+      borrower_type_set = patron_page.borrower_type_selector.selected?(@patron[:new_borrower_type]) 
+      expect(borrower_type_set).to be_true
     end
 
     it 'and persists changes' do
       patron_page.submit_button.click
-      expect(verify { patron_page.message.text =~ /success/ }).to be_true
+      success_message_given = verify { patron_page.message.text =~ /success/ }
+      expect(success_message_given).to be_true
     end
 
     it 'and verified via search' do
       patron_lookup.open
-      patron_lookup.barcode_field.when_present.set(@patron[:barcode])
-      patron_lookup.first_name_field.when_present.set(@patron[:first])
-      patron_lookup.last_name_field.when_present.set(@patron[:last])
-      patron_lookup.text_in_results?(@patron[:new_borrower_type])
+      new_borrower_type_found = verify(60) {
+          patron_lookup.clear_button.when_present.click
+          patron_lookup.barcode_field.when_present.set(@patron[:barcode])
+          patron_lookup.first_name_field.when_present.set(@patron[:first])
+          patron_lookup.last_name_field.when_present.set(@patron[:last])
+          patron_lookup.search_button.click
+          patron_lookup.text_in_results?(@patron[:new_borrower_type])
+      }
+      expect(new_borrower_type_found).to be_true
     end
   end
 end

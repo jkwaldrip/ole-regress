@@ -41,12 +41,14 @@ describe 'The Order Record Batch Process' do
     profile_lookup.wait_for_page_to_load
     profile_lookup.profile_type_selector.when_present.select('Order Record Import')
     profile_lookup.search_button.when_present.click
-    expect(Watir::Wait.until {profile_lookup.text_in_results('Test_Order_Import').present?}).to be_true
+    import_profile_found = Watir::Wait.until {profile_lookup.text_in_results('Test_Order_Import').present?}
+    expect(import_profile_found).to be_true
     profile_lookup.return_by_text('Test_Order_Import').click
   end
 
   it 'gives the job a name' do
-    batch_process.name_field.when_present.set(@batch_job.job_name)
+    batch_process.wait_for_page_to_load
+    set_field(batch_process.name_field,@batch_job.job_name)
   end
 
   it 'selects the .mrc file' do
@@ -60,7 +62,8 @@ describe 'The Order Record Batch Process' do
   it 'runs the job' do
     batch_process.run_button.when_present.click
     batch_process.wait_for_page_to_load
-    expect(batch_process.message.when_present.text).to match(/successfully saved/)
+    message_text = batch_process.message.when_present.text
+    expect(message_text).to match(/successfully saved/)
   end
 
   it 'opens the job details page' do
@@ -72,26 +75,29 @@ describe 'The Order Record Batch Process' do
   #   to show up in the load_profile_selector options list.
   #   - jkw, 2014/02/04
   it 'adds a YBP profile to load summary lookup' do
-    expect(assert(120) {
+    load_profile_found = assert(120) {
       load_summary_lookup.open
       Watir::Wait.until { load_summary_lookup.load_profile_selector.include?('YBP') }
-    }).to be_true
+    }
+    expect(load_profile_found).to be_true
   end
 
   it 'generates a load summary' do
-    expect(assert(60) {
+    load_summary_found = assert(60) {
       load_summary_lookup.user_id_field.when_present.clear
       load_summary_lookup.load_profile_selector.when_present.select('YBP')
       load_summary_lookup.filename_field.set(@batch_job.file_name)
       load_summary_lookup.search_button.click
       load_summary_lookup.wait_for_page_to_load
       load_summary_lookup.text_in_results?(@batch_job.file_name)
-    }).to be_true
+    }
+    expect(load_summary_found).to be_true
   end
 
   context 'generates a load report' do
     it 'with a document ID' do
-      expect(load_summary_lookup.doc_link_by_text(@batch_job.file_name).present?).to be_true
+      doc_id_found = load_summary_lookup.doc_link_by_text(@batch_job.file_name).present?
+      expect(doc_id_found).to be_true
       @batch_job.load_report_id = load_summary_lookup.doc_link_by_text(@batch_job.file_name).text.strip
       expect(@batch_job.load_report_id).to match(/\d+/)
     end
@@ -102,10 +108,11 @@ describe 'The Order Record Batch Process' do
     #   - jkw, 2014/02/04
     it 'with a record count' do
       url = load_report.lookup_url(@batch_job.load_report_id)
-      expect(page_assert(url,180) {
+      record_count_found = page_assert(url,180) {
         load_report.wait_for_page_to_load
         load_report.total_count =~ /\d+/
-      }).to be_true
+      }
+      expect(record_count_found).to be_true
       @batch_job.record_count = load_report.total_count
     end
 

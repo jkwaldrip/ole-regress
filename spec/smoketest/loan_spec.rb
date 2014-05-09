@@ -29,14 +29,17 @@ describe 'The OLE Loan Page' do
   end
 
   it 'has a circulation desk selector' do
-    expect(loan_page.circulation_desk_selector.present?).to be_true
+    desk_selector_present = loan_page.circulation_desk_selector.present?
+    expect(desk_selector_present).to be_true
   end
 
   it 'has a patron barcode field' do
-    expect(loan_page.patron_field.present?).to be_true
+    patron_field_present = loan_page.patron_field.present?
+    expect(patron_field_present).to be_true
   end
 
   it 'has a return button' do
-    expect(loan_page.return_button.present?).to be_true
+    return_button_present = loan_page.return_button.present?
+    expect(return_button_present).to be_true
   end
 end

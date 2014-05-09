@@ -45,7 +45,8 @@ describe 'Non-Latin characters' do
     add_data_line('500',@bib_record.line_500a9)
     bib_editor.save_record
     bib_editor.messages.each do |message|
-      expect(message.when_present.text).to match(/success/)
+      message_text = message.when_present.text
+      expect(message_text).to match(/success/)
     end
   end
 
@@ -59,47 +60,56 @@ describe 'Non-Latin characters' do
 
      it 'in Arabic' do
        bib_editor.data_line.line_number = 2
-       expect(bib_editor.data_line.data_field.when_present.value).to include(@alpha[:arabic])
+       arabic_line = bib_editor.data_line.data_field.when_present.value
+       expect(arabic_line).to include(@alpha[:arabic])
      end
 
      it 'in Cyrillic' do
        bib_editor.data_line.line_number = 3
-       expect(bib_editor.data_line.data_field.when_present.value).to include(@alpha[:cyrillic])
+       cyrillic_line = bib_editor.data_line.data_field.when_present.value
+       expect(cyrillic_line).to include(@alpha[:cyrillic])
      end
 
      it 'in Greek' do
        bib_editor.data_line.line_number = 4
-       expect(bib_editor.data_line.data_field.when_present.value).to include(@alpha[:greek])
+       greek_line = bib_editor.data_line.data_field.when_present.value
+       expect(greek_line).to include(@alpha[:greek])
      end
 
      it 'in Hangul' do
        bib_editor.data_line.line_number = 5
-       expect(bib_editor.data_line.data_field.when_present.value).to include(@alpha[:hangul])
+       hangul_line = bib_editor.data_line.data_field.when_present.value
+       expect(hangul_line).to include(@alpha[:hangul])
      end
 
      it 'in Hebrew' do
        bib_editor.data_line.line_number = 6
-       expect(bib_editor.data_line.data_field.when_present.value).to include(@alpha[:hebrew])
+       hebrew_line = bib_editor.data_line.data_field.when_present.value
+       expect(hebrew_line).to include(@alpha[:hebrew])
      end
     
      it 'in Hiragana' do
        bib_editor.data_line.line_number = 7
-       expect(bib_editor.data_line.data_field.when_present.value).to include(@alpha[:hiragana])
+       hiragana_line = bib_editor.data_line.data_field.when_present.value
+       expect(hiragana_line).to include(@alpha[:hiragana])
      end
 
      it 'in Katakana' do
        bib_editor.data_line.line_number = 8
-       expect(bib_editor.data_line.data_field.when_present.value).to include(@alpha[:katakana])
+       katakana_line = bib_editor.data_line.data_field.when_present.value
+       expect(katakana_line).to include(@alpha[:katakana])
      end
 
      it 'in Persian' do
        bib_editor.data_line.line_number = 9
-       expect(bib_editor.data_line.data_field.when_present.value).to include(@alpha[:persian])
+       persian_line = bib_editor.data_line.data_field.when_present.value
+       expect(persian_line).to include(@alpha[:persian])
      end
 
      it 'in Simplified Hanzi' do
        bib_editor.data_line.line_number = 10
-       expect(bib_editor.data_line.data_field.when_present.value).to include(@alpha[:simplified_hanzi_short])
+       hanzi_line = bib_editor.data_line.data_field.when_present.value
+       expect(hanzi_line).to include(@alpha[:simplified_hanzi_short])
      end
    end
 end

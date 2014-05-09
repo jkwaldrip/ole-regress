@@ -22,16 +22,19 @@ describe 'An OLE Requisition' do
     expect(requisition.open).to be_true
   end
 
-  it 'has a document ID' do 
-    expect(requisition.document_id.text).not_to be_empty
+  it 'has a document ID' do
+    document_id = requisition.document_id.text
+    expect(document_id).not_to be_empty
   end
 
   it 'has a status' do
-    expect(requisition.document_status.text.strip).to eq('INITIATED')
+    status = requisition.document_status.text.strip
+    expect(status).to eq('INITIATED')
   end
 
   it 'has a requisition status' do
-    expect(requisition.document_type_status.text.strip).to eq('In Process')
+    requisition_status = requisition.document_type_status.text.strip
+    expect(requisition_status).to eq('In Process')
   end
 
   it 'has a submit button' do

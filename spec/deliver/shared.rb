@@ -24,7 +24,8 @@ shared_context 'Checkout' do
     loan_page.circulation_desk_selector.when_present.select(desk)
     loan_page.circulation_desk_yes.click if loan_page.circulation_desk_yes.present?
     loan_page.loan_popup_box.wait_while_present if loan_page.loan_popup_box.present?
-    expect(loan_page.circulation_desk_selector.selected?(desk)).to be_true
+    desk_selected = loan_page.circulation_desk_selector.selected?(desk)
+    expect(desk_selected).to be_true
   end
 
   context 'checks out a resource' do
@@ -39,11 +40,13 @@ shared_context 'Checkout' do
 
     it 'using the dev2 login' do
       main_menu.open
-      expect(main_menu.login('dev2')).to be_true
+      logged_in = main_menu.login('dev2')
+      expect(logged_in).to be_true
     end
 
     it 'on the loan screen' do
-      expect(loan_page.open).to be_true
+      loan_page_loaded = loan_page.open
+      expect(loan_page_loaded).to be_true
     end
 
     it 'uses a circulation desk' do
@@ -69,7 +72,8 @@ shared_context 'Checkout' do
     end
 
     it 'has the item barcode in current items' do
-      expect(loan_page.item_barcode_link(1).when_present.text.strip.include?(item_barcode)).to be_true
+      barcode_shown = loan_page.item_barcode_link(1).when_present.text.strip.include?(item_barcode)
+      expect(barcode_shown).to be_true
     end
   end
 end
@@ -101,8 +105,10 @@ shared_context 'Checkin' do
       return_page.checkin_message_box.wait_while_present
     end
     return_page.items_returned_toggle.wait_until_present
-    expect(return_page.item_barcode_link(1).text.include?(barcode)).to            be_true
-    expect(return_page.item_checkin_date.text.include?(@checkin.expected_str)).to be_true
+    item_returned = return_page.item_barcode_link(1).text.include?(barcode)
+    checkin_date_correct = return_page.item_checkin_date.text.include?(@checkin.expected_str)
+    expect(item_returned).to be_true
+    expect(checkin_date_correct).to be_true
   end
 
   def end_session(return_page)
@@ -249,7 +255,8 @@ shared_context 'New Patron' do
     it 'successfully submitted' do
       patron_page.submit_button.click
       patron_page.wait_for_page_to_load
-      expect(patron_page.message.when_present.text).to match(/success/)
+      message_given = patron_page.message.when_present.text
+      expect(message_given).to match(/success/)
     end
   end
 end

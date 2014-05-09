@@ -40,7 +40,7 @@ shared_context 'Create Location' do
   end
 
   def verify_location(struct)
-    verify(90) {
+    location_found = verify(90) {
       location_lookup.open
       location_lookup.wait_for_page_to_load
       location_lookup.location_id_field.when_present.set(struct.id) unless struct.id.nil?
@@ -51,7 +51,7 @@ shared_context 'Create Location' do
       location_lookup.wait_for_page_to_load
       location_lookup.text_in_results?(struct.code)
     }
-    expect(location_lookup.text_in_results?(struct.code)).to be_true
+    expect(location_found).to be_true
   end
 
 end
@@ -85,12 +85,14 @@ shared_context 'New Batch Profile' do
 
     it 'with a description' do
       profile.description_field.when_present.set("Regression Import #{@bib_record.key_str}")
-      expect(profile.description_field.value).to  eq("Regression Import #{@bib_record.key_str}")
+      profile_description = profile.description_field.value
+      expect(profile_description).to  eq("Regression Import #{@bib_record.key_str}")
     end
 
     it 'with a name' do
       profile.batch_profile_name_field.when_present.set(@info.name)
-      expect(profile.batch_profile_name_field.value).to  eq(@info.name)
+      profile_name = profile.batch_profile_name_field.value
+      expect(profile_name).to  eq(@info.name)
     end
   end
 end
