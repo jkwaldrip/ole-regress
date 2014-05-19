@@ -58,7 +58,7 @@ describe 'The OLE SRU function' do
       filename      = "sru_title_any-#{@today}.xml"
       get_sru_file(query,filename,@ole)
       records       = get_marc_xml(filename)
-      file_is_emtpy = File.zero?("data/downloads/#{filename}")
+      file_is_empty = File.zero?("data/downloads/#{filename}")
       expect(file_is_empty).to be_false
       expect(records.count).to eq(2)
 
