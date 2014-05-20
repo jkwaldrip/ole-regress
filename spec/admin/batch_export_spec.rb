@@ -230,12 +230,17 @@ describe 'The Batch Export process' do
       @info.status = job_report.status.text
       expect(@info.status).to match(/COMPLETED/)
     end
+
+    it 'with a download link' do
+      download_link       = job_report.view_export_file
+      expect(download_link.present?).to be_true
+      @info.mrc_url       = download_link.href
+    end
   end
 
   context 'exports a .mrc file' do
     it 'and downloads it' do
-      @info.mrc_filepath = 'data/downloads/' + @info.filename
-      @info.mrc_url      = "#{@ole.url}home/#{@info.filename}/#{@info.job_id}/#{@info.filename}"
+      @info.mrc_filepath  = 'data/downloads/' + @info.filename
       open(@info.mrc_filepath,'wb') do |file|
         file << open(@info.mrc_url).read
       end

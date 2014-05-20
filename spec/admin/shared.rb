@@ -84,9 +84,9 @@ shared_context 'New Batch Profile' do
     end
 
     it 'with a description' do
-      profile.description_field.when_present.set("Regression Import #{@bib_record.key_str}")
+      profile.description_field.when_present.set("Regression Test #{@bib_record.key_str}")
       profile_description = profile.description_field.value
-      expect(profile_description).to  eq("Regression Import #{@bib_record.key_str}")
+      expect(profile_description).to  eq("Regression Test #{@bib_record.key_str}")
     end
 
     it 'with a name' do
