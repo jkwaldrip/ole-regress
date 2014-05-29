@@ -16,9 +16,18 @@ RSpec.configure do |config|
   end
 
   config.after(:all) do
-    # Close browser if OLE session is still active.
-    #   (Prevents error messages from frozen or aborted sessions.)
-    @ole.browser.close if @ole.class == OLE_QA::Framework::Session
+    # Close the browser session only if it is still alive after a test.
+    # @note This will not close the Headless session.  Closing and reopening
+    #   Headless between tests tends to result in errors reporting that
+    #   XVFB is frozen.
+    @ole.browser.close if @ole.browser.is_a?(Watir::Browser)
+  end
+
+  config.after(:suite) do
+    # Close the OLE session if it is still active.
+    # @note Calling @ole.quit tears down the Headless session and
+    #   calls browser.close on Watir-Webdriver.
+    @ole.quit if @ole.class == OLE_QA::Framework::Session
   end
 
   config.after(:each) do
