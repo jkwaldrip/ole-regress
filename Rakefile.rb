@@ -146,10 +146,9 @@ Cucumber::Rake::Task.new(:cucumber) do |task|
 end
 
 
-desc 'Run all RSpec & Cucumber tests.'
+desc 'Run all RSpec tests.'
 task :regress do
-  Rake::Task['all_specs'].invoke
-  Rake::Task['cucumber'].invoke
+  RSpec::Core::RakeTask.new(:regress)
 end
 
 desc 'Default:  Show version.'
