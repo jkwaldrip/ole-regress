@@ -20,7 +20,7 @@ RSpec.configure do |config|
     # @note This will not close the Headless session.  Closing and reopening
     #   Headless between tests tends to result in errors reporting that
     #   XVFB is frozen.
-    @ole.browser.close if @ole.browser.is_a?(Watir::Browser)
+    @ole.browser.close unless @ole.nil?
   end
 
   config.after(:suite) do
