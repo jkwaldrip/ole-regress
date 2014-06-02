@@ -146,9 +146,10 @@ Cucumber::Rake::Task.new(:cucumber) do |task|
 end
 
 
-desc 'Run all RSpec tests.'
+desc 'Run all non-smoketest RSpec tests.'
 task :regress do
-  RSpec::Core::RakeTask.new(:regress)
+  specs = Dir["spec/*/*_spec.rb"].sort - Dir["spec/smoketest/*_spec.rb"]
+  RSpec::Core::Runner::run(specs,$stderr,$stdout)
 end
 
 desc 'Default:  Show version.'
