@@ -15,7 +15,7 @@
 require 'rspec'
 require 'spec_helper.rb'
 
-describe 'The Order Record Batch Process' do
+describe 'The Order Record Batch Process', :xfer => true do
 
   include_context 'Batch Process'
 

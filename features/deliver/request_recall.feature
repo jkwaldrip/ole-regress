@@ -1,4 +1,4 @@
-@recall @request @happy_path
+@recall @request @happy_path @regress
 
 Feature:  Request Recall
 

@@ -1,4 +1,4 @@
-@deliver @request @happy_path
+@deliver @request @happy_path @regress
 
 Feature:  Request Page
 

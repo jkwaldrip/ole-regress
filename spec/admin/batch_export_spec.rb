@@ -15,7 +15,7 @@
 require 'rspec'
 require 'spec_helper.rb'
 
-describe 'The Batch Export process' do
+describe 'The Batch Export process', :xfer => true do
 
   include OLE_QA::RegressionTest::MarcEditor
 

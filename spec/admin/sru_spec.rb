@@ -1,7 +1,7 @@
 require 'rspec'
 require 'spec_helper.rb'
 
-describe 'The OLE SRU function' do
+describe 'The OLE SRU function', :xfer => true do
 
   include OLE_QA::RegressionTest::Assertions
   include OLE_QA::RegressionTest::MarcEditor

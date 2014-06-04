@@ -51,6 +51,11 @@ browsers.each do |browser|
   puts browser.split('_').map(&:capitalize).join(' ')
   # Configure RSpec
   RSpec.configure do |config|
+
+    # Exclude any specs with :xfer => true declared.
+    # This avoids running any file-transferring specs on SauceLabs.
+    config.filter_run_excluding :xfer => true
+
     # Start the SauceLabs connection and the OLE QA Framework session
     config.before(:all) do
       OLE_QA::RegressionTest::Sauce.start_browser(browser)

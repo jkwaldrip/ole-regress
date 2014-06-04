@@ -15,7 +15,7 @@
 require 'rspec'
 require 'spec_helper.rb'
 
-describe 'The Batch Import process' do
+describe 'The Batch Import process', :xfer => true do
 
   include_context 'Describe Workbench'
   include_context 'Batch Process'
