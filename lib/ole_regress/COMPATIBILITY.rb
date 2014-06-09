@@ -14,6 +14,6 @@
 
 module OLE_QA
   module RegressionTest
-    OLE_VERSION = '1.5.0-M2-r18843 - 2014/05/08'
+    OLE_VERSION = '1.5.0-M2-r19173 - 2014/06/05'
   end
 end
