@@ -37,13 +37,6 @@ describe 'The Describe Workbench' do
     end
   end
 
-  context 'searches for a holdings record' do
-    it 'by call number' do
-      call_number_found = call_number_search(call_number)
-      expect(call_number_found).to be_true
-    end
-  end
-
   context 'searches for an item record' do
     it 'by barcode' do
       barcode_found = barcode_search(barcode)

@@ -133,23 +133,6 @@ shared_context 'Describe Workbench' do
     verify(5) {workbench.text_in_results?(author)}
   end
 
-  # Search for a holdings record by call number and verify that it comes up in the search results.
-  def call_number_search(call_number)
-    workbench.open
-    set_field(workbench.document_type_selector,'Holdings')
-    workbench.wait_for_page_to_load
-    set_field(workbench.search_type_selector,'Search')
-    workbench.wait_for_page_to_load
-    set_field(workbench.search_line.search_field,call_number)
-    workbench.search_line.search_scope_selector.when_present.select_value('phrase')
-    expect(workbench.search_line.search_scope_selector.value).to eq('phrase')
-    set_field(workbench.search_line.field_selector,'Call Number')
-    workbench.wait_for_page_to_load
-    workbench.search_button.click
-    workbench.wait_for_page_to_load
-    verify(5) {workbench.text_in_results?(call_number)}
-  end
-
   # Search for an item record by barcode and verify that it comes up in the search results.
   def barcode_search(barcode)
     workbench.open
