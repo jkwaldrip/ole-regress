@@ -11,7 +11,7 @@ PATH
       numerizer
       ole-qa-framework (>= 3.13.4)
       rake
-      rspec
+      rspec (~> 2.14.1)
 
 GEM
   remote: https://rubygems.org/
@@ -39,7 +39,7 @@ GEM
     multi_test (0.1.1)
     net-http-persistent (2.9.4)
     numerizer (0.2.0)
-    ole-qa-framework (3.14.1)
+    ole-qa-framework (3.16.0)
       headless
       rspec
       watir-webdriver (>= 0.6.5)
@@ -61,7 +61,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.6)
-    watir-webdriver (0.6.9)
+    watir-webdriver (0.6.10)
       selenium-webdriver (>= 2.18.0)
     websocket (1.0.7)
 

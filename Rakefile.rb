@@ -140,9 +140,12 @@ RSpec::Core::RakeTask.new(:smoketest) do |task|
   task.rspec_opts = '-r spec_helper.rb'
 end
 
-desc 'Run all Cucumber tests.'
-Cucumber::Rake::Task.new(:cucumber) do |task|
+Cucumber::Rake::Task.new(:cucumber,'Run all Cucumber tests.') do |task|
   task.cucumber_opts = "features --format pretty"
+end
+
+Cucumber::Rake::Task.new(:cuke_regress,'Run only regression tests in Cucumber.') do |task|
+  task.cucumber_opts = 'features --format pretty --tags @regress'
 end
 
 
@@ -150,6 +153,19 @@ desc 'Run all non-smoketest RSpec tests.'
 task :regress do
   specs = Dir["spec/*/*_spec.rb"].sort - Dir["spec/smoketest/*_spec.rb"]
   RSpec::Core::Runner::run(specs,$stderr,$stdout)
+end
+
+desc 'Run only smoketest specs with Jenkins-friendly output.'
+RSpec::Core::RakeTask.new(:jenkins_smoketest) do |task|
+  task.pattern    = 'spec/smoketest/*_spec.rb'
+  task.rspec_opts = '-r spec_helper.rb --format documentation'
+end
+
+desc 'Run all non-smoketest RSpec tests with Jenkins-friendly output.'
+RSpec::Core::RakeTask.new(:jenkins_regress) do |task|
+  args              = Dir["spec/*/*_spec.rb"].sort - Dir["spec/smoketest/*_spec.rb"]
+  args << '--format documentation'
+  task.rspec_opts   = args
 end
 
 desc 'Default:  Show version.'

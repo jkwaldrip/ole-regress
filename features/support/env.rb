@@ -34,5 +34,11 @@ After do |scenario|
     file = "#{name}-#{time}.png"
     @ole.browser.screenshot.save("screenshots/#{file}")
   end
-  @ole.quit
+  @ole.close
+end
+
+# Clean up OLE and do Headless teardown (if running in headless mode) at exit.
+# @note :headless?: option is set in config/options.yml
+at_exit do
+  @ole.quit unless @ole.nil?
 end
