@@ -163,9 +163,8 @@ end
 
 desc 'Run all non-smoketest RSpec tests with Jenkins-friendly output.'
 RSpec::Core::RakeTask.new(:jenkins_regress) do |task|
-  args              = Dir["spec/*/*_spec.rb"].sort - Dir["spec/smoketest/*_spec.rb"]
-  args << '--format documentation'
-  task.rspec_opts   = args
+  task.pattern    = "spec/{admin,deliver,describe,select_acquire}/*_spec.rb"
+  task.rspec_opts = '-r spec_helper.rb --format documentation'
 end
 
 desc 'Default:  Show version.'
