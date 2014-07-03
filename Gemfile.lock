@@ -9,7 +9,7 @@ PATH
       marc
       net-http-persistent
       numerizer
-      ole-qa-framework (>= 3.13.4)
+      ole-qa-framework (>= 3.16.0)
       rake
       rspec
 
@@ -39,7 +39,7 @@ GEM
     multi_test (0.1.1)
     net-http-persistent (2.9.4)
     numerizer (0.2.0)
-    ole-qa-framework (3.14.1)
+    ole-qa-framework (3.16.0)
       headless
       rspec
       watir-webdriver (>= 0.6.5)
