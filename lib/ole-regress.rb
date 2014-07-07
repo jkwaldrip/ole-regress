@@ -33,6 +33,19 @@ module OLE_QA
     FileUtils::mkdir('logs') unless File.directory?('logs')
     FileUtils::mkdir('screenshots') unless File.directory?('screenshots')
 
+    # Set up Firefox profile options.
+    @profile = Selenium::WebDriver::Firefox::Profile.new
+    # Allow a custom download location.
+    @profile['browser.download.folderList'] = 2
+    # Set that download location to "data/downloads/"
+    @profile['browser.download.dir'] = File.expand_path("data/downloads/")
+    # Enable automatic download of Marc, XML, and PDF files.
+    @profile['browser.helperApps.neverAsk.saveToDisk'] = "application/octet-stream,application/xml,application/pdf"
+
+    class << self
+      attr_reader :profile
+    end
+
     # Load all *.rb in lib/ole_regress/
     Dir['lib/ole_regress/*.rb'].sort.each do |file|
       require file
