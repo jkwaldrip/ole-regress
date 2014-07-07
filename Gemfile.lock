@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ole-regress (1.17.1)
+    ole-regress (1.18.0)
       bundler
       chronic
       cucumber
@@ -39,7 +39,7 @@ GEM
     multi_test (0.1.1)
     net-http-persistent (2.9.4)
     numerizer (0.2.0)
-    ole-qa-framework (3.16.0)
+    ole-qa-framework (3.17.0)
       headless
       rspec
       watir-webdriver (>= 0.6.5)
