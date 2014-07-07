@@ -69,7 +69,7 @@ describe 'The Batch Import process', :xfer => true do
       batch_type_lookup.search_button.when_present.click
       verify {batch_type_lookup.text_in_results?('Bib Import')}
       batch_type_lookup.return_by_text('Bib Import').when_present.click
-      @ole.browser.iframe(:id => 'iframeportlet').wait_until_present
+      profile.wait_for_page_to_load
       batch_process_type = profile.batch_process_type_field.when_present.value
       expect(batch_process_type).to eq('Bib Import')
     end
@@ -136,7 +136,8 @@ describe 'The Batch Import process', :xfer => true do
 
   context 'executes a batch job' do
     it 'running the batch process' do
-      batch_process.run_button.click
+      batch_process.run_now_option.click unless batch_process.run_now_option.when_present.checked?
+      batch_process.submit_button.when_present.click
       batch_process.wait_for_page_to_load
       message_text = batch_process.message.when_present.text
       expect(message_text).to match(/successfully saved/)

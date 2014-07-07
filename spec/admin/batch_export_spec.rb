@@ -23,7 +23,8 @@ describe 'The Batch Export process', :xfer => true do
   include_context 'New Batch Profile'
 
   let(:bib_editor)                {OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)}
-  let(:profile)            {OLE_QA::Framework::OLELS::Batch_Export_Profile.new(@ole)}
+  let(:profile)                   {OLE_QA::Framework::OLELS::Batch_Export_Profile.new(@ole)}
+  let(:download_page)             {OLE_QA::Framework::OLELS::Batch_File_List.new(@ole)}
 
   before :all do
     FileUtils::mkdir('data/downloads') unless File.directory?('data/downloads')
@@ -42,7 +43,7 @@ describe 'The Batch Export process', :xfer => true do
                                       :value    => "|aRecord Three #{@bib_record.key_str}"}
     ]
     @info.name                    = "QART-#{@bib_record.key_str}"
-    @info.filename                = "#{@info.name}.mrc"
+    @info.filename                = "#{@info.name}"
   end
 
   context 'sets up an export profile' do
@@ -53,7 +54,7 @@ describe 'The Batch Export process', :xfer => true do
       batch_type_lookup.search_button.when_present.click
       verify {batch_type_lookup.text_in_results?('Batch Export')}
       batch_type_lookup.return_by_text('Batch Export').when_present.click
-      @ole.browser.iframe(:id => 'iframeportlet').wait_until_present
+      profile.wait_for_page_to_load
       batch_process_type = profile.batch_process_type_field.when_present.value
       expect(batch_process_type).to eq('Batch Export')
     end
@@ -152,7 +153,8 @@ describe 'The Batch Export process', :xfer => true do
 
   context 'executes a batch job' do
     it 'running the batch process' do
-      batch_process.run_button.click
+      batch_process.run_now_option.click unless batch_process.run_now_option.when_present.checked?
+      batch_process.submit_button.when_present.click
       batch_process.wait_for_page_to_load
       message_text = batch_process.message.when_present.text 
       expect(message_text).to match(/successfully saved/)
@@ -234,21 +236,30 @@ describe 'The Batch Export process', :xfer => true do
     it 'with a download link' do
       download_link       = job_report.view_export_file
       expect(download_link.present?).to be_true
-      @info.mrc_url       = download_link.href
     end
   end
 
   context 'exports a .mrc file' do
+    it 'to a download page' do
+      @ole.open(job_report.view_export_file.href)
+      download_page.wait_for_page_to_load
+      expect(download_page.link_by_filename?(/#{@info.filename}/)).to be_true
+      @info.mrc_url = download_page.link_by_filename(/#{@info.filename}/).href
+    end
+
+    it 'with a timestamped filename' do
+      @info.timestamped_filename = download_page.link_by_filename(/#{@info.filename}/).text
+      expect(@info.timestamped_filename).to match(/#{@info.filename}-\d{4}-\d{2}-\d{2}T\d{4}\.mrc/)
+    end
+
     it 'and downloads it' do
-      @info.mrc_filepath  = 'data/downloads/' + @info.filename
-      open(@info.mrc_filepath,'wb') do |file|
-        file << open(@info.mrc_url).read
-      end
+      @info.mrc_filepath  = 'data/downloads/' + @info.timestamped_filename
+      download_page.link_by_filename(@info.timestamped_filename).click
     end
 
     it 'and verifies it' do
-      file_exists = File.exists?(@info.mrc_filepath)
-      expect(file_exists).to be_true
+      assert {File.exists?(@info.mrc_filepath)}
+      expect(File.exists?(@info.mrc_filepath)).to be_true
     end
 
     it 'with 3 records' do

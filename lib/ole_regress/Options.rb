@@ -13,8 +13,10 @@
 #  limitations under the License.
 
 module OLE_QA::RegressionTest
-  yaml_config = File.open('config/options.yml','r')
+  # Load YAML options.
+  options = YAML.load_file('config/options.yml')
+  # Add custom profile to options hash.
+  options[:profile] = OLE_QA::RegressionTest.profile
   # Options hash for OLE QA Framework Session.
-  Options = YAML.load(yaml_config)
-  yaml_config.close
+  Options = options
 end

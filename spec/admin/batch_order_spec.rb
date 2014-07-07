@@ -60,7 +60,8 @@ describe 'The Order Record Batch Process', :xfer => true do
   end
 
   it 'runs the job' do
-    batch_process.run_button.when_present.click
+    batch_process.run_now_option.click unless batch_process.run_now_option.when_present.checked?
+    batch_process.submit_button.when_present.click
     batch_process.wait_for_page_to_load
     message_text = batch_process.message.when_present.text
     expect(message_text).to match(/successfully saved/)
