@@ -180,14 +180,22 @@ shared_context 'New Patron' do
       set_field(patron_page.address_line.address_source_selector,'Operator')
     end
 
+    it 'with an address type' do
+      set_field(patron_page.address_line.address_type_selector,'Home')
+    end
+
+    it 'with the address active' do
+      set_field(patron_page.address_line.active_checkbox,true)
+    end
+
+    it 'with the address preferred' do
+      set_field(patron_page.address_line.preferred_checkbox,true)
+    end
+
     it 'with address details' do
       patron_page.address_line.details_link.click
       address_details_present = patron_page.address_line.line_1_field.wait_until_present
       expect(address_details_present).to be_true
-    end
-
-    it 'with an address type' do
-      set_field(patron_page.address_line.address_type_selector,'Home')
     end
 
     it 'with an address' do
@@ -211,14 +219,10 @@ shared_context 'New Patron' do
       set_field(patron_page.phone_line.country_selector,'United States')
     end
 
-    it 'with the address active' do
-      set_field(patron_page.address_line.active_checkbox,true)
-    end
-
     it 'with the address added' do
       patron_page.address_line.add_button.click
       patron_page.address_line.line_number = 2
-      address_is_added = patron_page.address_line.line_1_field.wait_until_present
+      address_is_added = patron_page.address_line.details_link.wait_until_present
       expect(address_is_added).to be_true
     end
 
