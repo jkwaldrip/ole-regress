@@ -9,7 +9,7 @@ PATH
       marc
       net-http-persistent
       numerizer
-      ole-qa-framework (>= 3.17.0)
+      ole-qa-framework (>= 3.17.1)
       rake
       rspec (~> 2.14.1)
 
