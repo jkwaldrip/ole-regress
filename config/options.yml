@@ -1,5 +1,5 @@
 ---
-:url: http://tst.ole.kuali.org/
-:docstore_url: http://tst.docstore.ole.kuali.org/
-:headless?: true
+:url: http://qa.ole.kuali.org/
+:docstore_url: http://docstore.qa.ole.kuali.org/
+:headless?: false
 :explicit_wait: 30
