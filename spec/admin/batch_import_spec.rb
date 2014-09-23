@@ -74,6 +74,13 @@ describe 'The Batch Import process', :xfer => true do
       expect(batch_process_type).to eq('Bib Import')
     end
 
+    it 'with no matching' do
+      search_box = @ole.browser.iframe(:class => 'fancyboxy-iframe')
+      search_box.wait_while_present if search_box.present?
+      profile.match_section_toggle.when_present.click unless profile.match_section_toggled?
+      profile.bib_no_match.when_present.click
+    end
+
     it 'and approves it' do
       profile.approve_button.click
       profile.wait_for_page_to_load

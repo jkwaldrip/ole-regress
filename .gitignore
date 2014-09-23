@@ -1,5 +1,5 @@
 performance/
-config/
+config/options.yml
 bin/*.sh
 logs/
 data/downloads/
