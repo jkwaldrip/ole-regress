@@ -21,6 +21,7 @@ describe 'The Order Record Batch Process', :xfer => true do
 
   let(:load_summary_lookup)               {OLE_QA::Framework::OLEFS::Load_Summary_Lookup.new(@ole)}
   let(:load_report)                       {OLE_QA::Framework::OLEFS::Load_Report.new(@ole)}
+  let(:order_profile)                     {OLE_QA::Framework::OLELS::Batch_Order_Profile.new(@ole)}
 
   before :all do
     eocr       = OLE_QA::RegressionTest::EOCR.new
@@ -32,18 +33,47 @@ describe 'The Order Record Batch Process', :xfer => true do
     )
   end
 
-  it 'opens a new batch process' do
-    batch_process.open
+  it 'edits the Order Record Import profile' do
+    profile_lookup.open
+    profile_lookup.profile_name_field.when_present.set('Test_Order_Import')
+    profile_lookup.search_button.when_present.click
+    Watir::Wait.until {profile_lookup.text_in_results('Test_Order_Import').present?}
+    profile_lookup.edit_by_text('Test_Order_Import').when_present.click
+    order_profile.wait_for_page_to_load
+    order_profile.description_field.when_present.set("AFT Batch Order Import #{Time.now.strftime('%D')}")
   end
 
-  it 'selects the Order Record Import profile' do
+  it 'does not use Marc only' do
+    order_profile.marc_only.when_present.click if order_profile.marc_only?
+  end
+
+  it 'uses the Test Bib Import profile' do
+    unless order_profile.bib_profile == 'Test_Bib_Import'
+      order_profile.bib_profile_search.when_present.click
+      profile_lookup.wait_for_page_to_load
+      profile_lookup.profile_name_field.when_present.set('Test_Bib_Import')
+      profile_lookup.search_button.when_present.click
+      Watir::Wait.until {profile_lookup.text_in_results('Test_Bib_Import').present?}
+      profile_lookup.return_by_text('Test_Bib_Import').when_present.click
+      order_profile.wait_for_page_to_load
+    end
+  end
+
+  it 'submits the Test Order Import profile' do
+    order_profile.submit_button.when_present.click
+    order_profile.wait_for_page_to_load
+    Watir::Wait.until {order_profile.messages.count > 0}
+    expect(order_profile.messages[0].text.strip).to match(/Document was successfully submitted/i)
+  end
+
+  it 'uses the Order Record Import profile' do
+    batch_process.open
     batch_process.profile_search_icon.when_present.click
     profile_lookup.wait_for_page_to_load
     profile_lookup.profile_type_selector.when_present.select('Order Record Import')
     profile_lookup.search_button.when_present.click
-    import_profile_found = Watir::Wait.until {profile_lookup.text_in_results('Test_Order_Import').present?}
-    expect(import_profile_found).to be_true
-    profile_lookup.return_by_text('Test_Order_Import').click
+    Watir::Wait.until {profile_lookup.text_in_results('Test_Order_Import')}.present?
+    profile_lookup.return_by_text('Test_Order_Import').when_present.click
   end
 
   it 'gives the job a name' do
@@ -72,22 +102,13 @@ describe 'The Order Record Batch Process', :xfer => true do
     @ole.windows[-1].close
   end
 
-  # @note On the first run after a restart, it can take some time for the 'YBP' profile
-  #   to show up in the load_profile_selector options list.
-  #   - jkw, 2014/02/04
-  it 'adds a YBP profile to load summary lookup' do
-    load_profile_found = assert(120) {
-      load_summary_lookup.open
-      Watir::Wait.until { load_summary_lookup.load_profile_selector.include?('YBP') }
-    }
-    expect(load_profile_found).to be_true
-  end
-
   it 'generates a load summary' do
+    load_summary_lookup.open
+    load_summary_lookup.wait_for_page_to_load
     load_summary_found = assert(60) {
       load_summary_lookup.user_id_field.when_present.clear
-      load_summary_lookup.load_profile_selector.when_present.select('YBP')
       load_summary_lookup.filename_field.set(@batch_job.file_name)
+      load_summary_lookup.date_from_field.set(Time.now.strftime('%D'))
       load_summary_lookup.search_button.click
       load_summary_lookup.wait_for_page_to_load
       load_summary_lookup.text_in_results?(@batch_job.file_name)
