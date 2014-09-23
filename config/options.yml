@@ -1,5 +1,5 @@
 ---
 :url: http://qa.ole.kuali.org/
 :docstore_url: http://docstore.qa.ole.kuali.org/
-:headless?: true
+:headless?: false
 :explicit_wait: 30
