@@ -14,7 +14,7 @@ describe 'A Patron' do
       barcode_found = verify {
         patron_lookup.clear_button.click
         patron_lookup.barcode_field.when_present.set(@patron[:barcode])
-        patron_lookup.search_button.click
+        patron_lookup.search_button.when_present.click
         patron_lookup.wait_for_page_to_load
         patron_lookup.text_in_results?(@patron[:barcode])
       }
@@ -22,23 +22,22 @@ describe 'A Patron' do
     end
 
     it 'by name' do
-      patron_lookup.clear_button.click
-      patron_lookup.wait_for_page_to_load
+      patron_lookup.open
       patron_lookup.first_name_field.when_present.set(@patron[:first])
       patron_lookup.last_name_field.when_present.set(@patron[:last])
-      patron_lookup.search_button.click
+      patron_lookup.search_button.when_present.click
       patron_lookup.wait_for_page_to_load
-      barcode_found = verify {patron_lookup.text_in_results?(@patron[:barcode])}
+      barcode_found = patron_lookup.text_in_results?(@patron[:barcode])
       expect(barcode_found).to be_true
     end
 
     it 'by email' do
-      patron_lookup.clear_button.click
+      patron_lookup.open
       patron_lookup.wait_for_page_to_load
       patron_lookup.email_address_field.when_present.set(@patron[:email])
-      patron_lookup.search_button.click
+      patron_lookup.search_button.when_present.click
       patron_lookup.wait_for_page_to_load
-      barcode_found = verify {patron_lookup.text_in_results?(@patron[:barcode])}
+      barcode_found = patron_lookup.text_in_results?(@patron[:barcode])
       expect(barcode_found).to be_true
       patron_lookup.clear_button.click
     end
