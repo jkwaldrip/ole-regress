@@ -137,20 +137,21 @@ describe 'The OLE SRU function', :xfer => true do
     #    https://jira.kuali.org/browse/OLE-5791
     # end
 
-    it '= target value' do
-      query         = "year = #{@bib_records.year_2}"
-      filename      = "sru_author_exact-#{@today}.xml"
-      get_sru_file(query,filename,@ole)
-      records       = get_marc_xml(filename)
-      file_is_empty = File.zero?("data/downloads/#{filename}")
-      expect(file_is_empty).to be_false
-      expect(records.count).to eq(1)
+    # This test cannot be implemented until OLE-5791 is resolved.
+    #it '= target value' do
+      #query         = "year = #{@bib_records.year_2}"
+      #filename      = "sru_author_exact-#{@today}.xml"
+      #get_sru_file(query,filename,@ole)
+      #records       = get_marc_xml(filename)
+      #file_is_empty = File.zero?("data/downloads/#{filename}")
+      #expect(file_is_empty).to be_false
+      #expect(records.count).to eq(1)
 
-      records.each do |record|
-        year_field = record['260']['c']
-        expect(year_field).to match(/#{@bib_records.year_2}/)
-      end
-    end
+      #records.each do |record|
+        #year_field = record['260']['c']
+        #expect(year_field).to match(/#{@bib_records.year_2}/)
+      #end
+    #end
   end
 
   # context 'searches by publication date' do
