@@ -86,6 +86,17 @@ module OLE_QA::RegressionTest
       false
     end
     alias_method(:assert_page,:page_assert)
+
+    # Wait a specified number of seconds for ajax activity on a page to stop.
+    def wait_on_ajax(timeout = Watir.default_timeout)
+      timeout = Time.now + timeout
+      begin
+        return 'ok' if ole_session.browser.execute_script('return jQuery.active').to_i == 0
+        sleep INTERVAL
+      rescue
+      end while Time.now < timeout
+      raise OLE_QA::RegressionTest::Error,'Ajax still active on page.'
+    end
     
   end
 end
