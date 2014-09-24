@@ -126,7 +126,7 @@ shared_context 'Checkin' do
       return_page.wait_for_page_to_load
     end
 
-    it 'by_barcode' do
+    it 'by barcode' do
       return_resource(return_page, item_barcode) 
     end
 
