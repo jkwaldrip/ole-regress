@@ -79,6 +79,7 @@ When /^I add (?:a|the) patron(?:'s)? (?:([\w ]+){1,2}) line$/ do |which|
     when /address/
       @patron_editor.address_line.add_button.when_present.click
       @patron_editor.address_line.line_number += 1
+      @patron_editor.address_line.details_link.when_present.click
       @patron_editor.address_line.line_1_field.wait_until_present
     when /phone( number)?/
       @patron_editor.phone_line.add_button.when_present.click
