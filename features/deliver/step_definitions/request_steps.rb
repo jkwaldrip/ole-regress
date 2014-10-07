@@ -53,6 +53,7 @@ end
 
 Then /^I wait for the (second)? ?patron's name to appear in the patron name field$/ do |which|
   @request_page.wait_for_page_to_load
+  @request_page.loading_message.wait_while_present if @request_page.loading_message.present?
   if which.nil?
     patron_name = "#{@patron[:first_name]} #{@patron[:last_name]}"
   else
