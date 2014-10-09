@@ -37,6 +37,7 @@ describe 'The Order Record Batch Process', :xfer => true do
     profile_lookup.open
     profile_lookup.profile_name_field.when_present.set('Test_Order_Import')
     profile_lookup.search_button.when_present.click
+    profile_lookup.wait_for_page_to_load
     Watir::Wait.until {profile_lookup.text_in_results('Test_Order_Import').present?}
     profile_lookup.edit_by_text('Test_Order_Import').when_present.click
     order_profile.wait_for_page_to_load
