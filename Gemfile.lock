@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ole-regress (1.18.6)
+    ole-regress (1.18.7)
       bundler
       chronic
       cucumber
