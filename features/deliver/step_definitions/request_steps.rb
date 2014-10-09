@@ -31,6 +31,7 @@ end
 
 Then /^I wait for the operator ID to appear in the operator ID field$/ do
   @request_page.wait_for_page_to_load
+  @request_page.loading_message.wait_while_present if @request_page.loading_message.present?
   @request_page.user_name.when_present.text.should eq('dev2')
 end
 
@@ -43,7 +44,8 @@ When /^I select a request type of \"?([\w\/\s]+)\"?$/ do |request_type|
 end
 
 When /^I select the (second)? ?patron by barcode on the request page$/ do |which|
-  @request_page.patron_barcode_field.wait_until_present
+  @request_page.wait_for_page_to_load
+  @request_page.loading_message.wait_while_present(60) if @request_page.loading_message.present?
   if which.nil?
     set_field(@request_page.patron_barcode_field,"#{@patron[:barcode]}\n")
   else
@@ -53,7 +55,7 @@ end
 
 Then /^I wait for the (second)? ?patron's name to appear in the patron name field$/ do |which|
   @request_page.wait_for_page_to_load
-  @request_page.loading_message.wait_while_present if @request_page.loading_message.present?
+  @request_page.loading_message.wait_while_present(60) if @request_page.loading_message.present?
   if which.nil?
     patron_name = "#{@patron[:first_name]} #{@patron[:last_name]}"
   else
