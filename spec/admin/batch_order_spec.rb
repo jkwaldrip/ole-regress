@@ -47,6 +47,7 @@ describe 'The Order Record Batch Process', :xfer => true do
       bib_profile.wait_for_page_to_load
       bib_profile.match_section_toggle.click unless bib_profile.match_section_toggled?
       bib_profile.bib_no_match.when_present.click
+      bib_profile.bib_no_match_add.when_present.click
     end
 
     it 'with no holdings matching' do
