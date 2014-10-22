@@ -71,7 +71,7 @@ describe 'The Order Record Batch Process', :xfer => true do
     end
   end
   
-  context 'prepares the order profile'
+  context 'prepares the order profile' do
     it 'with Marc-only not set' do
       profile_lookup.open
       profile_lookup.profile_name_field.when_present.set('Test_Order_Import')
