@@ -41,10 +41,11 @@ describe 'The Order Record Batch Process', :xfer => true do
       profile_lookup.search_button.when_present.click
       Watir::Wait.until {profile_lookup.text_in_results('Test_Bib_Import').present?}
       profile_lookup.edit_by_text('Test_Bib_Import').when_present.click
+      bib_profile.wait_for_page_to_load
+      bib_profile.description_field.when_present.set('Batch Order Test')
     end
 
     it 'with no bib matching' do
-      bib_profile.wait_for_page_to_load
       bib_profile.match_section_toggle.click unless bib_profile.match_section_toggled?
       bib_profile.bib_no_match.when_present.click
       bib_profile.bib_no_match_add.when_present.click
