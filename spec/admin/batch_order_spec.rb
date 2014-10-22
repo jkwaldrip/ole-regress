@@ -22,6 +22,7 @@ describe 'The Order Record Batch Process', :xfer => true do
   let(:load_summary_lookup)               {OLE_QA::Framework::OLEFS::Load_Summary_Lookup.new(@ole)}
   let(:load_report)                       {OLE_QA::Framework::OLEFS::Load_Report.new(@ole)}
   let(:order_profile)                     {OLE_QA::Framework::OLELS::Batch_Order_Profile.new(@ole)}
+  let(:bib_profile)                       {OLE_QA::Framework::OLELS::Batch_Import_Profile.new(@ole)}
 
   before :all do
     eocr       = OLE_QA::RegressionTest::EOCR.new
@@ -33,90 +34,129 @@ describe 'The Order Record Batch Process', :xfer => true do
     )
   end
 
-  it 'edits the Order Record Import profile' do
-    profile_lookup.open
-    profile_lookup.profile_name_field.when_present.set('Test_Order_Import')
-    profile_lookup.search_button.when_present.click
-    profile_lookup.wait_for_page_to_load
-    Watir::Wait.until {profile_lookup.text_in_results('Test_Order_Import').present?}
-    profile_lookup.edit_by_text('Test_Order_Import').when_present.click
-    order_profile.wait_for_page_to_load
-    order_profile.description_field.when_present.set("AFT Batch Order Import #{Time.now.strftime('%D')}")
-  end
-
-  it 'does not use Marc only' do
-    order_profile.marc_only.when_present.click if order_profile.marc_only?
-  end
-
-  it 'uses the Test Bib Import profile' do
-    unless order_profile.bib_profile == 'Test_Bib_Import'
-      order_profile.bib_profile_search.when_present.click
-      profile_lookup.wait_for_page_to_load
+  context 'prepares the bib profile' do
+    it 'Test Bib Import' do
+      profile_lookup.open
       profile_lookup.profile_name_field.when_present.set('Test_Bib_Import')
       profile_lookup.search_button.when_present.click
       Watir::Wait.until {profile_lookup.text_in_results('Test_Bib_Import').present?}
-      profile_lookup.return_by_text('Test_Bib_Import').when_present.click
+      profile_lookup.edit_by_text('Test_Bib_Import').when_present.click
+    end
+
+    it 'with no bib matching' do
+      bib_profile.wait_for_page_to_load
+      bib_profile.match_section_toggle.click unless bib_profile.match_section_toggled?
+      bib_profile.bib_no_match.when_present.click
+    end
+
+    it 'with no holdings matching' do
+      bib_profile.match_holdings_toggle.click unless bib_profile.match_holdings_toggled?
+      bib_profile.holdings_no_match.when_present.click
+      bib_profile.holdings_add_unmatched.when_present.click
+      bib_profile.holdings_keep_all.when_present.click
+    end
+
+    it 'with no item matching' do
+      bib_profile.match_item_toggle.click unless bib_profile.match_item_toggled?
+      bib_profile.item_no_match.when_present.click
+      bib_profile.item_keep_all.when_present.click
+    end
+
+    it 'and submits the changes' do
+      bib_profile.submit_button.when_present.click
+      bib_profile.wait_for_page_to_load
+      Watir::Wait.until {bib_profile.messages.count > 0}
+      expect(bib_profile.messages[0].text.strip).to match(/Document was successfully submitted/i)
+    end
+  end
+  
+  context 'prepares the order profile'
+    it 'with Marc-only not set' do
+      profile_lookup.open
+      profile_lookup.profile_name_field.when_present.set('Test_Order_Import')
+      profile_lookup.search_button.when_present.click
+      profile_lookup.wait_for_page_to_load
+      Watir::Wait.until {profile_lookup.text_in_results('Test_Order_Import').present?}
+      profile_lookup.edit_by_text('Test_Order_Import').when_present.click
       order_profile.wait_for_page_to_load
+      order_profile.description_field.when_present.set("AFT Batch Order Import #{Time.now.strftime('%D')}")
+      order_profile.marc_only.when_present.click if order_profile.marc_only?
+    end
+  
+    it 'using the Test Bib Import profile' do
+      unless order_profile.bib_profile == 'Test_Bib_Import'
+        order_profile.bib_profile_search.when_present.click
+        profile_lookup.wait_for_page_to_load
+        profile_lookup.profile_name_field.when_present.set('Test_Bib_Import')
+        profile_lookup.search_button.when_present.click
+        Watir::Wait.until {profile_lookup.text_in_results('Test_Bib_Import').present?}
+        profile_lookup.return_by_text('Test_Bib_Import').when_present.click
+        order_profile.wait_for_page_to_load
+      end
+    end
+  
+    it 'submits the profile' do
+      order_profile.submit_button.when_present.click
+      order_profile.wait_for_page_to_load
+      Watir::Wait.until {order_profile.messages.count > 0}
+      expect(order_profile.messages[0].text.strip).to match(/Document was successfully submitted/i)
+    end
+  end
+ 
+  context 'runs the import' do
+    it 'with the Order Record Import profile' do
+      batch_process.open
+      batch_process.profile_search_icon.when_present.click
+      profile_lookup.wait_for_page_to_load
+      profile_lookup.profile_type_selector.when_present.select('Order Record Import')
+      profile_lookup.search_button.when_present.click
+      Watir::Wait.until {profile_lookup.text_in_results('Test_Order_Import')}.present?
+      profile_lookup.return_by_text('Test_Order_Import').when_present.click
+    end
+  
+    it 'with a job name' do
+      batch_process.wait_for_page_to_load
+      set_field(batch_process.name_field,@batch_job.job_name)
+    end
+  
+    it 'with the .mrc file' do
+      batch_process.marc_file_field.when_present.set(@batch_job.mrc_file)
+    end
+  
+    it 'with the .edi file' do
+      batch_process.edi_file_field.when_present.set(@batch_job.edi_file)
+    end
+  
+    it 'with the run now option' do
+      batch_process.run_now_option.click unless batch_process.run_now_option.when_present.checked?
+      batch_process.submit_button.when_present.click
+      batch_process.wait_for_page_to_load
+      message_text = batch_process.message.when_present.text
+      expect(message_text).to match(/successfully saved/)
     end
   end
 
-  it 'submits the Test Order Import profile' do
-    order_profile.submit_button.when_present.click
-    order_profile.wait_for_page_to_load
-    Watir::Wait.until {order_profile.messages.count > 0}
-    expect(order_profile.messages[0].text.strip).to match(/Document was successfully submitted/i)
-  end
-
-  it 'uses the Order Record Import profile' do
-    batch_process.open
-    batch_process.profile_search_icon.when_present.click
-    profile_lookup.wait_for_page_to_load
-    profile_lookup.profile_type_selector.when_present.select('Order Record Import')
-    profile_lookup.search_button.when_present.click
-    Watir::Wait.until {profile_lookup.text_in_results('Test_Order_Import')}.present?
-    profile_lookup.return_by_text('Test_Order_Import').when_present.click
-  end
-
-  it 'gives the job a name' do
-    batch_process.wait_for_page_to_load
-    set_field(batch_process.name_field,@batch_job.job_name)
-  end
-
-  it 'selects the .mrc file' do
-    batch_process.marc_file_field.when_present.set(@batch_job.mrc_file)
-  end
-
-  it 'selects the .edi file' do
-    batch_process.edi_file_field.when_present.set(@batch_job.edi_file)
-  end
-
-  it 'runs the job' do
-    batch_process.run_now_option.click unless batch_process.run_now_option.when_present.checked?
-    batch_process.submit_button.when_present.click
-    batch_process.wait_for_page_to_load
-    message_text = batch_process.message.when_present.text
-    expect(message_text).to match(/successfully saved/)
-  end
-
-  it 'opens the job details page' do
-    expect(@ole.windows.count).to eq(2)
-    @ole.windows[-1].close
-  end
-
-  it 'generates a load summary' do
-    load_summary_lookup.open
-    load_summary_lookup.wait_for_page_to_load
-    load_summary_found = assert(60) {
-      load_summary_lookup.user_id_field.when_present.clear
-      load_summary_lookup.filename_field.set(@batch_job.file_name)
-      load_summary_lookup.date_from_field.set(Time.now.strftime('%D'))
-      load_summary_lookup.search_button.click
+  context 'after running' do
+    it 'appears in job details page' do
+      expect(@ole.windows.count).to eq(2)
+      @ole.windows[-1].close
+    end
+  
+    it 'creates a load summary' do
+      load_summary_lookup.open
       load_summary_lookup.wait_for_page_to_load
-      load_summary_lookup.text_in_results?(@batch_job.file_name)
-    }
-    expect(load_summary_found).to be_true
+      load_summary_found = assert(60) {
+        load_summary_lookup.user_id_field.when_present.clear
+        load_summary_lookup.filename_field.set(@batch_job.file_name)
+        load_summary_lookup.date_from_field.set(Time.now.strftime('%D'))
+        load_summary_lookup.search_button.click
+        load_summary_lookup.wait_for_page_to_load
+        load_summary_lookup.text_in_results?(@batch_job.file_name)
+      }
+      expect(load_summary_found).to be_true
+    end
   end
-
+  
   context 'generates a load report' do
     it 'with a document ID' do
       doc_id_found = load_summary_lookup.doc_link_by_text(@batch_job.file_name).present?
