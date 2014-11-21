@@ -1,1 +1,1 @@
-default:  --require features
+default:  --require features --no-source
